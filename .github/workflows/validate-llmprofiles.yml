@@ -14,10 +14,10 @@ jobs:
         with: 
           node-version: 20
           
-      - run: npm i -D ajv ajv-formats jsonlint
+      - run: npm i -D ajv ajv-formats
       
       - name: Lint JSON/JSON-LD
-        run: npx jsonlint -q "**/*.json" "**/*.jsonld" || true
+        run: node scripts/validate-json.js
         
       - name: Validate Page Markup (schema contract)
         run: |

@@ -32,12 +32,12 @@ Thank you for your interest in contributing to llmprofiles! This document provid
 
 2. **Install dependencies**
    ```bash
-   npm install -D ajv ajv-formats jsonlint
+   npm install -D ajv ajv-formats
    ```
 
 3. **Run validation**
    ```bash
-   npx jsonlint -q **/*.json **/*.jsonld
+   node scripts/validate-json.js
    ```
 
 ## Development Setup
@@ -238,7 +238,7 @@ llmprofiles/
 
 ```bash
 # Validate all JSON files
-npx jsonlint -q **/*.json **/*.jsonld
+node scripts/validate-json.js
 
 # Validate specific schema
 node -e "

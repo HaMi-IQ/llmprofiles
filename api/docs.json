@@ -125,7 +125,7 @@
       "response": {
         "@type": "ProfileRegistry",
         "totalProfiles": 10,
-        "profiles": [...]
+        "profiles": []
       }
     },
     "searchProfiles": {
@@ -136,7 +136,7 @@
         "query": "faq",
         "filters": {"hasPageSchema": true},
         "totalResults": 1,
-        "results": [...]
+        "results": []
       }
     },
     "getCapabilities": {
@@ -170,38 +170,11 @@
   "usage": {
     "javascript": {
       "description": "Using the API with JavaScript",
-      "code": `
-// Get all profiles
-const profiles = await fetch('https://llmprofiles.org/api/discovery.json');
-const data = await profiles.json();
-console.log('Total profiles:', data.totalProfiles);
-
-// Search for specific profiles
-const search = await fetch('https://llmprofiles.org/api/search.json?q=faq');
-const results = await search.json();
-console.log('Search results:', results.results);
-
-// Get recommendations
-const recommendations = await fetch('https://llmprofiles.org/api/recommendations.json?useCase=e-commerce');
-const recs = await recommendations.json();
-console.log('Recommendations:', recs.recommendations);
-      `
+      "code": "// Get all profiles\nconst profiles = await fetch('https://llmprofiles.org/api/discovery.json');\nconst data = await profiles.json();\nconsole.log('Total profiles:', data.totalProfiles);\n\n// Search for specific profiles\nconst search = await fetch('https://llmprofiles.org/api/search.json?q=faq');\nconst results = await search.json();\nconsole.log('Search results:', results.results);\n\n// Get recommendations\nconst recommendations = await fetch('https://llmprofiles.org/api/recommendations.json?useCase=e-commerce');\nconst recs = await recommendations.json();\nconsole.log('Recommendations:', recs.recommendations);"
     },
     "curl": {
       "description": "Using the API with curl",
-      "code": `
-# Get all profiles
-curl https://llmprofiles.org/api/discovery.json
-
-# Search for FAQ profiles
-curl "https://llmprofiles.org/api/search.json?q=faq&hasPageSchema=true"
-
-# Get capabilities summary
-curl https://llmprofiles.org/api/capabilities.json
-
-# Get recommendations for e-commerce
-curl "https://llmprofiles.org/api/recommendations.json?useCase=e-commerce&limit=3"
-      `
+      "code": "# Get all profiles\ncurl https://llmprofiles.org/api/discovery.json\n\n# Search for FAQ profiles\ncurl \"https://llmprofiles.org/api/search.json?q=faq&hasPageSchema=true\"\n\n# Get capabilities summary\ncurl https://llmprofiles.org/api/capabilities.json\n\n# Get recommendations for e-commerce\ncurl \"https://llmprofiles.org/api/recommendations.json?useCase=e-commerce&limit=3\""
     }
   },
   "rateLimiting": {

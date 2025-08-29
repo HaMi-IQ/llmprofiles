@@ -259,7 +259,7 @@ Validate your declaration against the schema:
 
 ```bash
 # Validate JSON syntax
-npx jsonlint .well-known/llmprofiles.json
+node scripts/validate-json.js
 
 # Validate against profile schemas
 for profile in $(jq -r '.profiles[].type' .well-known/llmprofiles.json); do

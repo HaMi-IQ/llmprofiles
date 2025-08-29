@@ -12,8 +12,8 @@ jobs:
         with:
           node-version: 20
       - run: npm init -y
-      - run: npm i -D ajv ajv-formats jsonlint
-      - run: npx jsonlint -q **/*.json **/*.jsonld
+      - run: npm i -D ajv ajv-formats
+      - run: node scripts/validate-json.js
       - run: |
           node -e "const Ajv=require('ajv');const add=require('ajv-formats');          const fs=require('fs');const a=new Ajv({strict:false,allErrors:true});add(a);          const s=JSON.parse(fs.readFileSync('faqpage/v1/output.schema.json','utf8'));          a.compile(s); console.log('OK schema');"
       - uses: actions/upload-pages-artifact@v3

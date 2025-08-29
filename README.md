@@ -217,9 +217,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - run: npm i -D ajv ajv-formats jsonlint
+      - run: npm i -D ajv ajv-formats
       - name: Lint JSON/JSON-LD
-        run: npx jsonlint -q "**/*.json" "**/*.jsonld" || true
+        run: node scripts/validate-json.js
       - name: Validate Page Markup (schema contract)
         run: |
           npx ajv validate \
@@ -383,14 +383,14 @@ git clone https://github.com/HaMi-IQ/llmprofiles.git
 cd llmprofiles
 
 # Install dependencies (for validation)
-npm install -D ajv ajv-formats jsonlint
+npm install -D ajv ajv-formats
 ```
 
 ### Validation
 
 ```bash
 # Validate all JSON files
-npx jsonlint -q **/*.json **/*.jsonld
+node scripts/validate-json.js
 
 # Validate specific schema
 node -e "

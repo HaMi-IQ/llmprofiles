@@ -27,7 +27,7 @@
   },
   "scripts": {
     "validate": "npm run validate:json && npm run validate:schemas",
-    "validate:json": "find . -name \"*.json\" -o -name \"*.jsonld\" | xargs jsonlint -q",
+    "validate:json": "node scripts/validate-json.js",
     "validate:schemas": "node scripts/validate-schemas.js",
     "test": "npm run validate",
     "build": "npm run validate",
@@ -46,7 +46,6 @@
   "devDependencies": {
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
-    "jsonlint": "^1.6.3",
     "prettier": "^3.0.0"
   },
   "dependencies": {
