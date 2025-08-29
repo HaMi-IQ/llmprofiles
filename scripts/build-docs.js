@@ -250,4 +250,7 @@ temp/
 
 fs.writeFileSync(path.join(distDir, '.gitignore'), gitignoreContent);
 
+// Ensure GitHub Pages does not run Jekyll (serves directories/files as-is)
+fs.writeFileSync(path.join(distDir, '.nojekyll'), '');
+
 console.log('✅ Documentation built successfully in dist/ directory');
