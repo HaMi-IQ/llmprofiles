@@ -6,7 +6,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "x": "https://llmprofiles.org/vocab#"
   },
-  "@id": "https://llmprofiles.org/softwareapplication/v1",
+  "@id": "https://llmprofiles.org/softwareapplication/v1/index.jsonld",
   "rdfs:seeAlso": "https://schema.org/SoftwareApplication",
   "skos:prefLabel": "Software Application",
   "skos:definition": "A software application with features, requirements, and download information for software discovery.",

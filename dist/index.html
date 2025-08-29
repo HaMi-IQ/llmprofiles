@@ -502,7 +502,7 @@ curl <span class="highlight">https://llmprofiles.org/index.json</span>
                     <h3>2. Use in Your Application</h3>
                     <div class="code-block">
 <span class="highlight">// Example: Using enhanced FAQPage profile</span>
-const faqProfile = await fetch('https://llmprofiles.org/faqpage/v1');
+const faqProfile = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld');
 const profile = await faqProfile.json();
 
 <span class="highlight">// Get page schema for on-page validation</span>

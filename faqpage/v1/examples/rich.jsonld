@@ -35,7 +35,7 @@
     "acceptedAnswer": {
     "@type": "Answer",
     "text": "A canonical profile (this index), a permissive on-page JSON Schema for validation, a normalized extractor schema, copy-ready JSON-LD examples, and a training.jsonl. Adopt it to publish structured FAQs that rank in answer engines and unlock AI-rich results.",
-    "url": "https://llmprofiles.org/faqpage/v1"
+          "url": "https://llmprofiles.org/faqpage/v1/index.jsonld"
     }
     }
     ]

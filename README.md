@@ -147,7 +147,7 @@ const faqMarkup = {
   "@type": "FAQPage",
   "@id": "https://example.com/help#faq",
   "inLanguage": "en",
-  "conformsTo": "https://llmprofiles.org/faqpage/v1",
+  "conformsTo": "https://llmprofiles.org/faqpage/v1/index.jsonld",
   "mainEntity": [
     {
       "@type": "Question",
@@ -159,7 +159,7 @@ const faqMarkup = {
         "text": "Opinionated, testable structured data profiles for AI & SEO.",
         "isBasedOn": "https://example.com/help#faq"
       },
-      "sameAs": ["https://llmprofiles.org/faqpage/v1"]
+      "sameAs": ["https://llmprofiles.org/faqpage/v1/index.jsonld"]
     }
   ],
   "dateModified": "2025-08-28"

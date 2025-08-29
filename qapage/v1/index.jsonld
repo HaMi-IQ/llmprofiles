@@ -6,7 +6,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "x": "https://llmprofiles.org/vocab#"
   },
-  "@id": "https://llmprofiles.org/qapage/v1",
+  "@id": "https://llmprofiles.org/qapage/v1/index.jsonld",
   "rdfs:seeAlso": "https://schema.org/QAPage",
   "skos:prefLabel": "QA Page",
   "skos:definition": "A page focused on a single question with multiple answers, comments, or discussions.",

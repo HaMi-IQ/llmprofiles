@@ -6,7 +6,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "x": "https://llmprofiles.org/vocab#"
   },
-  "@id": "https://llmprofiles.org/product-offer/v1",
+  "@id": "https://llmprofiles.org/product-offer/v1/index.jsonld",
   "rdfs:seeAlso": "https://schema.org/Product",
   "skos:prefLabel": "Product Offer",
   "skos:definition": "A product listing with pricing, availability, and purchase information for e-commerce applications.",

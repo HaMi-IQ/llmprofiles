@@ -6,7 +6,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "x": "https://llmprofiles.org/vocab#"
   },
-  "@id": "https://llmprofiles.org/localbusiness/v1",
+  "@id": "https://llmprofiles.org/localbusiness/v1/index.jsonld",
   "rdfs:seeAlso": "https://schema.org/LocalBusiness",
   "skos:prefLabel": "Local Business",
   "skos:definition": "A local business with address, contact information, and services for local search and discovery.",

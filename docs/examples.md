@@ -258,7 +258,7 @@ class LLMProfilesWordPress {
   }
   
   async getFAQProfile() {
-    const response = await fetch(`${this.baseUrl}/faqpage/v1`);
+    const response = await fetch(`${this.baseUrl}/faqpage/v1/index.jsonld`);
     return response.json();
   }
   

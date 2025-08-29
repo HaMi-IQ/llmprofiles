@@ -6,7 +6,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "x": "https://llmprofiles.org/vocab#"
   },
-  "@id": "https://llmprofiles.org/event/v1",
+  "@id": "https://llmprofiles.org/event/v1/index.jsonld",
   "rdfs:seeAlso": "https://schema.org/Event",
   "skos:prefLabel": "Event",
   "skos:definition": "An event with date, time, location, and attendance information for scheduling and discovery.",

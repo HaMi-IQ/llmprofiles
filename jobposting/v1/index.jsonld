@@ -6,7 +6,7 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "x": "https://llmprofiles.org/vocab#"
   },
-  "@id": "https://llmprofiles.org/jobposting/v1",
+  "@id": "https://llmprofiles.org/jobposting/v1/index.jsonld",
   "rdfs:seeAlso": "https://schema.org/JobPosting",
   "skos:prefLabel": "Job Posting",
   "skos:definition": "A job advertisement with position details, requirements, and application information for recruitment.",
