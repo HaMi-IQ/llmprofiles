@@ -1,0 +1,25 @@
+{
+  "@context": "https://schema.org",
+  "@type": "QAPage",
+  "mainEntity": {
+    "@type": "Question",
+    "name": "How do I implement LLM Profiles in my website?",
+    "text": "I want to add structured data to my website using LLM Profiles. What's the best way to get started?",
+    "dateCreated": "2025-08-28T10:00:00Z",
+    "author": {
+      "@type": "Person",
+      "name": "HAMI Team"
+    },
+    "answerCount": 1,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Start by identifying your main content types (articles, products, events, etc.), then choose the appropriate profile from the registry. Add the JSON-LD markup to your pages and validate using the provided schemas.",
+      "dateCreated": "2025-08-28T10:30:00Z",
+      "upvoteCount": 15,
+      "author": {
+        "@type": "Person",
+        "name": "HAMI Team"
+      }
+    }
+  }
+}

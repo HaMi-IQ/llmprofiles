@@ -1,0 +1,111 @@
+{
+  "$id": "https://llmprofiles.org/softwareapplication/v1/page.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SoftwareApplication On-Page JSON-LD",
+  "type": "object",
+  "properties": {
+    "@context": { "anyOf": [{ "type": "string" }, { "type": "array" }] },
+    "@type": { "const": "SoftwareApplication" },
+    "name": { "type": "string", "minLength": 3 },
+    "description": { "type": "string", "minLength": 1 },
+    "applicationCategory": { "type": "string" },
+    "operatingSystem": { "type": "string" },
+    "softwareVersion": { "type": "string" },
+    "softwareRequirements": { "type": "string" },
+    "memoryRequirements": { "type": "string" },
+    "storageRequirements": { "type": "string" },
+    "processorRequirements": { "type": "string" },
+    "featureList": { "type": "string" },
+    "screenshot": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "ImageObject" },
+            "url": { "type": "string" },
+            "width": { "type": "integer" },
+            "height": { "type": "integer" }
+          },
+          "required": ["@type", "url"],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "downloadUrl": { "type": "string" },
+    "installUrl": { "type": "string" },
+    "updateUrl": { "type": "string" },
+    "fileSize": { "type": "string" },
+    "releaseNotes": { "type": "string" },
+    "datePublished": { "type": "string", "format": "date" },
+    "dateModified": { "type": "string", "format": "date" },
+    "author": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Organization" },
+            "name": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "required": ["@type", "name"],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Person" },
+            "name": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "required": ["@type", "name"],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "offers": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "Offer" },
+        "price": { "type": "string" },
+        "priceCurrency": { "type": "string" },
+        "availability": { "type": "string" },
+        "url": { "type": "string" }
+      },
+      "required": ["@type", "price", "priceCurrency"],
+      "additionalProperties": true
+    },
+    "aggregateRating": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "AggregateRating" },
+        "ratingValue": { "type": "number", "minimum": 0, "maximum": 5 },
+        "ratingCount": { "type": "integer", "minimum": 0 },
+        "bestRating": { "type": "number" },
+        "worstRating": { "type": "number" }
+      },
+      "required": ["@type", "ratingValue"],
+      "additionalProperties": true
+    },
+    "url": { "type": "string" },
+    "image": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "ImageObject" },
+            "url": { "type": "string" },
+            "width": { "type": "integer" },
+            "height": { "type": "integer" }
+          },
+          "required": ["@type", "url"],
+          "additionalProperties": true
+        }
+      ]
+    }
+  },
+  "required": ["@type", "name", "applicationCategory", "operatingSystem"],
+  "additionalProperties": true
+}

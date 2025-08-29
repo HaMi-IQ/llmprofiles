@@ -1,0 +1,238 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/"
+  },
+  "@type": "API",
+  "name": "LLM Profiles Discovery API",
+  "description": "API for discovering and exploring LLM-friendly structured data profiles",
+  "version": "1.0.0",
+  "baseUrl": "https://llmprofiles.org",
+  "documentation": "https://llmprofiles.org/docs/api.md",
+  "endpoints": {
+    "discovery": {
+      "url": "/api/discovery.json",
+      "method": "GET",
+      "description": "Get all available profiles with metadata",
+      "response": "ProfileRegistry",
+      "example": "https://llmprofiles.org/api/discovery.json"
+    },
+    "search": {
+      "url": "/api/search.json",
+      "method": "GET",
+      "description": "Search profiles by query and filters",
+      "parameters": {
+        "q": "Search query string",
+        "hasPageSchema": "Filter by page schema availability (boolean)",
+        "hasTrainingData": "Filter by training data availability (boolean)",
+        "hasExamples": "Filter by examples availability (boolean)",
+        "schemaType": "Filter by schema.org type"
+      },
+      "response": "ProfileSearchResults",
+      "example": "https://llmprofiles.org/api/search.json?q=faq&hasPageSchema=true"
+    },
+    "capabilities": {
+      "url": "/api/capabilities.json",
+      "method": "GET",
+      "description": "Get summary of profile capabilities",
+      "response": "ProfileCapabilities",
+      "example": "https://llmprofiles.org/api/capabilities.json"
+    },
+    "recommendations": {
+      "url": "/api/recommendations.json",
+      "method": "GET",
+      "description": "Get profile recommendations for a use case",
+      "parameters": {
+        "useCase": "Use case description",
+        "limit": "Maximum number of recommendations (default: 5)"
+      },
+      "response": "ProfileRecommendations",
+      "example": "https://llmprofiles.org/api/recommendations.json?useCase=e-commerce&limit=3"
+    },
+    "profile": {
+      "url": "/api/profile/{name}.json",
+      "method": "GET",
+      "description": "Get detailed information about a specific profile",
+      "parameters": {
+        "name": "Profile name (e.g., faqpage, article)"
+      },
+      "response": "Profile",
+      "example": "https://llmprofiles.org/api/profile/faqpage.json"
+    }
+  },
+  "dataTypes": {
+    "ProfileRegistry": {
+      "description": "Complete registry of all available profiles",
+      "properties": {
+        "@context": "JSON-LD context",
+        "@type": "Always 'ProfileRegistry'",
+        "name": "Registry name",
+        "description": "Registry description",
+        "version": "API version",
+        "totalProfiles": "Number of available profiles",
+        "lastUpdated": "Last update timestamp",
+        "profiles": "Array of profile objects"
+      }
+    },
+    "Profile": {
+      "description": "Individual profile information",
+      "properties": {
+        "@type": "Always 'Profile'",
+        "name": "Profile name",
+        "description": "Profile description",
+        "schemaType": "Schema.org type",
+        "version": "Profile version",
+        "profileUrl": "Profile definition URL",
+        "capabilities": "Available capabilities",
+        "endpoints": "Available endpoints",
+        "useCases": "Supported use cases"
+      }
+    },
+    "ProfileSearchResults": {
+      "description": "Search results with filtering",
+      "properties": {
+        "@type": "Always 'ProfileSearchResults'",
+        "query": "Search query used",
+        "filters": "Applied filters",
+        "totalResults": "Number of results",
+        "results": "Array of matching profiles"
+      }
+    },
+    "ProfileCapabilities": {
+      "description": "Summary of profile capabilities",
+      "properties": {
+        "@type": "Always 'ProfileCapabilities'",
+        "summary": "Capability counts",
+        "schemaTypes": "Available schema types",
+        "useCases": "Available use cases",
+        "lastUpdated": "Last update timestamp"
+      }
+    },
+    "ProfileRecommendations": {
+      "description": "Profile recommendations for use case",
+      "properties": {
+        "@type": "Always 'ProfileRecommendations'",
+        "useCase": "Requested use case",
+        "recommendations": "Array of recommendations",
+        "totalFound": "Number of recommendations"
+      }
+    }
+  },
+  "examples": {
+    "getAllProfiles": {
+      "url": "https://llmprofiles.org/api/discovery.json",
+      "description": "Get all available profiles",
+      "response": {
+        "@type": "ProfileRegistry",
+        "totalProfiles": 10,
+        "profiles": [...]
+      }
+    },
+    "searchProfiles": {
+      "url": "https://llmprofiles.org/api/search.json?q=faq&hasPageSchema=true",
+      "description": "Search for FAQ profiles with page schema",
+      "response": {
+        "@type": "ProfileSearchResults",
+        "query": "faq",
+        "filters": {"hasPageSchema": true},
+        "totalResults": 1,
+        "results": [...]
+      }
+    },
+    "getCapabilities": {
+      "url": "https://llmprofiles.org/api/capabilities.json",
+      "description": "Get profile capabilities summary",
+      "response": {
+        "@type": "ProfileCapabilities",
+        "summary": {
+          "totalProfiles": 10,
+          "profilesWithPageSchema": 10,
+          "profilesWithTrainingData": 10
+        }
+      }
+    },
+    "getRecommendations": {
+      "url": "https://llmprofiles.org/api/recommendations.json?useCase=e-commerce&limit=3",
+      "description": "Get recommendations for e-commerce use case",
+      "response": {
+        "@type": "ProfileRecommendations",
+        "useCase": "e-commerce",
+        "recommendations": [
+          {
+            "profile": "ProductOffer",
+            "relevance": 2,
+            "useCases": ["E-commerce product pages", "Product catalogs"]
+          }
+        ]
+      }
+    }
+  },
+  "usage": {
+    "javascript": {
+      "description": "Using the API with JavaScript",
+      "code": `
+// Get all profiles
+const profiles = await fetch('https://llmprofiles.org/api/discovery.json');
+const data = await profiles.json();
+console.log('Total profiles:', data.totalProfiles);
+
+// Search for specific profiles
+const search = await fetch('https://llmprofiles.org/api/search.json?q=faq');
+const results = await search.json();
+console.log('Search results:', results.results);
+
+// Get recommendations
+const recommendations = await fetch('https://llmprofiles.org/api/recommendations.json?useCase=e-commerce');
+const recs = await recommendations.json();
+console.log('Recommendations:', recs.recommendations);
+      `
+    },
+    "curl": {
+      "description": "Using the API with curl",
+      "code": `
+# Get all profiles
+curl https://llmprofiles.org/api/discovery.json
+
+# Search for FAQ profiles
+curl "https://llmprofiles.org/api/search.json?q=faq&hasPageSchema=true"
+
+# Get capabilities summary
+curl https://llmprofiles.org/api/capabilities.json
+
+# Get recommendations for e-commerce
+curl "https://llmprofiles.org/api/recommendations.json?useCase=e-commerce&limit=3"
+      `
+    }
+  },
+  "rateLimiting": {
+    "description": "No rate limiting currently applied",
+    "recommendations": [
+      "Cache responses when possible",
+      "Use appropriate user agents",
+      "Respect robots.txt"
+    ]
+  },
+  "authentication": {
+    "description": "No authentication required",
+    "note": "All endpoints are publicly accessible"
+  },
+  "cors": {
+    "description": "CORS enabled for all origins",
+    "headers": [
+      "Access-Control-Allow-Origin: *",
+      "Access-Control-Allow-Methods: GET",
+      "Access-Control-Allow-Headers: Content-Type"
+    ]
+  },
+  "errors": {
+    "400": "Bad Request - Invalid parameters",
+    "404": "Not Found - Endpoint or profile not found",
+    "500": "Internal Server Error - Server error"
+  },
+  "support": {
+    "documentation": "https://llmprofiles.org/docs/api.md",
+    "examples": "https://llmprofiles.org/docs/examples.md",
+    "issues": "https://github.com/HaMi-IQ/llmprofiles/issues",
+    "discussions": "https://github.com/HaMi-IQ/llmprofiles/discussions"
+  }
+}

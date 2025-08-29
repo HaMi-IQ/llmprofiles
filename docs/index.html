@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>llmprofiles — Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .section h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .section li {
+            margin-bottom: 10px;
+            padding: 8px 0;
+        }
+        .section a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .section a:hover {
+            text-decoration: underline;
+        }
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .profile-card {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .profile-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .profile-card .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .status.complete {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.planned {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>llmprofiles — Documentation</h1>
+        <p>Profile Registry & Remote Context Graphs for LLM-friendly structured data</p>
+    </div>
+
+    <div class="content">
+        <div class="section">
+            <h2>📚 Documentation</h2>
+            <ul>
+                <li><a href="../README.md">📖 Project Overview</a> - Complete project documentation and setup guide</li>
+                <li><a href="api.md">🔌 API Reference</a> - Complete API documentation with examples</li>
+                <li><a href="examples.md">💡 Usage Examples</a> - Practical examples in multiple languages</li>
+                <li><a href="../CONTRIBUTING.md">🤝 Contributing Guide</a> - How to contribute to the project</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔗 Quick Links</h2>
+            <ul>
+                <li><a href="../index.json">📋 Profile Registry</a> - Complete list of available profiles</li>
+                <li><a href="https://github.com/HaMi-IQ/llmprofiles">🐙 GitHub Repository</a> - Source code and issues</li>
+                <li><a href="https://llmprofiles.org">🌐 Website</a> - Project homepage</li>
+                <li><a href="../CHANGELOG.md">📝 Changelog</a> - Version history and updates</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📊 Available Profiles</h2>
+        <div class="profile-grid">
+            <div class="profile-card">
+                <span class="status complete">✅ Enhanced</span>
+                <h3><a href="../faqpage/v1/">FAQPage</a></h3>
+                <p>FAQ pages with Q&A pairs, training data, and implementation examples.</p>
+                <ul>
+                    <li><a href="../faqpage/v1/">Profile Definition</a></li>
+                    <li><a href="../faqpage/v1/page.schema.json">Page Schema</a></li>
+                    <li><a href="../faqpage/v1/output.schema.json">Output Schema</a></li>
+                    <li><a href="../faqpage/v1/training.jsonl">Training Data</a></li>
+                    <li><a href="../faqpage/v1/examples/">Examples</a></li>
+                    <li><a href="../faqpage/README.md">Documentation</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../qapage/v1/">QAPage</a></h3>
+                <p>Single question threads and discussions.</p>
+                <ul>
+                    <li><a href="../qapage/v1/">Profile Definition</a></li>
+                    <li><a href="../qapage/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../article/v1/">Article</a></h3>
+                <p>Blog posts, articles, and written content.</p>
+                <ul>
+                    <li><a href="../article/v1/">Profile Definition</a></li>
+                    <li><a href="../article/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../product-offer/v1/">ProductOffer</a></h3>
+                <p>Product listings and e-commerce content.</p>
+                <ul>
+                    <li><a href="../product-offer/v1/">Profile Definition</a></li>
+                    <li><a href="../product-offer/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../event/v1/">Event</a></h3>
+                <p>Event information and scheduling.</p>
+                <ul>
+                    <li><a href="../event/v1/">Profile Definition</a></li>
+                    <li><a href="../event/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../course/v1/">Course</a></h3>
+                <p>Educational courses and learning content.</p>
+                <ul>
+                    <li><a href="../course/v1/">Profile Definition</a></li>
+                    <li><a href="../course/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../jobposting/v1/">JobPosting</a></h3>
+                <p>Job advertisements and career opportunities.</p>
+                <ul>
+                    <li><a href="../jobposting/v1/">Profile Definition</a></li>
+                    <li><a href="../jobposting/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../localbusiness/v1/">LocalBusiness</a></h3>
+                <p>Business listings and local information.</p>
+                <ul>
+                    <li><a href="../localbusiness/v1/">Profile Definition</a></li>
+                    <li><a href="../localbusiness/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../softwareapplication/v1/">SoftwareApplication</a></h3>
+                <p>Software products and applications.</p>
+                <ul>
+                    <li><a href="../softwareapplication/v1/">Profile Definition</a></li>
+                    <li><a href="../softwareapplication/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-card">
+                <span class="status complete">✅ Complete</span>
+                <h3><a href="../review/v1/">Review</a></h3>
+                <p>Product reviews and ratings.</p>
+                <ul>
+                    <li><a href="../review/v1/">Profile Definition</a></li>
+                    <li><a href="../review/v1/output.schema.json">Output Schema</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Maintained by <strong>HAMI</strong> • <a href="https://github.com/HaMi-IQ/llmprofiles">GitHub</a> • <a href="https://llmprofiles.org">Website</a></p>
+        <p>Last updated: 2025-08-28</p>
+    </div>
+</body>
+</html>

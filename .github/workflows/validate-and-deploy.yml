@@ -1,0 +1,32 @@
+name: validate-and-deploy
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm init -y
+      - run: npm i -D ajv ajv-formats jsonlint
+      - run: npx jsonlint -q **/*.json **/*.jsonld
+      - run: |
+          node -e "const Ajv=require('ajv');const add=require('ajv-formats');          const fs=require('fs');const a=new Ajv({strict:false,allErrors:true});add(a);          const s=JSON.parse(fs.readFileSync('faqpage/v1/output.schema.json','utf8'));          a.compile(s); console.log('OK schema');"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

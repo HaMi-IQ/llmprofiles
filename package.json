@@ -1,0 +1,73 @@
+{
+  "name": "llmprofiles",
+  "version": "1.0.0",
+  "description": "Profile Registry & Remote Context Graphs for LLM-friendly structured data",
+  "main": "index.json",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HaMi-IQ/llmprofiles.git"
+  },
+  "homepage": "https://llmprofiles.org",
+  "keywords": [
+    "llm",
+    "ai",
+    "structured-data",
+    "json-ld",
+    "schema.org",
+    "skos",
+    "shacl",
+    "json-schema",
+    "semantic-web",
+    "profiles"
+  ],
+  "author": "HAMI",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HaMi-IQ/llmprofiles/issues"
+  },
+  "scripts": {
+    "validate": "npm run validate:json && npm run validate:schemas",
+    "validate:json": "find . -name \"*.json\" -o -name \"*.jsonld\" | xargs jsonlint -q",
+    "validate:schemas": "node scripts/validate-schemas.js",
+    "test": "npm run validate",
+    "build": "npm run validate",
+    "build:docs": "node scripts/build-docs.js",
+    "generate-images": "node scripts/create-generic-image-files.js",
+    "create-readmes": "node scripts/create-profile-readmes.js",
+    "generate-api": "node scripts/generate-api.js",
+    "api:server": "node api/server.js",
+    "test-well-known": "node scripts/test-well-known.js",
+    "test-ci": "node scripts/test-ci-validation.js",
+    "docs": "echo 'Documentation is in the docs/ directory'",
+    "lint": "npm run validate:json",
+    "format": "prettier --write \"**/*.json\" \"**/*.jsonld\" \"**/*.md\"",
+    "check": "npm run validate && npm run lint"
+  },
+  "devDependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1",
+    "jsonlint": "^1.6.3",
+    "prettier": "^3.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  },
+  "files": [
+    "*.json",
+    "*.jsonld",
+    "faqpage/",
+    "docs/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE-CODE",
+    "LICENSE-CONTENT"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

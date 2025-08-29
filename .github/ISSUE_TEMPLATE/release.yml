@@ -1,0 +1,24 @@
+name: Release prep
+description: Prepare a new tagged release & changelog update
+labels: [release]
+body:
+  - type: input
+    attributes:
+      label: Version
+      placeholder: v1.0.1
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Changes
+      description: Summarize what changed
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Checklist
+      value: |
+        - [ ] Update CHANGELOG.md
+        - [ ] Bump version in profile JSON-LD
+        - [ ] Create Git tag & GitHub Release
+        - [ ] Publish checksums in release notes

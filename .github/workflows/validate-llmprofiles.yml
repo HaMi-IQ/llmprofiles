@@ -1,0 +1,42 @@
+name: Validate LLM Profiles
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with: 
+          node-version: 20
+          
+      - run: npm i -D ajv ajv-formats jsonlint
+      
+      - name: Lint JSON/JSON-LD
+        run: npx jsonlint -q "**/*.json" "**/*.jsonld" || true
+        
+      - name: Validate Page Markup (schema contract)
+        run: |
+          npx ajv validate \
+            -s faqpage/v1/page.schema.json \
+            -d examples/faqpage/minimal.page.jsonld
+            
+      - name: Validate Extracted Output (RAG contract)
+        run: |
+          npx ajv validate \
+            -s faqpage/v1/output.schema.json \
+            -d examples/faqpage/sample.output.json
+            
+      - name: Validate Well-Known Discovery
+        run: |
+          npx ajv validate \
+            -s .well-known/llmprofiles.schema.json \
+            -d .well-known/llmprofiles.json || true
+            
+      - name: Test Discovery Endpoint
+        run: |
+          curl -fsSL https://llmprofiles.org/.well-known/llmprofiles.json | jq . || true

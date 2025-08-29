@@ -1,0 +1,99 @@
+{
+  "$id": "https://llmprofiles.org/qapage/v1/page.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QAPage On-Page JSON-LD",
+  "type": "object",
+  "properties": {
+    "@context": { "anyOf": [{ "type": "string" }, { "type": "array" }] },
+    "@type": { "const": "QAPage" },
+    "mainEntity": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "Question" },
+        "name": { "type": "string", "minLength": 3 },
+        "text": { "type": "string", "minLength": 1 },
+        "dateCreated": { "type": "string", "format": "date-time" },
+        "author": {
+          "anyOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "properties": {
+                "@type": { "const": "Person" },
+                "name": { "type": "string" },
+                "url": { "type": "string" }
+              },
+              "required": ["@type", "name"],
+              "additionalProperties": true
+            }
+          ]
+        },
+        "answerCount": { "type": "integer", "minimum": 0 },
+        "upvoteCount": { "type": "integer", "minimum": 0 },
+        "suggestedAnswer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "@type": { "const": "Answer" },
+              "text": { "type": "string", "minLength": 1 },
+              "dateCreated": { "type": "string", "format": "date-time" },
+              "upvoteCount": { "type": "integer", "minimum": 0 },
+              "url": { "type": "string" },
+              "author": {
+                "anyOf": [
+                  { "type": "string" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "@type": { "const": "Person" },
+                      "name": { "type": "string" },
+                      "url": { "type": "string" }
+                    },
+                    "required": ["@type", "name"],
+                    "additionalProperties": true
+                  }
+                ]
+              }
+            },
+            "required": ["@type", "text"],
+            "additionalProperties": true
+          }
+        },
+        "acceptedAnswer": {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Answer" },
+            "text": { "type": "string", "minLength": 1 },
+            "dateCreated": { "type": "string", "format": "date-time" },
+            "upvoteCount": { "type": "integer", "minimum": 0 },
+            "url": { "type": "string" },
+            "author": {
+              "anyOf": [
+                { "type": "string" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "@type": { "const": "Person" },
+                    "name": { "type": "string" },
+                    "url": { "type": "string" }
+                  },
+                  "required": ["@type", "name"],
+                  "additionalProperties": true
+                }
+              ]
+            }
+          },
+          "required": ["@type", "text"],
+          "additionalProperties": true
+        }
+      },
+      "required": ["@type", "name", "text"],
+      "additionalProperties": true
+    },
+    "url": { "type": "string" },
+    "inLanguage": { "type": "string" }
+  },
+  "required": ["@type", "mainEntity"],
+  "additionalProperties": true
+}
