@@ -117,8 +117,8 @@ if (fs.existsSync(examplesSrc)) {
 // Copy CNAME
 fs.copyFileSync(path.join(__dirname, '..', 'CNAME'), path.join(distDir, 'CNAME'));
 
-// Copy robots.txt and sitemap.xml if they exist
-const seoFiles = ['robots.txt', 'sitemap.xml'];
+// Copy robots.txt, sitemap.xml, and _redirects if they exist
+const seoFiles = ['robots.txt', 'sitemap.xml', '_redirects'];
 seoFiles.forEach(file => {
   const srcPath = path.join(__dirname, '..', file);
   const destPath = path.join(distDir, file);
