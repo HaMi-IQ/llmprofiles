@@ -59,6 +59,22 @@ profileDirs.forEach(profile => {
   if (fs.existsSync(srcPath)) {
     copyFiles(srcPath, destPath);
   }
+
+  // Ensure profile directory exists in dist for index generation
+  if (!fs.existsSync(destPath)) {
+    fs.mkdirSync(destPath, { recursive: true });
+  }
+
+  // Create {profile}/index.html that redirects to v1/
+  const profileIndexHtml = `<!doctype html><meta http-equiv="refresh" content="0; url=v1/">`;
+  fs.writeFileSync(path.join(destPath, 'index.html'), profileIndexHtml);
+
+  // Create {profile}/v1/index.html that redirects to index.jsonld
+  const v1Path = path.join(destPath, 'v1');
+  if (fs.existsSync(v1Path)) {
+    const v1IndexHtml = `<!doctype html><meta http-equiv="refresh" content="0; url=index.jsonld">`;
+    fs.writeFileSync(path.join(v1Path, 'index.html'), v1IndexHtml);
+  }
 });
 
 // Copy main files
