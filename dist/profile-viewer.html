@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile Viewer — llmprofiles</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --bg-color: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-color: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            opacity: 0.9;
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .profile-selector {
+            margin-bottom: 40px;
+        }
+
+        .profile-selector select {
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .section {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .json-viewer {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .json-viewer .string { color: #a7f3d0; }
+        .json-viewer .number { color: #fbbf24; }
+        .json-viewer .boolean { color: #f87171; }
+        .json-viewer .null { color: #94a3b8; }
+        .json-viewer .key { color: #60a5fa; }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .validation-result {
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+
+        .validation-result.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .validation-result.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .example-selector {
+            margin-bottom: 20px;
+        }
+
+        .example-selector select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .copy-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-top: 12px;
+            transition: background-color 0.2s;
+        }
+
+        .copy-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <a href="index.html" class="back-link">← Back to Home</a>
+            <h1>Profile Viewer</h1>
+            <p>Explore and validate llmprofiles schemas interactively</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="profile-selector">
+            <label for="profileSelect">Select Profile:</label>
+            <select id="profileSelect">
+                <option value="">Loading profiles...</option>
+            </select>
+        </div>
+
+        <div class="profile-content" id="profileContent" style="display: none;">
+            <div class="section">
+                <h2>Profile Definition</h2>
+                <div class="tabs">
+                    <button class="tab active" data-tab="definition">Definition</button>
+                    <button class="tab" data-tab="pageSchema">Page Schema</button>
+                    <button class="tab" data-tab="outputSchema">Output Schema</button>
+                </div>
+                
+                <div class="tab-content active" id="definition">
+                    <div class="json-viewer" id="definitionViewer"></div>
+                </div>
+                
+                <div class="tab-content" id="pageSchema">
+                    <div class="json-viewer" id="pageSchemaViewer"></div>
+                </div>
+                
+                <div class="tab-content" id="outputSchema">
+                    <div class="json-viewer" id="outputSchemaViewer"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Examples & Validation</h2>
+                <div class="tabs">
+                    <button class="tab active" data-tab="examples">Examples</button>
+                    <button class="tab" data-tab="validation">Validation</button>
+                    <button class="tab" data-tab="training">Training Data</button>
+                </div>
+                
+                <div class="tab-content active" id="examples">
+                    <div class="example-selector">
+                        <label for="exampleSelect">Select Example:</label>
+                        <select id="exampleSelect">
+                            <option value="minimal">Minimal</option>
+                            <option value="rich">Rich</option>
+                        </select>
+                    </div>
+                    <div class="json-viewer" id="exampleViewer"></div>
+                    <button class="copy-button" onclick="copyToClipboard('exampleViewer')">Copy JSON</button>
+                </div>
+                
+                <div class="tab-content" id="validation">
+                    <h3>Validate JSON-LD</h3>
+                    <textarea id="validationInput" placeholder="Paste your JSON-LD here..." style="width: 100%; height: 200px; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: monospace; resize: vertical;"></textarea>
+                    <button class="copy-button" onclick="validateJSON()">Validate</button>
+                    <div id="validationResult"></div>
+                </div>
+                
+                <div class="tab-content" id="training">
+                    <div class="json-viewer" id="trainingViewer"></div>
+                    <button class="copy-button" onclick="copyToClipboard('trainingViewer')">Copy Training Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentProfile = null;
+        let profileData = null;
+
+        // Load profiles
+        async function loadProfiles() {
+            try {
+                const response = await fetch('./index.json');
+                const data = await response.json();
+                
+                const select = document.getElementById('profileSelect');
+                select.innerHTML = '<option value="">Select a profile...</option>';
+                
+                Object.keys(data.profiles).forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    select.appendChild(option);
+                });
+                
+                select.addEventListener('change', onProfileChange);
+            } catch (error) {
+                console.error('Error loading profiles:', error);
+            }
+        }
+
+        // Handle profile selection
+        async function onProfileChange(event) {
+            const profileName = event.target.value;
+            if (!profileName) {
+                document.getElementById('profileContent').style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch('./index.json');
+                const data = await response.json();
+                profileData = data.profiles[profileName];
+                currentProfile = profileName;
+                
+                await loadProfileData();
+                document.getElementById('profileContent').style.display = 'grid';
+            } catch (error) {
+                console.error('Error loading profile data:', error);
+            }
+        }
+
+        // Load profile data
+        async function loadProfileData() {
+            if (!profileData) return;
+
+            try {
+                // Load definition
+                const definitionResponse = await fetch(profileData.profile);
+                const definition = await definitionResponse.json();
+                displayJSON('definitionViewer', definition);
+
+                // Load page schema
+                const pageSchemaResponse = await fetch(profileData.pageSchema);
+                const pageSchema = await pageSchemaResponse.json();
+                displayJSON('pageSchemaViewer', pageSchema);
+
+                // Load output schema
+                const outputSchemaResponse = await fetch(profileData.outputSchema);
+                const outputSchema = await outputSchemaResponse.json();
+                displayJSON('outputSchemaViewer', outputSchema);
+
+                // Load example
+                await loadExample('minimal');
+
+                // Load training data
+                const trainingResponse = await fetch(profileData.training);
+                const trainingText = await trainingResponse.text();
+                displayText('trainingViewer', trainingText);
+
+            } catch (error) {
+                console.error('Error loading profile data:', error);
+            }
+        }
+
+        // Load example
+        async function loadExample(type) {
+            if (!profileData) return;
+
+            try {
+                const response = await fetch(profileData.examples[type]);
+                const example = await response.json();
+                displayJSON('exampleViewer', example);
+            } catch (error) {
+                console.error('Error loading example:', error);
+            }
+        }
+
+        // Display JSON with syntax highlighting
+        function displayJSON(elementId, data) {
+            const element = document.getElementById(elementId);
+            const jsonString = JSON.stringify(data, null, 2);
+            element.innerHTML = syntaxHighlight(jsonString);
+        }
+
+        // Display plain text
+        function displayText(elementId, text) {
+            const element = document.getElementById(elementId);
+            element.textContent = text;
+        }
+
+        // Syntax highlighting
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        // Validate JSON
+        function validateJSON() {
+            const input = document.getElementById('validationInput').value;
+            const resultDiv = document.getElementById('validationResult');
+            
+            try {
+                const parsed = JSON.parse(input);
+                resultDiv.innerHTML = '<div class="validation-result success">✅ Valid JSON</div>';
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="validation-result error">❌ Invalid JSON: ${error.message}</div>`;
+            }
+        }
+
+        // Tab functionality
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and contents
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    document.getElementById(tabName).classList.add('active');
+                    
+                    // Handle special cases
+                    if (tabName === 'examples') {
+                        const exampleType = document.getElementById('exampleSelect').value;
+                        loadExample(exampleType);
+                    }
+                });
+            });
+        }
+
+        // Example selector
+        function setupExampleSelector() {
+            const exampleSelect = document.getElementById('exampleSelect');
+            exampleSelect.addEventListener('change', (e) => {
+                loadExample(e.target.value);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProfiles();
+            setupTabs();
+            setupExampleSelector();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  "title": "Frontend Developer - LLM Profiles Team",
+  "description": "Join our team to help build and maintain the LLM Profiles platform. We're looking for a skilled frontend developer with experience in modern web technologies.",
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "HAMI",
+    "url": "https://llmprofiles.org"
+  },
+  "jobLocation": {
+    "@type": "Place",
+    "name": "San Francisco, CA",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "San Francisco",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    }
+  },
+  "employmentType": "Full-time",
+  "datePosted": "2025-08-28",
+  "salaryCurrency": "USD",
+  "salaryMinValue": 80000,
+  "salaryMaxValue": 120000,
+  "salaryUnit": "YEAR"
+}

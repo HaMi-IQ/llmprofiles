@@ -1,0 +1,528 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@type": "ProfileRegistry",
+  "name": "LLM Profiles Registry",
+  "description": "A comprehensive registry of LLM-friendly structured data profiles",
+  "version": "1.0.0",
+  "totalProfiles": 10,
+  "lastUpdated": "2025-08-29T09:52:23.264Z",
+  "profiles": [
+    {
+      "@type": "Profile",
+      "name": "FAQPage",
+      "profileUrl": "https://llmprofiles.org/faqpage/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/faqpage/v1",
+        "pageSchema": "https://llmprofiles.org/faqpage/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/faqpage/v1/output.schema.json",
+        "training": "https://llmprofiles.org/faqpage/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/faqpage/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/faqpage/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "FAQ (Frequently Asked Questions) content for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Support/help pages with Q&A content",
+        "Product documentation FAQs",
+        "Service information pages",
+        "Knowledge base articles",
+        "Customer service resources"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "FAQPage On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "mainEntity"
+          ],
+          "properties": 4
+        },
+        "outputSchema": {
+          "title": "FAQPage Extracted Content",
+          "type": "object",
+          "required": [
+            "faqs"
+          ],
+          "properties": 1
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "QAPage",
+      "profileUrl": "https://llmprofiles.org/qapage/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/qapage/v1",
+        "pageSchema": "https://llmprofiles.org/qapage/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/qapage/v1/output.schema.json",
+        "training": "https://llmprofiles.org/qapage/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/qapage/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/qapage/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "single question and answer content for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Single question discussion threads",
+        "Forum question pages",
+        "Stack Overflow-style Q&A pages",
+        "Reddit question posts",
+        "Community discussion threads",
+        "Expert Q&A sessions"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "QAPage On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "mainEntity"
+          ],
+          "properties": 5
+        },
+        "outputSchema": {
+          "title": "QAPage Extracted Content",
+          "type": "object",
+          "required": [
+            "question",
+            "answers"
+          ],
+          "properties": 3
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "Article",
+      "profileUrl": "https://llmprofiles.org/article/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/article/v1",
+        "pageSchema": "https://llmprofiles.org/article/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/article/v1/output.schema.json",
+        "training": "https://llmprofiles.org/article/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/article/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/article/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "blog posts, articles, and written content for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Blog posts and articles",
+        "News articles and reports",
+        "Technical documentation",
+        "Research papers",
+        "Opinion pieces",
+        "Tutorial content"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "Article On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "headline",
+            "author",
+            "datePublished"
+          ],
+          "properties": 15
+        },
+        "outputSchema": {
+          "title": "Article Extracted Content",
+          "type": "object",
+          "required": [
+            "id",
+            "headline",
+            "content",
+            "author",
+            "publisher",
+            "dates",
+            "url"
+          ],
+          "properties": 14
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "ProductOffer",
+      "profileUrl": "https://llmprofiles.org/product-offer/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/product-offer/v1",
+        "pageSchema": "https://llmprofiles.org/product-offer/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/product-offer/v1/output.schema.json",
+        "training": "https://llmprofiles.org/product-offer/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/product-offer/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/product-offer/v1/examples/rich.jsonld"
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "Event",
+      "profileUrl": "https://llmprofiles.org/event/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/event/v1",
+        "pageSchema": "https://llmprofiles.org/event/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/event/v1/output.schema.json",
+        "training": "https://llmprofiles.org/event/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/event/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/event/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "event information and scheduling for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Event listings and calendars",
+        "Conference and workshop pages",
+        "Concert and performance pages",
+        "Sports event pages",
+        "Webinar and online event pages",
+        "Exhibition and trade show pages"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "Event On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "startDate",
+            "location"
+          ],
+          "properties": 15
+        },
+        "outputSchema": {
+          "title": "Event Extracted Content",
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "dates",
+            "location",
+            "url"
+          ],
+          "properties": 14
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "Course",
+      "profileUrl": "https://llmprofiles.org/course/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/course/v1",
+        "pageSchema": "https://llmprofiles.org/course/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/course/v1/output.schema.json",
+        "training": "https://llmprofiles.org/course/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/course/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/course/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "educational courses and learning content for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Online course pages",
+        "Educational program listings",
+        "Training course pages",
+        "University course catalogs",
+        "Skill development programs",
+        "Certification courses"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "Course On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "provider"
+          ],
+          "properties": 14
+        },
+        "outputSchema": {
+          "title": "Course Extracted Content",
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "provider",
+            "url"
+          ],
+          "properties": 17
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "JobPosting",
+      "profileUrl": "https://llmprofiles.org/jobposting/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/jobposting/v1",
+        "pageSchema": "https://llmprofiles.org/jobposting/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/jobposting/v1/output.schema.json",
+        "training": "https://llmprofiles.org/jobposting/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/jobposting/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/jobposting/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "job advertisements and career opportunities for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Job board listings",
+        "Company career pages",
+        "Recruitment agency pages",
+        "Freelance job postings",
+        "Internship opportunities",
+        "Executive search listings"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "JobPosting On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "title",
+            "hiringOrganization",
+            "jobLocation"
+          ],
+          "properties": 19
+        },
+        "outputSchema": {
+          "title": "Job Posting Extracted Content",
+          "type": "object",
+          "required": [
+            "id",
+            "title",
+            "company",
+            "location",
+            "url"
+          ],
+          "properties": 16
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "LocalBusiness",
+      "profileUrl": "https://llmprofiles.org/localbusiness/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/localbusiness/v1",
+        "pageSchema": "https://llmprofiles.org/localbusiness/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/localbusiness/v1/output.schema.json",
+        "training": "https://llmprofiles.org/localbusiness/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/localbusiness/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/localbusiness/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "business listings and local information for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Business directory pages",
+        "Restaurant and service listings",
+        "Retail store pages",
+        "Professional service pages",
+        "Local business websites",
+        "Review and rating pages"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "LocalBusiness On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "address",
+            "telephone"
+          ],
+          "properties": 16
+        },
+        "outputSchema": {
+          "title": "Local Business Extracted Content",
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "address",
+            "url"
+          ],
+          "properties": 15
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "SoftwareApplication",
+      "profileUrl": "https://llmprofiles.org/softwareapplication/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/softwareapplication/v1",
+        "pageSchema": "https://llmprofiles.org/softwareapplication/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/softwareapplication/v1/output.schema.json",
+        "training": "https://llmprofiles.org/softwareapplication/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/softwareapplication/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/softwareapplication/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "software products and applications for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Software product pages",
+        "Mobile app listings",
+        "Web application pages",
+        "Plugin and extension pages",
+        "Software download pages",
+        "Development tool pages"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "SoftwareApplication On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "applicationCategory",
+            "operatingSystem"
+          ],
+          "properties": 25
+        },
+        "outputSchema": {
+          "title": "Software Application Extracted Content",
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "developer",
+            "url"
+          ],
+          "properties": 19
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "Review",
+      "profileUrl": "https://llmprofiles.org/review/v1",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/review/v1",
+        "pageSchema": "https://llmprofiles.org/review/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/review/v1/output.schema.json",
+        "training": "https://llmprofiles.org/review/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/review/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/review/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "product reviews and ratings for LLM-friendly processing and semantic understanding",
+      "useCases": [
+        "Product review pages",
+        "Service review pages",
+        "Restaurant review pages",
+        "Book and media reviews",
+        "Hotel and travel reviews",
+        "Professional service reviews"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "Review On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "reviewRating",
+            "author",
+            "itemReviewed"
+          ],
+          "properties": 13
+        },
+        "outputSchema": {
+          "title": "Review Extracted Content",
+          "type": "object",
+          "required": [
+            "id",
+            "text",
+            "rating",
+            "author",
+            "itemReviewed",
+            "url"
+          ],
+          "properties": 17
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "$id": "https://llmprofiles.org/localbusiness/v1/page.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LocalBusiness On-Page JSON-LD",
+  "type": "object",
+  "properties": {
+    "@context": { "anyOf": [{ "type": "string" }, { "type": "array" }] },
+    "@type": { "const": "LocalBusiness" },
+    "name": { "type": "string", "minLength": 3 },
+    "description": { "type": "string", "minLength": 1 },
+    "address": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "PostalAddress" },
+        "streetAddress": { "type": "string" },
+        "addressLocality": { "type": "string" },
+        "addressRegion": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "addressCountry": { "type": "string" }
+      },
+      "required": ["@type", "addressLocality", "addressCountry"],
+      "additionalProperties": true
+    },
+    "telephone": { "type": "string" },
+    "email": { "type": "string" },
+    "url": { "type": "string" },
+    "geo": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "GeoCoordinates" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" }
+      },
+      "required": ["@type", "latitude", "longitude"],
+      "additionalProperties": true
+    },
+    "openingHours": { "type": "string" },
+    "openingHoursSpecification": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "@type": { "const": "OpeningHoursSpecification" },
+          "dayOfWeek": { "type": "string" },
+          "opens": { "type": "string" },
+          "closes": { "type": "string" }
+        },
+        "required": ["@type", "dayOfWeek", "opens", "closes"],
+        "additionalProperties": true
+      }
+    },
+    "priceRange": { "type": "string" },
+    "paymentAccepted": { "type": "string" },
+    "currenciesAccepted": { "type": "string" },
+    "image": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "ImageObject" },
+            "url": { "type": "string" },
+            "width": { "type": "integer" },
+            "height": { "type": "integer" }
+          },
+          "required": ["@type", "url"],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "logo": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "ImageObject" },
+        "url": { "type": "string" },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" }
+      },
+      "required": ["@type", "url"],
+      "additionalProperties": true
+    }
+  },
+  "required": ["@type", "name", "address", "telephone"],
+  "additionalProperties": true
+}

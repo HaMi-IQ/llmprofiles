@@ -1,0 +1,55 @@
+{
+  "@type": "Profile",
+  "name": "LocalBusiness",
+  "profileUrl": "https://llmprofiles.org/localbusiness/v1",
+  "version": "v1",
+  "capabilities": {
+    "pageSchema": true,
+    "outputSchema": true,
+    "trainingData": true,
+    "examples": true
+  },
+  "endpoints": {
+    "definition": "https://llmprofiles.org/localbusiness/v1",
+    "pageSchema": "https://llmprofiles.org/localbusiness/v1/page.schema.json",
+    "outputSchema": "https://llmprofiles.org/localbusiness/v1/output.schema.json",
+    "training": "https://llmprofiles.org/localbusiness/v1/training.jsonl",
+    "examples": {
+      "minimal": "https://llmprofiles.org/localbusiness/v1/examples/minimal.jsonld",
+      "rich": "https://llmprofiles.org/localbusiness/v1/examples/rich.jsonld"
+    }
+  },
+  "description": "business listings and local information for LLM-friendly processing and semantic understanding",
+  "useCases": [
+    "Business directory pages",
+    "Restaurant and service listings",
+    "Retail store pages",
+    "Professional service pages",
+    "Local business websites",
+    "Review and rating pages"
+  ],
+  "schema": {
+    "pageSchema": {
+      "title": "LocalBusiness On-Page JSON-LD",
+      "type": "object",
+      "required": [
+        "@type",
+        "name",
+        "address",
+        "telephone"
+      ],
+      "properties": 16
+    },
+    "outputSchema": {
+      "title": "Local Business Extracted Content",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "address",
+        "url"
+      ],
+      "properties": 15
+    }
+  }
+}

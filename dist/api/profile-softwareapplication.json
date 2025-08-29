@@ -1,0 +1,55 @@
+{
+  "@type": "Profile",
+  "name": "SoftwareApplication",
+  "profileUrl": "https://llmprofiles.org/softwareapplication/v1",
+  "version": "v1",
+  "capabilities": {
+    "pageSchema": true,
+    "outputSchema": true,
+    "trainingData": true,
+    "examples": true
+  },
+  "endpoints": {
+    "definition": "https://llmprofiles.org/softwareapplication/v1",
+    "pageSchema": "https://llmprofiles.org/softwareapplication/v1/page.schema.json",
+    "outputSchema": "https://llmprofiles.org/softwareapplication/v1/output.schema.json",
+    "training": "https://llmprofiles.org/softwareapplication/v1/training.jsonl",
+    "examples": {
+      "minimal": "https://llmprofiles.org/softwareapplication/v1/examples/minimal.jsonld",
+      "rich": "https://llmprofiles.org/softwareapplication/v1/examples/rich.jsonld"
+    }
+  },
+  "description": "software products and applications for LLM-friendly processing and semantic understanding",
+  "useCases": [
+    "Software product pages",
+    "Mobile app listings",
+    "Web application pages",
+    "Plugin and extension pages",
+    "Software download pages",
+    "Development tool pages"
+  ],
+  "schema": {
+    "pageSchema": {
+      "title": "SoftwareApplication On-Page JSON-LD",
+      "type": "object",
+      "required": [
+        "@type",
+        "name",
+        "applicationCategory",
+        "operatingSystem"
+      ],
+      "properties": 25
+    },
+    "outputSchema": {
+      "title": "Software Application Extracted Content",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "developer",
+        "url"
+      ],
+      "properties": 19
+    }
+  }
+}

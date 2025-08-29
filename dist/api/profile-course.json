@@ -1,0 +1,54 @@
+{
+  "@type": "Profile",
+  "name": "Course",
+  "profileUrl": "https://llmprofiles.org/course/v1",
+  "version": "v1",
+  "capabilities": {
+    "pageSchema": true,
+    "outputSchema": true,
+    "trainingData": true,
+    "examples": true
+  },
+  "endpoints": {
+    "definition": "https://llmprofiles.org/course/v1",
+    "pageSchema": "https://llmprofiles.org/course/v1/page.schema.json",
+    "outputSchema": "https://llmprofiles.org/course/v1/output.schema.json",
+    "training": "https://llmprofiles.org/course/v1/training.jsonl",
+    "examples": {
+      "minimal": "https://llmprofiles.org/course/v1/examples/minimal.jsonld",
+      "rich": "https://llmprofiles.org/course/v1/examples/rich.jsonld"
+    }
+  },
+  "description": "educational courses and learning content for LLM-friendly processing and semantic understanding",
+  "useCases": [
+    "Online course pages",
+    "Educational program listings",
+    "Training course pages",
+    "University course catalogs",
+    "Skill development programs",
+    "Certification courses"
+  ],
+  "schema": {
+    "pageSchema": {
+      "title": "Course On-Page JSON-LD",
+      "type": "object",
+      "required": [
+        "@type",
+        "name",
+        "provider"
+      ],
+      "properties": 14
+    },
+    "outputSchema": {
+      "title": "Course Extracted Content",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "provider",
+        "url"
+      ],
+      "properties": 17
+    }
+  }
+}

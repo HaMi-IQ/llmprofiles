@@ -1,0 +1,112 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/"
+  },
+  "@type": "LLMProfilesDeclaration",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Example Publisher",
+    "url": "https://example.com"
+  },
+  "version": "1.0.0",
+  "lastUpdated": "2025-08-28T10:00:00Z",
+  "profiles": [
+    {
+      "type": "FAQPage",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/faqpage/v1",
+      "page": "https://example.com/faq",
+      "training": "https://example.com/data/faq.training.jsonl",
+      "description": "FAQ page with Q&A content"
+    },
+    {
+      "type": "Article",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/article/v1",
+      "page": "https://example.com/blog",
+      "training": "https://example.com/data/articles.training.jsonl",
+      "description": "Blog articles and content"
+    },
+    {
+      "type": "ProductOffer",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/product-offer/v1",
+      "page": "https://example.com/products",
+      "training": "https://example.com/data/products.training.jsonl",
+      "description": "Product listings and offers"
+    },
+    {
+      "type": "Event",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/event/v1",
+      "page": "https://example.com/events",
+      "training": "https://example.com/data/events.training.jsonl",
+      "description": "Event information and schedules"
+    },
+    {
+      "type": "Course",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/course/v1",
+      "page": "https://example.com/courses",
+      "training": "https://example.com/data/courses.training.jsonl",
+      "description": "Educational courses and training"
+    },
+    {
+      "type": "JobPosting",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/jobposting/v1",
+      "page": "https://example.com/careers",
+      "training": "https://example.com/data/jobs.training.jsonl",
+      "description": "Job postings and career opportunities"
+    },
+    {
+      "type": "LocalBusiness",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/localbusiness/v1",
+      "page": "https://example.com/locations",
+      "training": "https://example.com/data/locations.training.jsonl",
+      "description": "Local business information"
+    },
+    {
+      "type": "SoftwareApplication",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/softwareapplication/v1",
+      "page": "https://example.com/software",
+      "training": "https://example.com/data/software.training.jsonl",
+      "description": "Software products and applications"
+    },
+    {
+      "type": "Review",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/review/v1",
+      "page": "https://example.com/reviews",
+      "training": "https://example.com/data/reviews.training.jsonl",
+      "description": "Product and service reviews"
+    },
+    {
+      "type": "QAPage",
+      "version": "v1",
+      "profileUrl": "https://llmprofiles.org/qapage/v1",
+      "page": "https://example.com/qa",
+      "training": "https://example.com/data/qa.training.jsonl",
+      "description": "Single question and answer pages"
+    }
+  ],
+  "capabilities": {
+    "totalProfiles": 10,
+    "hasTrainingData": true,
+    "hasPageSchemas": true,
+    "hasOutputSchemas": true,
+    "hasExamples": true
+  },
+  "endpoints": {
+    "discovery": "https://llmprofiles.org/api/discovery.json",
+    "capabilities": "https://llmprofiles.org/api/capabilities.json",
+    "docs": "https://llmprofiles.org/api/docs.json"
+  },
+  "contact": {
+    "email": "structured-data@example.com",
+    "support": "https://example.com/support/structured-data"
+  }
+}

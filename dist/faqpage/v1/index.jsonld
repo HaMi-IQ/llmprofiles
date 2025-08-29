@@ -1,0 +1,39 @@
+{
+  "@context": {
+  "schema": "https://schema.org/",
+  "skos": "http://www.w3.org/2004/02/skos/core#",
+  "sh": "http://www.w3.org/ns/shacl#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "x": "https://llmprofiles.org/vocab#"
+  },
+  "@id": "https://llmprofiles.org/faqpage/v1",
+  "rdfs:seeAlso": "https://schema.org/FAQPage",
+  "skos:prefLabel": "FAQ Page",
+  "skos:definition": "A page listing multiple user-relevant questions with their accepted answers.",
+  "skos:scopeNote": "Not a single question thread (use schema:QAPage). Avoid pricing tables, docs indexes, or changelogs.",
+  "skos:example": "Support /help/faq page with 10 concise Q/A items and anchors.",
+  "x:dos": [
+  "Use schema:Question with schema:acceptedAnswer.",
+  "Keep each Q/A self-contained and non-duplicative.",
+  "Link each question to a stable anchor (#question-id).",
+  "Prefer plain text in acceptedAnswer.text; add details via acceptedAnswer.url.",
+  "Include inLanguage at page or Question level."
+  ],
+  "x:donts": [
+  "Do not use for forum threads or comment discussions.",
+  "Do not mix product offers or terms of service content into FAQ.",
+  "Do not mark every header as a Question if no direct answer follows."
+  ],
+  "sh:shapesGraph": {
+  "@type": "sh:NodeShape",
+  "sh:targetClass": "schema:FAQPage",
+  "sh:property": [
+  { "sh:path": "schema:mainEntity", "sh:minCount": 1 },
+  { "sh:path": "schema:mainEntity", "sh:node": "schema:Question" }
+  ]
+  },
+  "x:pageSchema": "https://llmprofiles.org/faqpage/v1/page.schema.json",
+  "x:outputSchema": "https://llmprofiles.org/faqpage/v1/output.schema.json",
+  "x:profileVersion": "1.0.0",
+  "x:created": "2025-08-28"
+  }

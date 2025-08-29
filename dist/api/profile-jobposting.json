@@ -1,0 +1,56 @@
+{
+  "@type": "Profile",
+  "name": "JobPosting",
+  "profileUrl": "https://llmprofiles.org/jobposting/v1",
+  "version": "v1",
+  "capabilities": {
+    "pageSchema": true,
+    "outputSchema": true,
+    "trainingData": true,
+    "examples": true
+  },
+  "endpoints": {
+    "definition": "https://llmprofiles.org/jobposting/v1",
+    "pageSchema": "https://llmprofiles.org/jobposting/v1/page.schema.json",
+    "outputSchema": "https://llmprofiles.org/jobposting/v1/output.schema.json",
+    "training": "https://llmprofiles.org/jobposting/v1/training.jsonl",
+    "examples": {
+      "minimal": "https://llmprofiles.org/jobposting/v1/examples/minimal.jsonld",
+      "rich": "https://llmprofiles.org/jobposting/v1/examples/rich.jsonld"
+    }
+  },
+  "description": "job advertisements and career opportunities for LLM-friendly processing and semantic understanding",
+  "useCases": [
+    "Job board listings",
+    "Company career pages",
+    "Recruitment agency pages",
+    "Freelance job postings",
+    "Internship opportunities",
+    "Executive search listings"
+  ],
+  "schema": {
+    "pageSchema": {
+      "title": "JobPosting On-Page JSON-LD",
+      "type": "object",
+      "required": [
+        "@type",
+        "title",
+        "hiringOrganization",
+        "jobLocation"
+      ],
+      "properties": 19
+    },
+    "outputSchema": {
+      "title": "Job Posting Extracted Content",
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "company",
+        "location",
+        "url"
+      ],
+      "properties": 16
+    }
+  }
+}

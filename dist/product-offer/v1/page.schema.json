@@ -1,0 +1,127 @@
+{
+  "$id": "https://llmprofiles.org/product-offer/v1/page.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProductOffer On-Page JSON-LD",
+  "type": "object",
+  "properties": {
+    "@context": { "anyOf": [{ "type": "string" }, { "type": "array" }] },
+    "@type": { "const": "Product" },
+    "name": { "type": "string", "minLength": 3 },
+    "description": { "type": "string", "minLength": 1 },
+    "brand": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "Brand" },
+        "name": { "type": "string" },
+        "url": { "type": "string" }
+      },
+      "required": ["@type", "name"],
+      "additionalProperties": true
+    },
+    "category": { "type": "string" },
+    "sku": { "type": "string" },
+    "mpn": { "type": "string" },
+    "gtin": { "type": "string" },
+    "image": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "ImageObject" },
+            "url": { "type": "string" },
+            "width": { "type": "integer" },
+            "height": { "type": "integer" }
+          },
+          "required": ["@type", "url"],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "offers": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "Offer" },
+        "price": { "type": "string" },
+        "priceCurrency": { "type": "string" },
+        "priceValidUntil": { "type": "string", "format": "date" },
+        "availability": { "type": "string" },
+        "url": { "type": "string" },
+        "seller": {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Organization" },
+            "name": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "required": ["@type", "name"],
+          "additionalProperties": true
+        },
+        "shippingDetails": {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "OfferShippingDetails" },
+            "shippingRate": {
+              "type": "object",
+              "properties": {
+                "@type": { "const": "MonetaryAmount" },
+                "value": { "type": "string" },
+                "currency": { "type": "string" }
+              },
+              "required": ["@type", "value", "currency"],
+              "additionalProperties": true
+            }
+          },
+          "required": ["@type"],
+          "additionalProperties": true
+        }
+      },
+      "required": ["@type", "price", "priceCurrency"],
+      "additionalProperties": true
+    },
+    "aggregateRating": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "AggregateRating" },
+        "ratingValue": { "type": "number", "minimum": 0, "maximum": 5 },
+        "ratingCount": { "type": "integer", "minimum": 0 },
+        "bestRating": { "type": "number" },
+        "worstRating": { "type": "number" }
+      },
+      "required": ["@type", "ratingValue"],
+      "additionalProperties": true
+    },
+    "review": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "@type": { "const": "Review" },
+          "reviewRating": {
+            "type": "object",
+            "properties": {
+              "@type": { "const": "Rating" },
+              "ratingValue": { "type": "number" }
+            },
+            "required": ["@type", "ratingValue"],
+            "additionalProperties": true
+          },
+          "author": {
+            "type": "object",
+            "properties": {
+              "@type": { "const": "Person" },
+              "name": { "type": "string" }
+            },
+            "required": ["@type", "name"],
+            "additionalProperties": true
+          }
+        },
+        "required": ["@type", "reviewRating", "author"],
+        "additionalProperties": true
+      }
+    },
+    "url": { "type": "string" }
+  },
+  "required": ["@type", "name", "offers"],
+  "additionalProperties": true
+}

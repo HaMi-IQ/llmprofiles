@@ -1,0 +1,49 @@
+{
+  "@type": "Profile",
+  "name": "FAQPage",
+  "profileUrl": "https://llmprofiles.org/faqpage/v1",
+  "version": "v1",
+  "capabilities": {
+    "pageSchema": true,
+    "outputSchema": true,
+    "trainingData": true,
+    "examples": true
+  },
+  "endpoints": {
+    "definition": "https://llmprofiles.org/faqpage/v1",
+    "pageSchema": "https://llmprofiles.org/faqpage/v1/page.schema.json",
+    "outputSchema": "https://llmprofiles.org/faqpage/v1/output.schema.json",
+    "training": "https://llmprofiles.org/faqpage/v1/training.jsonl",
+    "examples": {
+      "minimal": "https://llmprofiles.org/faqpage/v1/examples/minimal.jsonld",
+      "rich": "https://llmprofiles.org/faqpage/v1/examples/rich.jsonld"
+    }
+  },
+  "description": "FAQ (Frequently Asked Questions) content for LLM-friendly processing and semantic understanding",
+  "useCases": [
+    "Support/help pages with Q&A content",
+    "Product documentation FAQs",
+    "Service information pages",
+    "Knowledge base articles",
+    "Customer service resources"
+  ],
+  "schema": {
+    "pageSchema": {
+      "title": "FAQPage On-Page JSON-LD",
+      "type": "object",
+      "required": [
+        "@type",
+        "mainEntity"
+      ],
+      "properties": 4
+    },
+    "outputSchema": {
+      "title": "FAQPage Extracted Content",
+      "type": "object",
+      "required": [
+        "faqs"
+      ],
+      "properties": 1
+    }
+  }
+}

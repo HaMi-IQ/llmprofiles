@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://llmprofiles.org/course/v1/output.schema.json",
+  "title": "Course Extracted Content",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the course"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Course name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Course description"
+    },
+    "provider": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Course provider name"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Provider website"
+        }
+      }
+    },
+    "instructor": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Instructor name"
+        },
+        "bio": {
+          "type": "string",
+          "description": "Instructor biography"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Instructor profile URL"
+        }
+      }
+    },
+    "duration": {
+      "type": "object",
+      "properties": {
+        "weeks": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Course duration in weeks"
+        },
+        "hours": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total course hours"
+        }
+      }
+    },
+    "level": {
+      "type": "string",
+      "enum": ["Beginner", "Intermediate", "Advanced"],
+      "description": "Course difficulty level"
+    },
+    "language": {
+      "type": "string",
+      "description": "Course language"
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Course prerequisites"
+    },
+    "learningOutcomes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "What students will learn"
+    },
+    "curriculum": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Module or lesson title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Module description"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Module duration"
+          }
+        }
+      },
+      "description": "Course curriculum or syllabus"
+    },
+    "pricing": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Course price"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "Currency code"
+        },
+        "isFree": {
+          "type": "boolean",
+          "description": "Whether the course is free"
+        }
+      }
+    },
+    "enrollment": {
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Enrollment start date"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Enrollment end date"
+        },
+        "isOpen": {
+          "type": "boolean",
+          "description": "Whether enrollment is currently open"
+        },
+        "maxStudents": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of students"
+        }
+      }
+    },
+    "certificate": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "type": "boolean",
+          "description": "Whether a certificate is available"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of certificate"
+        }
+      }
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the course page"
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Course image URL"
+        },
+        "alt": {
+          "type": "string",
+          "description": "Image alt text"
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Course tags or categories"
+    }
+  },
+  "required": ["id", "name", "provider", "url"],
+  "additionalProperties": false
+}
+

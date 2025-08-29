@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://llmprofiles.org/qapage/v1/output.schema.json",
+  "title": "QAPage Extracted Content",
+  "type": "object",
+  "properties": {
+    "question": {
+      "type": "object",
+      "required": ["text", "id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the question"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 3,
+          "description": "The question text"
+        },
+        "title": {
+          "type": "string",
+          "description": "Question title or headline"
+        },
+        "author": {
+          "type": "string",
+          "description": "Name or username of the question author"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the question was created"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags or categories for the question"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the question page"
+        }
+      }
+    },
+    "answers": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["text", "id"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the answer"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The answer text"
+          },
+          "author": {
+            "type": "string",
+            "description": "Name or username of the answer author"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the answer was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the answer was last updated"
+          },
+          "isAccepted": {
+            "type": "boolean",
+            "description": "Whether this is the accepted answer"
+          },
+          "score": {
+            "type": "integer",
+            "description": "Vote score or rating for the answer"
+          },
+          "parentId": {
+            "type": "string",
+            "description": "ID of parent answer for threaded discussions"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the specific answer"
+          }
+        }
+      },
+      "description": "List of answers to the question"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "totalAnswers": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of answers"
+        },
+        "viewCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of views for the question"
+        },
+        "lastActivity": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last activity timestamp"
+        },
+        "category": {
+          "type": "string",
+          "description": "Category or forum section"
+        }
+      }
+    }
+  },
+  "required": ["question", "answers"],
+  "additionalProperties": false
+}
+

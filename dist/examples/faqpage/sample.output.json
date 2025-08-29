@@ -1,0 +1,12 @@
+{
+  "faqs": [
+    {
+      "id": "faq#what-is-llmprofiles",
+      "question": "What is LLM Profiles?",
+      "answer": "Opinionated, testable structured data profiles for AI & SEO.",
+      "url": "https://example.com/help#q-what-is-llmprofiles",
+      "tags": ["llm", "structured-data", "seo"],
+      "lastUpdated": "2025-08-28T10:00:00Z"
+    }
+  ]
+}
