@@ -130,7 +130,7 @@ Each profile in the API response includes:
   "description": "FAQ pages with Q&A pairs, training data, and implementation examples",
   "schemaType": "FAQPage",
   "version": "v1",
-  "profileUrl": "https://llmprofiles.org/faqpage/v1",
+  "profileUrl": "https://llmprofiles.org/faqpage/v1/index.jsonld",
   "capabilities": {
     "pageSchema": true,
     "outputSchema": true,
@@ -138,13 +138,13 @@ Each profile in the API response includes:
     "examples": true
   },
   "endpoints": {
-    "definition": "https://llmprofiles.org/faqpage/v1",
-    "pageSchema": "https://llmprofiles.org/faqpage/v1/page.schema.json",
-    "outputSchema": "https://llmprofiles.org/faqpage/v1/output.schema.json",
-    "training": "https://llmprofiles.org/faqpage/v1/training.jsonl",
+    "definition": "https://llmprofiles.org/faqpage/v1/index.jsonld",
+    "pageSchema": "https://llmprofiles.org/faqpage/v1/index.jsonld/page.schema.json",
+    "outputSchema": "https://llmprofiles.org/faqpage/v1/index.jsonld/output.schema.json",
+    "training": "https://llmprofiles.org/faqpage/v1/index.jsonld/training.jsonl",
     "examples": {
-      "minimal": "https://llmprofiles.org/faqpage/v1/examples/minimal.jsonld",
-      "rich": "https://llmprofiles.org/faqpage/v1/examples/rich.jsonld"
+      "minimal": "https://llmprofiles.org/faqpage/v1/index.jsonld/examples/minimal.jsonld",
+      "rich": "https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld"
     }
   },
   "useCases": [

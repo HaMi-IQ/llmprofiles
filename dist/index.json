@@ -1,7 +1,7 @@
 {
   "profiles": {
     "FAQPage": {
-      "profile": "https://llmprofiles.org/faqpage/v1",
+      "profile": "https://llmprofiles.org/faqpage/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/faqpage/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/faqpage/v1/output.schema.json",
       "training": "https://llmprofiles.org/faqpage/v1/training.jsonl",
@@ -11,7 +11,7 @@
       }
     },
     "QAPage": {
-      "profile": "https://llmprofiles.org/qapage/v1",
+      "profile": "https://llmprofiles.org/qapage/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/qapage/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/qapage/v1/output.schema.json",
       "training": "https://llmprofiles.org/qapage/v1/training.jsonl",
@@ -21,7 +21,7 @@
       }
     },
     "Article": {
-      "profile": "https://llmprofiles.org/article/v1",
+      "profile": "https://llmprofiles.org/article/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/article/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/article/v1/output.schema.json",
       "training": "https://llmprofiles.org/article/v1/training.jsonl",
@@ -31,7 +31,7 @@
       }
     },
     "ProductOffer": {
-      "profile": "https://llmprofiles.org/product-offer/v1",
+      "profile": "https://llmprofiles.org/product-offer/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/product-offer/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/product-offer/v1/output.schema.json",
       "training": "https://llmprofiles.org/product-offer/v1/training.jsonl",
@@ -41,7 +41,7 @@
       }
     },
     "Event": {
-      "profile": "https://llmprofiles.org/event/v1",
+      "profile": "https://llmprofiles.org/event/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/event/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/event/v1/output.schema.json",
       "training": "https://llmprofiles.org/event/v1/training.jsonl",
@@ -51,7 +51,7 @@
       }
     },
     "Course": {
-      "profile": "https://llmprofiles.org/course/v1",
+      "profile": "https://llmprofiles.org/course/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/course/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/course/v1/output.schema.json",
       "training": "https://llmprofiles.org/course/v1/training.jsonl",
@@ -61,7 +61,7 @@
       }
     },
     "JobPosting": {
-      "profile": "https://llmprofiles.org/jobposting/v1",
+      "profile": "https://llmprofiles.org/jobposting/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/jobposting/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/jobposting/v1/output.schema.json",
       "training": "https://llmprofiles.org/jobposting/v1/training.jsonl",
@@ -71,7 +71,7 @@
       }
     },
     "LocalBusiness": {
-      "profile": "https://llmprofiles.org/localbusiness/v1",
+      "profile": "https://llmprofiles.org/localbusiness/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/localbusiness/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/localbusiness/v1/output.schema.json",
       "training": "https://llmprofiles.org/localbusiness/v1/training.jsonl",
@@ -81,7 +81,7 @@
       }
     },
     "SoftwareApplication": {
-      "profile": "https://llmprofiles.org/softwareapplication/v1",
+      "profile": "https://llmprofiles.org/softwareapplication/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/softwareapplication/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/softwareapplication/v1/output.schema.json",
       "training": "https://llmprofiles.org/softwareapplication/v1/training.jsonl",
@@ -91,7 +91,7 @@
       }
     },
     "Review": {
-      "profile": "https://llmprofiles.org/review/v1",
+      "profile": "https://llmprofiles.org/review/v1/index.jsonld",
       "pageSchema": "https://llmprofiles.org/review/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/review/v1/output.schema.json",
       "training": "https://llmprofiles.org/review/v1/training.jsonl",

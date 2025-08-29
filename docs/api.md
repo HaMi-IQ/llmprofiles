@@ -29,13 +29,13 @@ Returns the complete profile registry with all available profiles and their vers
 {
   "profiles": {
     "FAQPage": {
-      "profile": "https://llmprofiles.org/faqpage/v1",
-      "pageSchema": "https://llmprofiles.org/faqpage/v1/page.schema.json",
-      "outputSchema": "https://llmprofiles.org/faqpage/v1/output.schema.json",
-      "training": "https://llmprofiles.org/faqpage/v1/training.jsonl",
+      "profile": "https://llmprofiles.org/faqpage/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/faqpage/v1/index.jsonld/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/faqpage/v1/index.jsonld/output.schema.json",
+      "training": "https://llmprofiles.org/faqpage/v1/index.jsonld/training.jsonl",
       "examples": {
-        "minimal": "https://llmprofiles.org/faqpage/v1/examples/minimal.jsonld",
-        "rich": "https://llmprofiles.org/faqpage/v1/examples/rich.jsonld"
+        "minimal": "https://llmprofiles.org/faqpage/v1/index.jsonld/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld"
       }
     },
     "QAPage": "https://llmprofiles.org/qapage/v1",
@@ -101,7 +101,7 @@ Returns the JSON-LD profile definition with context, constraints, and metadata.
 #### Example
 
 ```bash
-curl https://llmprofiles.org/faqpage/v1
+curl https://llmprofiles.org/faqpage/v1/index.jsonld
 ```
 
 ### 3. Output Schema Endpoint
@@ -134,7 +134,7 @@ Returns the JSON Schema for validating extracted content from the profile.
 #### Example
 
 ```bash
-curl https://llmprofiles.org/faqpage/v1/output.schema.json
+curl https://llmprofiles.org/faqpage/v1/index.jsonld/output.schema.json
 ```
 
 ### 4. Page Schema Endpoint (Enhanced Profiles)
@@ -167,7 +167,7 @@ Returns the JSON Schema for validating on-page JSON-LD markup (available for enh
 #### Example
 
 ```bash
-curl https://llmprofiles.org/faqpage/v1/page.schema.json
+curl https://llmprofiles.org/faqpage/v1/index.jsonld/page.schema.json
 ```
 
 ### 5. Training Data Endpoint (Enhanced Profiles)
@@ -191,7 +191,7 @@ Returns training data in JSONL format for LLM fine-tuning (available for enhance
 #### Example
 
 ```bash
-curl https://llmprofiles.org/faqpage/v1/training.jsonl
+curl https://llmprofiles.org/faqpage/v1/index.jsonld/training.jsonl
 ```
 
 ### 6. Examples Endpoint (Enhanced Profiles)
@@ -209,8 +209,8 @@ Returns implementation examples for the profile (available for enhanced profiles
 #### Example
 
 ```bash
-curl https://llmprofiles.org/faqpage/v1/examples/minimal.jsonld
-curl https://llmprofiles.org/faqpage/v1/examples/rich.jsonld
+curl https://llmprofiles.org/faqpage/v1/index.jsonld/examples/minimal.jsonld
+curl https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld
 ```
 
 ## Profile-Specific Documentation
@@ -231,7 +231,7 @@ The FAQPage profile is enhanced with additional resources:
 
 ```javascript
 // Fetch profile definition
-const profile = await fetch('https://llmprofiles.org/faqpage/v1');
+const profile = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld');
 const profileData = await profile.json();
 
 // Create FAQ content
@@ -251,20 +251,20 @@ const faqContent = {
 };
 
 // Validate against page schema (on-page markup)
-const pageSchema = await fetch('https://llmprofiles.org/faqpage/v1/page.schema.json');
+const pageSchema = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld/page.schema.json');
 const pageSchemaData = await pageSchema.json();
 
 // Validate against output schema (extracted content)
-const outputSchema = await fetch('https://llmprofiles.org/faqpage/v1/output.schema.json');
+const outputSchema = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld/output.schema.json');
 const outputSchemaData = await outputSchema.json();
 
 // Get training data for LLM fine-tuning
-const trainingData = await fetch('https://llmprofiles.org/faqpage/v1/training.jsonl');
+const trainingData = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld/training.jsonl');
 const trainingText = await trainingData.text();
 
 // Get implementation examples
-const minimalExample = await fetch('https://llmprofiles.org/faqpage/v1/examples/minimal.jsonld');
-const richExample = await fetch('https://llmprofiles.org/faqpage/v1/examples/rich.jsonld');
+const minimalExample = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld/examples/minimal.jsonld');
+const richExample = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld');
 ```
 
 #### Page Schema (On-Page JSON-LD)
@@ -464,7 +464,7 @@ Test your JSON-LD markup to see if it's eligible for Google's rich results.
 **Example with llmprofiles:**
 ```bash
 # Get FAQPage example and test it
-curl https://llmprofiles.org/faqpage/v1/examples/rich.jsonld | \
+curl https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld | \
   curl -X POST https://search.google.com/test/rich-results/api/validate \
   -H "Content-Type: application/json" \
   -d @-
@@ -515,7 +515,7 @@ Test and debug your JSON-LD markup with interactive visualization.
 #### Step 1: Get Profile Example
 ```bash
 # Get a working example from llmprofiles
-curl https://llmprofiles.org/faqpage/v1/examples/rich.jsonld
+curl https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld
 ```
 
 #### Step 2: Test with Google Rich Results
@@ -524,7 +524,7 @@ curl https://llmprofiles.org/faqpage/v1/examples/rich.jsonld
 curl -X POST https://search.google.com/test/rich-results/api/validate \
   -H "Content-Type: application/json" \
   -d '{
-    "code": "'$(curl -s https://llmprofiles.org/faqpage/v1/examples/rich.jsonld | jq -c .)'"
+    "code": "'$(curl -s https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld | jq -c .)'"
   }'
 ```
 
@@ -534,7 +534,7 @@ curl -X POST https://search.google.com/test/rich-results/api/validate \
 curl -X POST https://validator.schema.org/validate \
   -H "Content-Type: application/json" \
   -d '{
-    "url": "https://llmprofiles.org/faqpage/v1/examples/rich.jsonld"
+    "url": "https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld"
   }'
 ```
 
@@ -544,7 +544,7 @@ curl -X POST https://validator.schema.org/validate \
 curl -X POST https://json-ld.org/playground/api/expand \
   -H "Content-Type: application/json" \
   -d '{
-    "input": "'$(curl -s https://llmprofiles.org/faqpage/v1/examples/rich.jsonld | jq -c .)'"
+    "input": "'$(curl -s https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld | jq -c .)'"
   }'
 ```
 

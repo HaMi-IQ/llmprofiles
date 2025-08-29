@@ -74,6 +74,13 @@ profileDirs.forEach(profile => {
   if (fs.existsSync(v1Path)) {
     const v1IndexHtml = `<!doctype html><meta http-equiv="refresh" content="0; url=index.jsonld">`;
     fs.writeFileSync(path.join(v1Path, 'index.html'), v1IndexHtml);
+    
+    // Create index.json for machine-friendly access (same content as index.jsonld)
+    const indexJsonldPath = path.join(v1Path, 'index.jsonld');
+    if (fs.existsSync(indexJsonldPath)) {
+      const jsonldContent = fs.readFileSync(indexJsonldPath, 'utf8');
+      fs.writeFileSync(path.join(v1Path, 'index.json'), jsonldContent);
+    }
   }
 });
 

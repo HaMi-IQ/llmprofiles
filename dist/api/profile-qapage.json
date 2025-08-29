@@ -1,7 +1,7 @@
 {
   "@type": "Profile",
   "name": "QAPage",
-  "profileUrl": "https://llmprofiles.org/qapage/v1",
+  "profileUrl": "https://llmprofiles.org/qapage/v1/index.jsonld",
   "version": "v1",
   "capabilities": {
     "pageSchema": true,
@@ -10,7 +10,7 @@
     "examples": true
   },
   "endpoints": {
-    "definition": "https://llmprofiles.org/qapage/v1",
+    "definition": "https://llmprofiles.org/qapage/v1/index.jsonld",
     "pageSchema": "https://llmprofiles.org/qapage/v1/page.schema.json",
     "outputSchema": "https://llmprofiles.org/qapage/v1/output.schema.json",
     "training": "https://llmprofiles.org/qapage/v1/training.jsonl",

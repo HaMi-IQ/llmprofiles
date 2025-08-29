@@ -37,7 +37,7 @@ https://yourdomain.com/.well-known/llmprofiles.json
     {
       "type": "FAQPage",
       "version": "v1",
-      "profileUrl": "https://llmprofiles.org/faqpage/v1",
+      "profileUrl": "https://llmprofiles.org/faqpage/v1/index.jsonld",
       "page": "https://yourdomain.com/faq",
       "training": "https://yourdomain.com/data/faq.training.jsonl",
       "description": "FAQ page with Q&A content"
@@ -94,7 +94,7 @@ Each profile in the `profiles` array should include:
     {
       "type": "FAQPage",
       "version": "v1",
-      "profileUrl": "https://llmprofiles.org/faqpage/v1",
+      "profileUrl": "https://llmprofiles.org/faqpage/v1/index.jsonld",
       "page": "https://mycompany.com/faq"
     }
   ]
@@ -129,7 +129,7 @@ Each profile in the `profiles` array should include:
     {
       "type": "FAQPage",
       "version": "v1",
-      "profileUrl": "https://llmprofiles.org/faqpage/v1",
+      "profileUrl": "https://llmprofiles.org/faqpage/v1/index.jsonld",
       "page": "https://techblog.com/faq",
       "training": "https://techblog.com/api/faq.training.jsonl",
       "description": "Frequently asked questions"
@@ -234,7 +234,7 @@ Add your profile declarations to the file:
     {
       "type": "FAQPage",
       "version": "v1",
-      "profileUrl": "https://llmprofiles.org/faqpage/v1",
+      "profileUrl": "https://llmprofiles.org/faqpage/v1/index.jsonld",
       "page": "https://yourdomain.com/faq"
     }
   ]

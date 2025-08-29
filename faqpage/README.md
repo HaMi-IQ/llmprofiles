@@ -182,7 +182,7 @@ The profile provides both minimal and rich implementation examples:
 ```javascript
 async function createFAQPage() {
   // Fetch the profile definition
-  const profile = await fetch('https://llmprofiles.org/faqpage/v1');
+  const profile = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld');
   const profileData = await profile.json();
   
   // Create FAQ content

@@ -4,6 +4,8 @@
 ![Profile-Discovery](https://img.shields.io/badge/.well--known-passed-brightgreen)
 ![CI-Contracts](https://img.shields.io/github/actions/workflow/status/HaMi-IQ/llmprofiles/validate-llmprofiles.yml?label=contracts)
 
+<link rel="canonical" href="https://llmprofiles.org/">
+
 **Organization:** HAMI-IQ • **Domain:** https://llmprofiles.org • **Repository:** https://github.com/HaMi-IQ/llmprofiles.git
 
 **Turn structured data into operational, testable, AEO-ready content.**
@@ -128,14 +130,14 @@ Built-in stable anchors, language hints, and anti-patterns for better AI retriev
 curl https://llmprofiles.org/api/discovery.json
 
 # Get a specific profile (e.g., FAQPage)
-curl https://llmprofiles.org/faqpage/v1
+curl https://llmprofiles.org/faqpage/v1/index.jsonld
 ```
 
 ### 2. Implement & Validate
 
 ```javascript
 // Fetch the profile and schemas
-const profile = await fetch('https://llmprofiles.org/faqpage/v1');
+const profile = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld');
 const pageSchema = await fetch('https://llmprofiles.org/faqpage/v1/page.schema.json');
 const outputSchema = await fetch('https://llmprofiles.org/faqpage/v1/output.schema.json');
 
@@ -244,7 +246,7 @@ jobs:
     {
       "name": "FAQPage",
       "version": "v1",
-      "iri": "https://llmprofiles.org/faqpage/v1",
+      "iri": "https://llmprofiles.org/faqpage/v1/",
       "pageSchema": "https://llmprofiles.org/faqpage/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/faqpage/v1/output.schema.json",
       "training": "https://example.com/ai/training/faq.v1.jsonl",
