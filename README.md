@@ -20,11 +20,11 @@
 
 ```mermaid
 flowchart LR
-A[Page Content] --> B[JSON-LD (Profile)]
-B -->|CI: page.schema.json| C{Pass?}
+A[Page Content] --> B[JSON-LD Profile]
+B -->|CI page.schema.json| C{Pass?}
 C -- No --> D[Fail build]
 C -- Yes --> E[Extractor]
-E -->|CI: output.schema.json| F{Pass?}
+E -->|CI output.schema.json| F{Pass?}
 F -- No --> D
 F -- Yes --> G[training.jsonl]
 G --> H[Answer Engines / RAG]
