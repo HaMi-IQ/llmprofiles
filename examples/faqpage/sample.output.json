@@ -1,14 +1,12 @@
 {
-  "id": "faq#what-is-llmprofiles",
-  "lang": "en",
-  "url": "https://example.com/help#q-what-is-llmprofiles",
-  "version": "faqpage.v1",
-  "input": "What is LLM Profiles?",
-  "output": "Opinionated, testable structured data profiles for AI & SEO.",
-  "evidence": ["https://example.com/help#faq"],
-  "metadata": {
-    "extracted_at": "2025-08-28T10:00:00Z",
-    "source_url": "https://example.com/help#faq",
-    "profile_version": "v1"
-  }
+  "faqs": [
+    {
+      "id": "faq#what-is-llmprofiles",
+      "question": "What is LLM Profiles?",
+      "answer": "Opinionated, testable structured data profiles for AI & SEO.",
+      "url": "https://example.com/help#q-what-is-llmprofiles",
+      "tags": ["llm", "structured-data", "seo"],
+      "lastUpdated": "2025-08-28T10:00:00Z"
+    }
+  ]
 }

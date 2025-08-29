@@ -168,10 +168,10 @@ const faqMarkup = {
 
 ```bash
 # Validate your JSON-LD before deployment
-npx ajv validate -s faqpage/v1/page.schema.json -d your-page-markup.json
+node scripts/validate-ajv.js faqpage/v1/page.schema.json your-page-markup.json
 
 # Validate extracted content for RAG
-npx ajv validate -s faqpage/v1/output.schema.json -d your-extracted-data.json
+node scripts/validate-ajv.js faqpage/v1/output.schema.json your-extracted-data.json
 ```
 
 ### 4. Export Training Data

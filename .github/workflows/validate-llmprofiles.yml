@@ -21,21 +21,21 @@ jobs:
         
       - name: Validate Page Markup (schema contract)
         run: |
-          npx ajv validate \
-            -s faqpage/v1/page.schema.json \
-            -d examples/faqpage/minimal.page.jsonld
+          node scripts/validate-ajv.js \
+            faqpage/v1/page.schema.json \
+            examples/faqpage/minimal.page.jsonld
             
       - name: Validate Extracted Output (RAG contract)
         run: |
-          npx ajv validate \
-            -s faqpage/v1/output.schema.json \
-            -d examples/faqpage/sample.output.json
+          node scripts/validate-ajv.js \
+            faqpage/v1/output.schema.json \
+            examples/faqpage/sample.output.json
             
       - name: Validate Well-Known Discovery
         run: |
-          npx ajv validate \
-            -s .well-known/llmprofiles.schema.json \
-            -d .well-known/llmprofiles.json || true
+          node scripts/validate-ajv.js \
+            .well-known/llmprofiles.schema.json \
+            .well-known/llmprofiles.json || true
             
       - name: Test Discovery Endpoint
         run: |
