@@ -209,6 +209,13 @@ softwarePages.forEach(file => {
     fs.copyFileSync(srcPath, destPath);
   }
 });
+
+// Copy blog directory
+const blogSrc = path.join(__dirname, '..', 'blog');
+const blogDest = path.join(distDir, 'blog');
+if (fs.existsSync(blogSrc)) {
+  copyDirAll(blogSrc, blogDest);
+}
 // Copy robots.txt, sitemap.xml, and _redirects if they exist
 const seoFiles = ['robots.txt', 'sitemap.xml', '_redirects'];
 seoFiles.forEach(file => {
