@@ -22,7 +22,7 @@ function copyFiles(src, dest) {
     
     if (fs.statSync(srcPath).isDirectory()) {
       copyFiles(srcPath, destPath);
-    } else if (item.endsWith('.json') || item.endsWith('.jsonld') || item.endsWith('.jsonl')) {
+    } else if (item.endsWith('.json') || item.endsWith('.jsonld') || item.endsWith('.jsonl') || item.endsWith('.md') || item.endsWith('.html')) {
       fs.copyFileSync(srcPath, destPath);
     }
   });
@@ -85,7 +85,7 @@ profileDirs.forEach(profile => {
 });
 
 // Copy main files
-const mainFiles = ['index.json', 'README.md', 'CHANGELOG.md', 'LICENSE-CODE', 'LICENSE-CONTENT'];
+const mainFiles = ['index.json', 'README.md', 'CHANGELOG.md', 'LICENSE-CODE', 'LICENSE-CONTENT', 'vocab.json'];
 mainFiles.forEach(file => {
   const srcPath = path.join(__dirname, '..', file);
   const destPath = path.join(distDir, file);
@@ -140,6 +140,75 @@ if (fs.existsSync(examplesSrc)) {
 // Copy CNAME
 fs.copyFileSync(path.join(__dirname, '..', 'CNAME'), path.join(distDir, 'CNAME'));
 
+// Copy utility HTML pages
+const utilityPages = ['faq.html', 'about.html'];
+utilityPages.forEach(file => {
+  const srcPath = path.join(__dirname, '..', file);
+  const destPath = path.join(distDir, file);
+  if (fs.existsSync(srcPath)) {
+    fs.copyFileSync(srcPath, destPath);
+  }
+});
+
+// Copy article pages
+const articlePages = ['article/standardizing-structured-data.html'];
+articlePages.forEach(file => {
+  const srcPath = path.join(__dirname, '..', file);
+  const destPath = path.join(distDir, file);
+  if (fs.existsSync(srcPath)) {
+    // Ensure directory exists
+    const destDir = path.dirname(destPath);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+    fs.copyFileSync(srcPath, destPath);
+  }
+});
+
+// Copy course pages
+const coursePages = ['courses/structured-data-101.html'];
+coursePages.forEach(file => {
+  const srcPath = path.join(__dirname, '..', file);
+  const destPath = path.join(distDir, file);
+  if (fs.existsSync(srcPath)) {
+    // Ensure directory exists
+    const destDir = path.dirname(destPath);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+    fs.copyFileSync(srcPath, destPath);
+  }
+});
+
+// Copy event pages
+const eventPages = ['events/conference-2025.html', 'events/conference-2025/tickets.html'];
+eventPages.forEach(file => {
+  const srcPath = path.join(__dirname, '..', file);
+  const destPath = path.join(distDir, file);
+  if (fs.existsSync(srcPath)) {
+    // Ensure directory exists
+    const destDir = path.dirname(destPath);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+    fs.copyFileSync(srcPath, destPath);
+  }
+});
+
+// Copy software pages
+const softwarePages = ['software/validator.html'];
+softwarePages.forEach(file => {
+  const srcPath = path.join(__dirname, '..', file);
+  const destPath = path.join(distDir, file);
+  if (fs.existsSync(srcPath)) {
+    // Ensure directory exists
+    const destDir = path.dirname(destPath);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+    fs.copyFileSync(srcPath, destPath);
+  }
+});
 // Copy robots.txt, sitemap.xml, and _redirects if they exist
 const seoFiles = ['robots.txt', 'sitemap.xml', '_redirects'];
 seoFiles.forEach(file => {

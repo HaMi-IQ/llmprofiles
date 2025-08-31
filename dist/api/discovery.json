@@ -9,7 +9,7 @@
   "description": "A comprehensive registry of LLM-friendly structured data profiles",
   "version": "1.0.0",
   "totalProfiles": 10,
-  "lastUpdated": "2025-08-29T11:03:28.177Z",
+  "lastUpdated": "2025-08-31T11:48:46.367Z",
   "profiles": [
     {
       "@type": "Profile",
