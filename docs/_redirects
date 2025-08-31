@@ -1,0 +1,8 @@
+# Redirect .md files to HTML versions or markdown viewer
+/docs/api.md /docs/api.html 200
+/docs/examples.md /docs/examples.html 200
+/docs/well-known.md /docs/well-known.html 200
+/docs/api-discovery.md /docs/api-discovery.html 200
+
+# Fallback for any .md file to the markdown viewer
+/*.md /docs/md-viewer.html?file=:splat 200

@@ -32,6 +32,7 @@
     "test": "npm run validate",
     "build": "npm run validate",
     "build:docs": "node scripts/build-docs.js",
+    "build:md": "node scripts/convert-md-to-html.js batch",
     "generate-images": "node scripts/create-generic-image-files.js",
     "create-readmes": "node scripts/create-profile-readmes.js",
     "generate-api": "node scripts/generate-api.js",
@@ -46,7 +47,8 @@
   "devDependencies": {
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "marked": "^9.1.0"
   },
   "dependencies": {
     "express": "^4.18.2",
