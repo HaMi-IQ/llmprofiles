@@ -105,6 +105,11 @@ Built-in stable anchors, language hints, and anti-patterns for better AI retriev
 | [LocalBusiness](localbusiness/v1/) | ✅ Enhanced | v1.0.0 | Business listings with training data and examples |
 | [SoftwareApplication](softwareapplication/v1/) | ✅ Enhanced | v1.0.0 | Software products with training data and examples |
 | [Review](review/v1/) | ✅ Enhanced | v1.0.0 | Product reviews with training data and examples |
+| [Recipe](recipe/v1/) | ✅ Enhanced | v1.0.0 | Cooking recipes with structured ingredients and instructions |
+| [HowTo](howto/v1/) | ✅ Enhanced | v1.0.0 | Step-by-step instructional content and guides |
+| [VideoObject](videoobject/v1/) | ✅ Enhanced | v1.0.0 | Video content with metadata and transcripts |
+| [Book](book/v1/) | ✅ Enhanced | v1.0.0 | Published books and literary works with metadata |
+| [Dataset](dataset/v1/) | ✅ Enhanced | v1.0.0 | Datasets and data collections with structured metadata |
 
 ## 🧩 Profiles Compatibility Table (AEO-focused)
 
@@ -120,6 +125,11 @@ Built-in stable anchors, language hints, and anti-patterns for better AI retriev
 | SoftwareApp v1  | `@id`, `applicationCategory`         | ✅         | ✅             | ✅                                         |
 | Review v1       | `@id`, `reviewRating`, `itemReviewed`| ✅         | ✅             | ✅                                         |
 | QAPage v1       | `@id`, `question`, `acceptedAnswer`  | ✅         | ✅             | ✅                                         |
+| Recipe v1       | `@id`, `name`, `ingredients`, `recipeInstructions` | ✅ | ✅ | ✅ |
+| HowTo v1        | `@id`, `name`, `description`, `step` | ✅         | ✅             | ✅                                         |
+| VideoObject v1  | `@id`, `name`, `description`, `uploadDate` | ✅ | ✅ | ✅ |
+| Book v1         | `@id`, `name`, `author`              | ✅         | ✅             | ✅                                         |
+| Dataset v1      | `@id`, `name`, `description`         | ✅         | ✅             | ✅                                         |
 
 ## 🛠️ Quick Start
 

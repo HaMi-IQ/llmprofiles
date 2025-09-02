@@ -89,6 +89,51 @@
       "pageSchema": "https://llmprofiles.org/qapage/v1/page.schema.json",
       "outputSchema": "https://llmprofiles.org/qapage/v1/output.schema.json",
       "training": "https://llmprofiles.org/qapage/v1/training.jsonl"
+    },
+    {
+      "name": "Recipe",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/recipe/v1/",
+      "fetch": "https://llmprofiles.org/recipe/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/recipe/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/recipe/v1/output.schema.json",
+      "training": "https://llmprofiles.org/recipe/v1/training.jsonl"
+    },
+    {
+      "name": "HowTo",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/howto/v1/",
+      "fetch": "https://llmprofiles.org/howto/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/howto/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/howto/v1/output.schema.json",
+      "training": "https://llmprofiles.org/howto/v1/training.jsonl"
+    },
+    {
+      "name": "VideoObject",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/videoobject/v1/",
+      "fetch": "https://llmprofiles.org/videoobject/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/videoobject/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/videoobject/v1/output.schema.json",
+      "training": "https://llmprofiles.org/videoobject/v1/training.jsonl"
+    },
+    {
+      "name": "Book",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/book/v1/",
+      "fetch": "https://llmprofiles.org/book/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/book/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/book/v1/output.schema.json",
+      "training": "https://llmprofiles.org/book/v1/training.jsonl"
+    },
+    {
+      "name": "Dataset",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/dataset/v1/",
+      "fetch": "https://llmprofiles.org/dataset/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/dataset/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/dataset/v1/output.schema.json",
+      "training": "https://llmprofiles.org/dataset/v1/training.jsonl"
     }
   ]
 }

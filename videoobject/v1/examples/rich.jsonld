@@ -1,0 +1,53 @@
+{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "@id": "https://example.com/videos/italian-pasta-masterclass",
+  "name": "Italian Pasta Masterclass: Traditional Recipes from Rome",
+  "description": "Join Chef Marco Rossi in this comprehensive cooking masterclass as he teaches you to make three authentic Italian pasta dishes: Spaghetti Carbonara, Cacio e Pepe, and Bucatini all'Amatriciana. Learn traditional techniques, ingredient selection, and the secrets of perfect pasta al dente.",
+  "uploadDate": "2025-01-15",
+  "datePublished": "2025-01-15",
+  "dateModified": "2025-01-15",
+  "duration": "PT30M",
+  "thumbnailUrl": "https://example.com/images/italian-pasta-thumb.jpg",
+  "contentUrl": "https://example.com/videos/italian-pasta-masterclass.mp4",
+  "embedUrl": "https://example.com/videos/italian-pasta-masterclass/embed",
+  "author": {
+    "@type": "Person",
+    "name": "Chef Marco Rossi"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Chef Marco Rossi"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Culinary Institute of Rome"
+  },
+  "genre": "Cooking",
+  "keywords": "italian pasta, carbonara, cacio e pepe, amatriciana, cooking tutorial, italian cuisine, pasta recipes",
+  "inLanguage": "en",
+  "caption": "English captions available",
+  "transcript": "Welcome to the Italian Pasta Masterclass. Today we'll be making three classic Roman pasta dishes. Let's start with the ingredients for our Spaghetti Carbonara. You'll need fresh eggs, guanciale or pancetta, pecorino romano cheese, black pepper, and of course, high-quality spaghetti. The key to perfect carbonara is timing and temperature control...",
+  "width": 1920,
+  "height": 1080,
+  "bitrate": "5000 kbps",
+  "encodingFormat": "MP4",
+  "interactionStatistic": [
+    {
+      "@type": "InteractionCounter",
+      "interactionType": "http://schema.org/WatchAction",
+      "userInteractionCount": 15420
+    },
+    {
+      "@type": "InteractionCounter",
+      "interactionType": "http://schema.org/LikeAction",
+      "userInteractionCount": 1247
+    },
+    {
+      "@type": "InteractionCounter",
+      "interactionType": "http://schema.org/ShareAction",
+      "userInteractionCount": 89
+    }
+  ],
+  "conformsTo": "https://llmprofiles.org/videoobject/v1/index.jsonld"
+}

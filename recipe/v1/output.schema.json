@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Recipe Extracted Content",
+  "description": "JSON Schema for validating extracted Recipe content for RAG/AI applications",
+  "type": "object",
+  "required": ["recipe"],
+  "properties": {
+    "recipe": {
+      "type": "object",
+      "required": ["name", "ingredients", "instructions"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the recipe"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the recipe"
+        },
+        "author": {
+          "type": "string",
+          "description": "The author or creator of the recipe"
+        },
+        "prepTime": {
+          "type": "string",
+          "description": "Preparation time in human-readable format"
+        },
+        "cookTime": {
+          "type": "string",
+          "description": "Cooking time in human-readable format"
+        },
+        "totalTime": {
+          "type": "string",
+          "description": "Total time in human-readable format"
+        },
+        "servings": {
+          "type": "string",
+          "description": "Number of servings or yield amount"
+        },
+        "category": {
+          "type": "string",
+          "description": "Category of the recipe"
+        },
+        "cuisine": {
+          "type": "string",
+          "description": "Cuisine type"
+        },
+        "ingredients": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["item"],
+            "properties": {
+              "item": {
+                "type": "string",
+                "description": "The ingredient name"
+              },
+              "amount": {
+                "type": "string",
+                "description": "The quantity and unit of the ingredient"
+              },
+              "notes": {
+                "type": "string",
+                "description": "Additional notes about the ingredient"
+              }
+            }
+          }
+        },
+        "instructions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["step", "text"],
+            "properties": {
+              "step": {
+                "type": "integer",
+                "description": "The step number"
+              },
+              "text": {
+                "type": "string",
+                "description": "The instruction text"
+              },
+              "time": {
+                "type": "string",
+                "description": "Time for this step if specified"
+              }
+            }
+          }
+        },
+        "nutrition": {
+          "type": "object",
+          "properties": {
+            "calories": {
+              "type": "string",
+              "description": "Calories per serving"
+            },
+            "protein": {
+              "type": "string",
+              "description": "Protein content per serving"
+            },
+            "fat": {
+              "type": "string",
+              "description": "Fat content per serving"
+            },
+            "carbohydrates": {
+              "type": "string",
+              "description": "Carbohydrate content per serving"
+            },
+            "fiber": {
+              "type": "string",
+              "description": "Fiber content per serving"
+            },
+            "sugar": {
+              "type": "string",
+              "description": "Sugar content per serving"
+            }
+          }
+        },
+        "dietary": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Dietary restrictions or preferences"
+          }
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["Easy", "Medium", "Hard"],
+          "description": "Difficulty level of the recipe"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Additional tags or keywords"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "extractedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the content was extracted"
+        },
+        "sourceUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Source URL of the recipe"
+        },
+        "profileVersion": {
+          "type": "string",
+          "const": "recipe.v1",
+          "description": "LLM Profile version used"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

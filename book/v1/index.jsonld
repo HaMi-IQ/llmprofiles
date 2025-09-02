@@ -1,0 +1,62 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "x": "https://llmprofiles.org/vocab#"
+  },
+  "@id": "https://llmprofiles.org/book/v1/index.jsonld",
+  "rdfs:seeAlso": "https://schema.org/Book",
+  "skos:prefLabel": "Book",
+  "skos:definition": "A structured book with metadata, content information, and knowledge organization optimized for AI processing and rich search results.",
+  "skos:scopeNote": "Use for published books, e-books, textbooks, and literary works. Not for articles, blog posts, or short-form content.",
+  "skos:example": "Published book page, e-book listing, textbook information, or literary work details.",
+  "x:dos": [
+    "Use schema:Book with proper name, author, and isbn when available.",
+    "Include book description, genre, and publication details.",
+    "Add book format, language, and availability information.",
+    "Use structured metadata for better content discovery.",
+    "Include book reviews and ratings when available."
+  ],
+  "x:donts": [
+    "Do not use for articles, blog posts, or short-form content.",
+    "Do not use for magazine articles or journal papers.",
+    "Do not use for web pages or digital content.",
+    "Do not use for audio books or podcasts."
+  ],
+  "sh:shapesGraph": {
+    "@type": "sh:NodeShape",
+    "sh:targetClass": "schema:Book",
+    "sh:property": [
+      {
+        "sh:path": "schema:name",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:author",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:bookFormat",
+        "sh:minCount": 0
+      },
+      {
+        "sh:path": "schema:isbn",
+        "sh:minCount": 0
+      },
+      {
+        "sh:path": "schema:numberOfPages",
+        "sh:minCount": 0
+      },
+      {
+        "sh:path": "schema:inLanguage",
+        "sh:minCount": 0
+      }
+    ]
+  },
+  "x:pageSchema": "https://llmprofiles.org/book/v1/page.schema.json",
+  "x:outputSchema": "https://llmprofiles.org/book/v1/output.schema.json",
+  "x:profileVersion": "1.0.0",
+  "x:created": "2025-01-15"
+}

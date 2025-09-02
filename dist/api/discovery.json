@@ -8,8 +8,8 @@
   "name": "LLM Profiles Registry",
   "description": "A comprehensive registry of LLM-friendly structured data profiles",
   "version": "1.0.0",
-  "totalProfiles": 10,
-  "lastUpdated": "2025-08-31T11:48:46.367Z",
+  "totalProfiles": 15,
+  "lastUpdated": "2025-01-15T00:00:00.000Z",
   "profiles": [
     {
       "@type": "Profile",
@@ -521,6 +521,259 @@
             "url"
           ],
           "properties": 17
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "Recipe",
+      "profileUrl": "https://llmprofiles.org/recipe/v1/index.jsonld",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/recipe/v1/index.jsonld",
+        "pageSchema": "https://llmprofiles.org/recipe/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/recipe/v1/output.schema.json",
+        "training": "https://llmprofiles.org/recipe/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/recipe/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/recipe/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "Cooking recipes with structured ingredients, instructions, and nutritional information for AI processing and rich search results",
+      "useCases": [
+        "Food blogs and recipe websites",
+        "Cooking apps and meal planning platforms",
+        "Culinary education content",
+        "Restaurant recipe sharing",
+        "Nutrition and dietary content"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "Recipe On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "ingredients",
+            "recipeInstructions"
+          ],
+          "properties": 25
+        },
+        "outputSchema": {
+          "title": "Recipe Extracted Content",
+          "type": "object",
+          "required": [
+            "recipe"
+          ],
+          "properties": 2
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "HowTo",
+      "profileUrl": "https://llmprofiles.org/howto/v1/index.jsonld",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/howto/v1/index.jsonld",
+        "pageSchema": "https://llmprofiles.org/howto/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/howto/v1/output.schema.json",
+        "training": "https://llmprofiles.org/howto/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/howto/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/howto/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "Step-by-step instructional content and guides optimized for AI processing and search",
+      "useCases": [
+        "DIY and home improvement guides",
+        "Technical tutorials and how-to articles",
+        "Educational step-by-step content",
+        "Skill-building and training materials",
+        "Maintenance and repair instructions"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "HowTo On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "description",
+            "step"
+          ],
+          "properties": 20
+        },
+        "outputSchema": {
+          "title": "HowTo Extracted Content",
+          "type": "object",
+          "required": [
+            "howto"
+          ],
+          "properties": 2
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "VideoObject",
+      "profileUrl": "https://llmprofiles.org/videoobject/v1/index.jsonld",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/videoobject/v1/index.jsonld",
+        "pageSchema": "https://llmprofiles.org/videoobject/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/videoobject/v1/output.schema.json",
+        "training": "https://llmprofiles.org/videoobject/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/videoobject/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/videoobject/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "Video content with metadata, transcripts, and content information for AI processing and rich search results",
+      "useCases": [
+        "YouTube videos and educational content",
+        "Tutorial and how-to videos",
+        "Product demonstration videos",
+        "Training and educational content",
+        "Entertainment and media content"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "VideoObject On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "description",
+            "uploadDate"
+          ],
+          "properties": 30
+        },
+        "outputSchema": {
+          "title": "VideoObject Extracted Content",
+          "type": "object",
+          "required": [
+            "video"
+          ],
+          "properties": 2
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "Book",
+      "profileUrl": "https://llmprofiles.org/book/v1/index.jsonld",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/book/v1/index.jsonld",
+        "pageSchema": "https://llmprofiles.org/book/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/book/v1/output.schema.json",
+        "training": "https://llmprofiles.org/book/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/book/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/book/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "Published books and literary works with structured metadata for AI processing and rich search results",
+      "useCases": [
+        "Book publisher websites and catalogs",
+        "Online bookstores and e-commerce platforms",
+        "Library and educational institution catalogs",
+        "Author websites and book promotion pages",
+        "Book review and recommendation sites"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "Book On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "author"
+          ],
+          "properties": 22
+        },
+        "outputSchema": {
+          "title": "Book Extracted Content",
+          "type": "object",
+          "required": [
+            "book"
+          ],
+          "properties": 2
+        }
+      }
+    },
+    {
+      "@type": "Profile",
+      "name": "Dataset",
+      "profileUrl": "https://llmprofiles.org/dataset/v1/index.jsonld",
+      "version": "v1",
+      "capabilities": {
+        "pageSchema": true,
+        "outputSchema": true,
+        "trainingData": true,
+        "examples": true
+      },
+      "endpoints": {
+        "definition": "https://llmprofiles.org/dataset/v1/index.jsonld",
+        "pageSchema": "https://llmprofiles.org/dataset/v1/page.schema.json",
+        "outputSchema": "https://llmprofiles.org/dataset/v1/output.schema.json",
+        "training": "https://llmprofiles.org/dataset/v1/training.jsonl",
+        "examples": {
+          "minimal": "https://llmprofiles.org/dataset/v1/examples/minimal.jsonld",
+          "rich": "https://llmprofiles.org/dataset/v1/examples/rich.jsonld"
+        }
+      },
+      "description": "Datasets and data collections with structured metadata for AI discovery and processing",
+      "useCases": [
+        "Research institution data catalogs",
+        "Government open data portals",
+        "Academic research datasets",
+        "Corporate data sharing platforms",
+        "Scientific data repositories"
+      ],
+      "schema": {
+        "pageSchema": {
+          "title": "Dataset On-Page JSON-LD",
+          "type": "object",
+          "required": [
+            "@type",
+            "name",
+            "description"
+          ],
+          "properties": 25
+        },
+        "outputSchema": {
+          "title": "Dataset Extracted Content",
+          "type": "object",
+          "required": [
+            "dataset"
+          ],
+          "properties": 2
         }
       }
     }

@@ -4,6 +4,35 @@ All notable changes to this project will be documented here.
 
 ## [Unreleased]
 
+### Added
+- Recipe profile v1 (recipe/v1/index.jsonld) at https://llmprofiles.org/recipe/v1
+- Recipe page schema (recipe/v1/page.schema.json) for on-page JSON-LD validation
+- Recipe output schema (recipe/v1/output.schema.json) for extracted content validation
+- Recipe training data (recipe/v1/training.jsonl) for LLM fine-tuning
+- Recipe implementation examples (recipe/v1/examples/) with minimal and rich examples
+- HowTo profile v1 (howto/v1/index.jsonld) at https://llmprofiles.org/howto/v1
+- HowTo page schema (howto/v1/page.schema.json) for on-page JSON-LD validation
+- HowTo output schema (howto/v1/output.schema.json) for extracted content validation
+- HowTo training data (howto/v1/training.jsonl) for LLM fine-tuning
+- HowTo implementation examples (howto/v1/examples/) with minimal and rich examples
+- VideoObject profile v1 (videoobject/v1/index.jsonld) at https://llmprofiles.org/videoobject/v1
+- VideoObject page schema (videoobject/v1/page.schema.json) for on-page JSON-LD validation
+- VideoObject output schema (videoobject/v1/output.schema.json) for extracted content validation
+- VideoObject training data (videoobject/v1/training.jsonl) for LLM fine-tuning
+- VideoObject implementation examples (videoobject/v1/examples/) with minimal and rich examples
+- Book profile v1 (book/v1/index.jsonld) at https://llmprofiles.org/book/v1
+- Book page schema (book/v1/page.schema.json) for on-page JSON-LD validation
+- Book output schema (book/v1/output.schema.json) for extracted content validation
+- Book training data (book/v1/training.jsonl) for LLM fine-tuning
+- Book implementation examples (book/v1/examples/) with minimal and rich examples
+- Dataset profile v1 (dataset/v1/index.jsonld) at https://llmprofiles.org/dataset/v1
+- Dataset page schema (dataset/v1/page.schema.json) for on-page JSON-LD validation
+- Dataset output schema (dataset/v1/output.schema.json) for extracted content validation
+- Dataset training data (dataset/v1/training.jsonl) for LLM fine-tuning
+- Dataset implementation examples (dataset/v1/examples/) with minimal and rich examples
+- Updated discovery endpoints to include all 15 profiles
+- Updated API documentation and examples
+
 ## [1.0.0] - 2025-08-28
 ### Added
 - Initial registry (index.json) at https://llmprofiles.org/index.json

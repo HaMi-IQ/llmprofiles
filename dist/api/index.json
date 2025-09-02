@@ -45,7 +45,12 @@
     "profile-jobposting.json",
     "profile-localbusiness.json",
     "profile-softwareapplication.json",
-    "profile-review.json"
+    "profile-review.json",
+    "profile-recipe.json",
+    "profile-howto.json",
+    "profile-videoobject.json",
+    "profile-book.json",
+    "profile-dataset.json"
   ],
-  "lastUpdated": "2025-08-31T11:48:46.398Z"
+  "lastUpdated": "2025-01-15T00:00:00.000Z"
 }

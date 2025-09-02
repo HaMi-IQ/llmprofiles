@@ -1,0 +1,38 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  "@id": "https://example.com/recipes/chocolate-chip-cookies",
+  "name": "Classic Chocolate Chip Cookies",
+  "description": "Soft and chewy chocolate chip cookies with crispy edges",
+  "author": "Chef Sarah Johnson",
+  "datePublished": "2025-01-15",
+  "dateModified": "2025-01-15",
+  "prepTime": "PT15M",
+  "cookTime": "PT10M",
+  "totalTime": "PT25M",
+  "recipeYield": "24 cookies",
+  "recipeCategory": "Dessert",
+  "recipeCuisine": "American",
+  "ingredients": [
+    "2 1/4 cups all-purpose flour",
+    "1 teaspoon baking soda",
+    "1 teaspoon salt",
+    "1 cup butter, softened",
+    "3/4 cup granulated sugar",
+    "3/4 cup brown sugar",
+    "2 eggs",
+    "2 teaspoons vanilla extract",
+    "2 cups chocolate chips"
+  ],
+  "recipeInstructions": [
+    "Preheat oven to 375°F (190°C)",
+    "Mix flour, baking soda, and salt in a bowl",
+    "Cream butter and sugars until light and fluffy",
+    "Beat in eggs and vanilla",
+    "Gradually mix in flour mixture",
+    "Stir in chocolate chips",
+    "Drop by rounded tablespoons onto ungreased baking sheets",
+    "Bake for 9-11 minutes or until golden brown"
+  ],
+  "conformsTo": "https://llmprofiles.org/recipe/v1/index.jsonld"
+}
