@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://llmprofiles.org/profiles/content/article/v1/output.schema.json",
+  "$id": "https://llmprofiles.org/schemas/extensions/output.schema.json",
   "title": "Article Extracted Content",
   "type": "object",
   "properties": {

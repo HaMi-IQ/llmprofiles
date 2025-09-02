@@ -51,8 +51,27 @@ jobs:
           # Remove all existing files
           git rm -rf .
           
-          # Copy built files from web/dist to root
-          cp -r web/dist/* .
+          # Verify dist directory exists and is clean
+          if [ ! -d "web/dist" ]; then
+            echo "❌ web/dist directory not found!"
+            exit 1
+          fi
+          
+          # Check for recursive directory structure
+          if [ -d "web/dist/web" ]; then
+            echo "⚠️  Detected recursive directory structure, cleaning..."
+            rm -rf web/dist/web
+          fi
+          
+          # Copy built files from web/dist to root (with safety checks)
+          echo "📁 Copying files from web/dist to root..."
+          if [ "$(ls -A web/dist)" ]; then
+            cp -r web/dist/* .
+            echo "✅ Files copied successfully"
+          else
+            echo "❌ web/dist directory is empty!"
+            exit 1
+          fi
           
           # Copy .well-known directory (important for domain verification)
           if [ -d "../.well-known" ]; then
@@ -64,6 +83,12 @@ jobs:
           cp web/_redirects . 2>/dev/null || true
           cp web/robots.txt . 2>/dev/null || true
           cp web/sitemap.xml . 2>/dev/null || true
+          
+          # Verify no recursive directories were created
+          if [ -d "web" ]; then
+            echo "⚠️  Detected web directory in root, removing..."
+            rm -rf web
+          fi
           
           # Add all files
           git add .

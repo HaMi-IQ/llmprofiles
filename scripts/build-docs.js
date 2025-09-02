@@ -146,6 +146,35 @@ function cleanDistDir(distDir, options = {}) {
       log(`Warning: Could not clean dist directory: ${error.message}`, 'yellow');
     }
   }
+  
+  // Always ensure dist directory is clean of recursive structures
+  if (fs.existsSync(distDir)) {
+    try {
+      // Check for recursive web/dist/web structure
+      const webDistPath = path.join(distDir, 'web', 'dist');
+      if (fs.existsSync(webDistPath)) {
+        log(`⚠️  Detected recursive web/dist/web structure, cleaning...`, 'yellow');
+        fs.rmSync(webDistPath, { recursive: true, force: true });
+      }
+      
+      // Check for any other recursive structures
+      const webPath = path.join(distDir, 'web');
+      if (fs.existsSync(webPath)) {
+        const webItems = fs.readdirSync(webPath);
+        webItems.forEach(item => {
+          if (item === 'dist') {
+            const itemPath = path.join(webPath, item);
+            if (fs.existsSync(itemPath)) {
+              log(`⚠️  Removing recursive dist directory: ${itemPath}`, 'yellow');
+              fs.rmSync(itemPath, { recursive: true, force: true });
+            }
+          }
+        });
+      }
+    } catch (error) {
+      log(`Warning: Could not clean recursive structures: ${error.message}`, 'yellow');
+    }
+  }
 }
 
 // Create legacy redirects for backward compatibility
@@ -305,12 +334,37 @@ function main() {
       copyDirAll(toolsSrc, toolsDest, options);
     }
     
-    // Copy web assets
+    // Copy web assets (but exclude dist to prevent recursion)
     const webSrc = path.join(__dirname, '..', 'web');
-    const webDest = path.join(distDir, 'web');
     if (fs.existsSync(webSrc)) {
       log('🌐 Copying web assets...', 'blue');
-      copyDirAll(webSrc, webDest, options);
+      
+      // Copy web files but exclude dist directory to prevent recursion
+      const webItems = fs.readdirSync(webSrc);
+      webItems.forEach(item => {
+        if (item !== 'dist') { // Skip dist directory to prevent recursion
+          const srcPath = path.join(webSrc, item);
+          const destPath = path.join(distDir, item);
+          
+          try {
+            const stat = fs.statSync(srcPath);
+            if (stat.isDirectory()) {
+              copyDirAll(srcPath, destPath, options);
+            } else {
+              if (options.dryRun) {
+                log(`Would copy: ${srcPath} → ${destPath}`, 'blue');
+              } else {
+                fs.copyFileSync(srcPath, destPath);
+                if (options.verbose) {
+                  log(`Copied: ${item}`, 'green');
+                }
+              }
+            }
+          } catch (error) {
+            log(`Warning: Could not copy ${item}: ${error.message}`, 'yellow');
+          }
+        }
+      });
     }
     
     // Copy images

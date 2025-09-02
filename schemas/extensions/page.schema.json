@@ -1,5 +1,5 @@
 {
-  "$id": "https://llmprofiles.org/profiles/content/article/v1/page.schema.json",
+  "$id": "https://llmprofiles.org/schemas/extensions/page.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Article On-Page JSON-LD",
   "type": "object",
