@@ -104,7 +104,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: dist/
+          path: web/dist/
           retention-days: 30
 
   deploy:

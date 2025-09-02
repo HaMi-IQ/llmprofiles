@@ -18,7 +18,7 @@ jobs:
           node scripts/validate-ajv.js profiles/interaction/faqpage/v1/output.schema.json examples/faqpage/sample.output.json
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: web/dist
   deploy:
     needs: build
     runs-on: ubuntu-latest
