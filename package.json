@@ -51,14 +51,12 @@
     "release:major": "node scripts/manage-release.js prepare --type major",
     "ci:full": "npm run validate && npm run build:docs && npm run build:md && npm run generate-api && npm run create-readmes && npm run generate-images",
     "structure:validate": "node scripts/validate-structure.js",
-    "structure:migrate": "node scripts/restructure-repository.js",
     "structure:report": "node scripts/validate-structure.js --json",
     "links:validate": "node scripts/validate-links.js",
     "links:fix": "node scripts/validate-links.js fix",
     "links:report": "node scripts/validate-links.js report",
     "build:profiles": "node scripts/build-profiles.js",
     "validate:structure": "node scripts/validate-structure.js",
-    "migrate:structure": "node scripts/restructure-repository.js",
     "deploy": "node scripts/deploy-gh-pages.js"
   },
   "devDependencies": {

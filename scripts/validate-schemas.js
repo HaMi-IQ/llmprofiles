@@ -32,25 +32,52 @@ function log(message, color = 'reset') {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
+function showHelp() {
+  console.log(`
+Usage: node validate-schemas.js [options]
+
+Options:
+  --help        Show this help message
+  --verbose     Show detailed output for each schema
+  --quiet       Suppress success messages, only show errors
+  --no-sample   Skip sample data validation
+
+Examples:
+  node validate-schemas.js
+  node validate-schemas.js --verbose
+  node validate-schemas.js --quiet --no-sample
+  `);
+  process.exit(0);
+}
+
 function findSchemaFiles(dir = '.') {
   const schemas = [];
   
   function scanDirectory(currentDir) {
-    const items = fs.readdirSync(currentDir);
-    
-    for (const item of items) {
-      const fullPath = path.join(currentDir, item);
-      const stat = fs.statSync(fullPath);
+    try {
+      const items = fs.readdirSync(currentDir);
       
-      if (stat.isDirectory()) {
-        // Skip dist directory (build output)
-        if (item === 'dist') {
-          continue;
+      for (const item of items) {
+        const fullPath = path.join(currentDir, item);
+        
+        try {
+          const stat = fs.statSync(fullPath);
+          
+          if (stat.isDirectory()) {
+            // Skip dist directory (build output)
+            if (item === 'dist' || item === 'node_modules' || item === '.git') {
+              continue;
+            }
+            scanDirectory(fullPath);
+          } else if (item === 'output.schema.json') {
+            schemas.push(fullPath);
+          }
+        } catch (statError) {
+          log(`Warning: Could not stat ${fullPath}: ${statError.message}`, 'yellow');
         }
-        scanDirectory(fullPath);
-      } else if (item === 'output.schema.json') {
-        schemas.push(fullPath);
       }
+    } catch (readError) {
+      log(`Warning: Could not read directory ${currentDir}: ${readError.message}`, 'yellow');
     }
   }
   
@@ -58,7 +85,7 @@ function findSchemaFiles(dir = '.') {
   return schemas;
 }
 
-function validateSchema(schemaPath) {
+function validateSchema(schemaPath, verbose = false) {
   try {
     const schemaContent = fs.readFileSync(schemaPath, 'utf8');
     const schema = JSON.parse(schemaContent);
@@ -66,7 +93,10 @@ function validateSchema(schemaPath) {
     // Compile the schema to check for syntax errors
     const validate = ajv.compile(schema);
     
-    log(`✓ ${schemaPath}`, 'green');
+    if (verbose) {
+      log(`✓ ${schemaPath}`, 'green');
+    }
+    
     return { valid: true, path: schemaPath };
   } catch (error) {
     log(`✗ ${schemaPath}`, 'red');
@@ -75,7 +105,7 @@ function validateSchema(schemaPath) {
   }
 }
 
-function validateSampleData(schemaPath) {
+function validateSampleData(schemaPath, verbose = false) {
   try {
     const schemaContent = fs.readFileSync(schemaPath, 'utf8');
     const schema = JSON.parse(schemaContent);
@@ -96,14 +126,18 @@ function validateSampleData(schemaPath) {
     if (sampleData) {
       const isValid = validate(sampleData);
       if (!isValid) {
-        log(`  Warning: Sample data validation failed`, 'yellow');
-        log(`  Errors: ${JSON.stringify(validate.errors, null, 2)}`, 'yellow');
+        if (verbose) {
+          log(`  Warning: Sample data validation failed`, 'yellow');
+          log(`  Errors: ${JSON.stringify(validate.errors, null, 2)}`, 'yellow');
+        }
       }
     }
     
     return true;
   } catch (error) {
-    log(`  Warning: Could not validate sample data: ${error.message}`, 'yellow');
+    if (verbose) {
+      log(`  Warning: Could not validate sample data: ${error.message}`, 'yellow');
+    }
     return false;
   }
 }
@@ -132,8 +166,42 @@ function generateSampleData(schema) {
 }
 
 function main() {
-  log('🔍 Validating llmprofiles schemas...', 'blue');
-  log('');
+  const args = process.argv.slice(2);
+  const options = {
+    verbose: false,
+    quiet: false,
+    noSample: false
+  };
+  
+  // Parse command line arguments
+  for (const arg of args) {
+    switch (arg) {
+      case '--help':
+      case '-h':
+        showHelp();
+        break;
+      case '--verbose':
+      case '-v':
+        options.verbose = true;
+        break;
+      case '--quiet':
+      case '-q':
+        options.quiet = true;
+        break;
+      case '--no-sample':
+        options.noSample = true;
+        break;
+      default:
+        log(`Unknown option: ${arg}`, 'yellow');
+        log('Use --help for usage information', 'yellow');
+        process.exit(1);
+    }
+  }
+  
+  if (!options.quiet) {
+    log('🔍 Validating llmprofiles schemas...', 'blue');
+    log('');
+  }
   
   const schemaFiles = findSchemaFiles();
   
@@ -142,46 +210,61 @@ function main() {
     process.exit(0);
   }
   
-  log(`Found ${schemaFiles.length} schema file(s):`, 'blue');
-  log('');
+  if (!options.quiet) {
+    log(`Found ${schemaFiles.length} schema file(s):`, 'blue');
+    log('');
+  }
   
   let validCount = 0;
   let invalidCount = 0;
   const results = [];
   
   for (const schemaPath of schemaFiles) {
-    const result = validateSchema(schemaPath);
+    const result = validateSchema(schemaPath, options.verbose);
     results.push(result);
     
     if (result.valid) {
       validCount++;
-      // Try to validate with sample data
-      validateSampleData(schemaPath);
+      // Try to validate with sample data unless disabled
+      if (!options.noSample) {
+        validateSampleData(schemaPath, options.verbose);
+      }
     } else {
       invalidCount++;
     }
   }
   
-  log('');
-  log('📊 Validation Summary:', 'blue');
-  log(`  Total schemas: ${schemaFiles.length}`, 'reset');
-  log(`  Valid: ${validCount}`, 'green');
-  log(`  Invalid: ${invalidCount}`, invalidCount > 0 ? 'red' : 'green');
+  if (!options.quiet) {
+    log('');
+    log('📊 Validation Summary:', 'blue');
+    log(`  Total schemas: ${schemaFiles.length}`, 'reset');
+    log(`  Valid: ${validCount}`, 'green');
+    log(`  Invalid: ${invalidCount}`, invalidCount > 0 ? 'red' : 'green');
+  }
   
   if (invalidCount > 0) {
-    log('');
-    log('❌ Validation failed. Please fix the errors above.', 'red');
+    if (!options.quiet) {
+      log('');
+      log('❌ Validation failed. Please fix the errors above.', 'red');
+    }
     process.exit(1);
   } else {
-    log('');
-    log('✅ All schemas are valid!', 'green');
+    if (!options.quiet) {
+      log('');
+      log('✅ All schemas are valid!', 'green');
+    }
     process.exit(0);
   }
 }
 
 // Run the validation
 if (require.main === module) {
-  main();
+  try {
+    main();
+  } catch (error) {
+    log(`❌ Unexpected error: ${error.message}`, 'red');
+    process.exit(1);
+  }
 }
 
 module.exports = {

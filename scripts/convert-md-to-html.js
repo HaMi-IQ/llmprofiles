@@ -1,8 +1,48 @@
 #!/usr/bin/env node
 
+/**
+ * Markdown to HTML Converter for llmprofiles
+ * Converts markdown files to HTML with consistent styling
+ */
+
 const fs = require('fs');
 const path = require('path');
 const marked = require('marked');
+
+// Colors for console output
+const colors = {
+  reset: '\x1b[0m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m'
+};
+
+function log(message, color = 'reset') {
+  console.log(`${colors[color]}${message}${colors.reset}`);
+}
+
+function showHelp() {
+  console.log(`
+Usage: node convert-md-to-html.js [command] [options]
+
+Commands:
+  convert <input> [output-dir]  Convert a single file or directory
+  batch                        Convert all .md files in docs/ to dist/docs/
+
+Options:
+  --help        Show this help message
+  --verbose     Show detailed output for each operation
+  --dry-run     Show what would be converted without actually converting
+
+Examples:
+  node convert-md-to-html.js convert docs/api.md
+  node convert-md-to-html.js convert docs/ dist/docs/
+  node convert-md-to-html.js batch
+  node convert-md-to-html.js batch --verbose --dry-run
+  `);
+  process.exit(0);
+}
 
 // HTML template for converted markdown files
 const htmlTemplate = (title, content, originalPath) => `
@@ -98,19 +138,17 @@ const htmlTemplate = (title, content, originalPath) => `
         
         .markdown-content code {
             background: #f4f4f4;
-            padding: 2px 6px;
+            padding: 2px 4px;
             border-radius: 3px;
             font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 0.9em;
         }
         
         .markdown-content pre {
             background: #f8f9fa;
-            border: 1px solid #e1e5e9;
-            border-radius: 4px;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
             padding: 15px;
             overflow-x: auto;
-            margin: 20px 0;
         }
         
         .markdown-content pre code {
@@ -123,7 +161,7 @@ const htmlTemplate = (title, content, originalPath) => `
             margin: 20px 0;
             padding: 10px 20px;
             background: #f8f9fa;
-            color: #555;
+            font-style: italic;
         }
         
         .markdown-content table {
@@ -141,7 +179,7 @@ const htmlTemplate = (title, content, originalPath) => `
         
         .markdown-content th {
             background: #f8f9fa;
-            font-weight: bold;
+            font-weight: 600;
         }
         
         .markdown-content ul,
@@ -151,63 +189,20 @@ const htmlTemplate = (title, content, originalPath) => `
         }
         
         .markdown-content li {
-            margin-bottom: 5px;
-        }
-        
-        .markdown-content a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        
-        .markdown-content a:hover {
-            text-decoration: underline;
-        }
-        
-        .markdown-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 4px;
-            margin: 10px 0;
+            margin: 5px 0;
         }
         
         .footer {
             background: #ecf0f1;
-            padding: 15px 20px;
+            padding: 20px;
             text-align: center;
             color: #7f8c8d;
             font-size: 0.9em;
         }
         
-        .view-options {
-            background: #ecf0f1;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
-        }
-        
-        .view-options a {
-            display: inline-block;
-            margin: 0 10px;
-            padding: 5px 10px;
-            background: #3498db;
-            color: white;
+        .footer a {
+            color: #3498db;
             text-decoration: none;
-            border-radius: 3px;
-            font-size: 0.9em;
-        }
-        
-        .view-options a:hover {
-            background: #2980b9;
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .content {
-                padding: 20px;
-            }
         }
     </style>
 </head>
@@ -219,14 +214,10 @@ const htmlTemplate = (title, content, originalPath) => `
         </div>
         
         <div class="breadcrumb">
-            <a href="/">Home</a> / 
-            <a href="/docs/">Documentation</a> / 
-            <span>${path.basename(originalPath, '.md')}</span>
-        </div>
-        
-        <div class="view-options">
-            <a href="${originalPath}" target="_blank">View Raw Markdown</a>
-            <a href="/docs/md-viewer.html?file=${originalPath}" target="_blank">Open in Markdown Viewer</a>
+            <a href="/">Home</a> &gt; 
+            <a href="/docs/">Documentation</a> &gt; 
+            ${originalPath ? `<a href="/docs/${path.dirname(originalPath)}/">${path.dirname(originalPath)}</a> &gt; ` : ''}
+            ${path.basename(originalPath, '.md')}
         </div>
         
         <div class="content">
@@ -236,91 +227,41 @@ const htmlTemplate = (title, content, originalPath) => `
         </div>
         
         <div class="footer">
-            <p>Generated from ${originalPath} - llmprofiles Documentation</p>
+            <p>Generated from <a href="https://github.com/HaMi-IQ/llmprofiles">llmprofiles</a> | 
+            <a href="https://llmprofiles.org">llmprofiles.org</a></p>
         </div>
     </div>
-    
-    <script>
-        // Highlight code blocks
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof Prism !== 'undefined') {
-                Prism.highlightAll();
-            }
-        });
-    </script>
 </body>
-</html>
-`;
+</html>`;
 
-// Configure marked.js
-marked.setOptions({
-    highlight: function(code, lang) {
-        return code; // We'll handle highlighting with Prism.js
-    },
-    breaks: true,
-    gfm: true
-});
-
-function convertMarkdownToHtml(mdFilePath, outputDir = null) {
-    try {
-        // Read the markdown file
-        const mdContent = fs.readFileSync(mdFilePath, 'utf8');
-        
-        // Convert markdown to HTML
-        const htmlContent = marked.parse(mdContent);
-        
-        // Extract title from first h1 or use filename
-        const titleMatch = mdContent.match(/^#\s+(.+)$/m);
-        const title = titleMatch ? titleMatch[1] : path.basename(mdFilePath, '.md');
-        
-        // Generate HTML with template
-        const fullHtml = htmlTemplate(title, htmlContent, mdFilePath);
-        
-        // Determine output path
-        const relativePath = path.relative(process.cwd(), mdFilePath);
-        const outputPath = outputDir 
-            ? path.join(outputDir, path.basename(mdFilePath).replace('.md', '.html'))
-            : mdFilePath.replace('.md', '.html');
-        
-        // Ensure output directory exists
-        const outputDirPath = path.dirname(outputPath);
-        if (!fs.existsSync(outputDirPath)) {
-            fs.mkdirSync(outputDirPath, { recursive: true });
-        }
-        
-        // Write HTML file
-        fs.writeFileSync(outputPath, fullHtml);
-        
-        console.log(`✓ Converted ${mdFilePath} to ${outputPath}`);
-        return outputPath;
-        
-    } catch (error) {
-        console.error(`✗ Error converting ${mdFilePath}:`, error.message);
-        return null;
-    }
-}
-
-function findMarkdownFiles(dir, extensions = ['.md']) {
+function findMarkdownFiles(dir) {
     const files = [];
     
     function scanDirectory(currentDir) {
-        const items = fs.readdirSync(currentDir);
-        
-        for (const item of items) {
-            const fullPath = path.join(currentDir, item);
-            const stat = fs.statSync(fullPath);
+        try {
+            const items = fs.readdirSync(currentDir);
             
-            if (stat.isDirectory()) {
-                // Skip node_modules and other common directories
-                if (!['node_modules', '.git', 'dist', 'build'].includes(item)) {
-                    scanDirectory(fullPath);
-                }
-            } else if (stat.isFile()) {
-                const ext = path.extname(item);
-                if (extensions.includes(ext)) {
-                    files.push(fullPath);
+            for (const item of items) {
+                const fullPath = path.join(currentDir, item);
+                
+                try {
+                    const stat = fs.statSync(fullPath);
+                    
+                    if (stat.isDirectory()) {
+                        // Skip certain directories
+                        if (item === 'node_modules' || item === 'dist' || item === '.git') {
+                            continue;
+                        }
+                        scanDirectory(fullPath);
+                    } else if (item.endsWith('.md')) {
+                        files.push(fullPath);
+                    }
+                } catch (statError) {
+                    log(`Warning: Could not stat ${fullPath}: ${statError.message}`, 'yellow');
                 }
             }
+        } catch (readError) {
+            log(`Warning: Could not read directory ${currentDir}: ${readError.message}`, 'yellow');
         }
     }
     
@@ -328,35 +269,132 @@ function findMarkdownFiles(dir, extensions = ['.md']) {
     return files;
 }
 
+function convertMarkdownToHtml(inputPath, outputDir = null, options = {}) {
+    try {
+        if (!fs.existsSync(inputPath)) {
+            log(`Error: Input file not found: ${inputPath}`, 'red');
+            return false;
+        }
+        
+        // Read the markdown file
+        const mdContent = fs.readFileSync(inputPath, 'utf8');
+        
+        // Convert markdown to HTML
+        const htmlContent = marked.parse(mdContent);
+        
+        // Extract title from first h1 or use filename
+        const titleMatch = mdContent.match(/^#\s+(.+)$/m);
+        const title = titleMatch ? titleMatch[1] : path.basename(inputPath, '.md');
+        
+        // Generate HTML with template
+        const fullHtml = htmlTemplate(title, htmlContent, inputPath);
+        
+        // Determine output path
+        let outputPath;
+        if (outputDir) {
+            const filename = path.basename(inputPath, '.md') + '.html';
+            outputPath = path.join(outputDir, filename);
+        } else {
+            outputPath = inputPath.replace('.md', '.html');
+        }
+        
+        // Ensure output directory exists
+        const outputDirPath = path.dirname(outputPath);
+        if (!fs.existsSync(outputDirPath)) {
+            if (!options.dryRun) {
+                fs.mkdirSync(outputDirPath, { recursive: true });
+            }
+        }
+        
+        if (options.dryRun) {
+            log(`Would convert: ${inputPath} → ${outputPath}`, 'blue');
+            return true;
+        }
+        
+        // Write HTML file
+        fs.writeFileSync(outputPath, fullHtml);
+        
+        if (options.verbose) {
+            log(`✓ Converted: ${inputPath} → ${outputPath}`, 'green');
+        }
+        
+        return true;
+        
+    } catch (error) {
+        log(`✗ Error converting ${inputPath}: ${error.message}`, 'red');
+        return false;
+    }
+}
+
 function main() {
     const args = process.argv.slice(2);
-    const command = args[0];
+    
+    // Parse global options
+    const globalOptions = {
+        verbose: false,
+        dryRun: false
+    };
+    
+    // Remove global options from args
+    const filteredArgs = args.filter(arg => {
+        if (arg === '--help' || arg === '-h') {
+            showHelp();
+        } else if (arg === '--verbose' || arg === '-v') {
+            globalOptions.verbose = true;
+            return false;
+        } else if (arg === '--dry-run' || arg === '-n') {
+            globalOptions.dryRun = true;
+            return false;
+        }
+        return true;
+    });
+    
+    if (filteredArgs.length === 0) {
+        showHelp();
+    }
+    
+    const command = filteredArgs[0];
+    
+    if (globalOptions.dryRun) {
+        log('🔍 DRY RUN MODE - No files will be modified', 'blue');
+        log('');
+    }
     
     if (command === 'convert') {
-        const inputPath = args[1];
-        const outputDir = args[2] || null;
+        const inputPath = filteredArgs[1];
+        const outputDir = filteredArgs[2] || null;
         
         if (!inputPath) {
-            console.error('Usage: node convert-md-to-html.js convert <input-file> [output-dir]');
+            log('Error: Input file or directory required', 'red');
+            log('Usage: node convert-md-to-html.js convert <input-file> [output-dir]', 'yellow');
             process.exit(1);
         }
         
-        if (fs.statSync(inputPath).isDirectory()) {
-            // Convert all markdown files in directory
-            const mdFiles = findMarkdownFiles(inputPath);
-            console.log(`Found ${mdFiles.length} markdown files to convert...`);
-            
-            let successCount = 0;
-            for (const mdFile of mdFiles) {
-                if (convertMarkdownToHtml(mdFile, outputDir)) {
-                    successCount++;
+        try {
+            if (fs.statSync(inputPath).isDirectory()) {
+                // Convert all markdown files in directory
+                const mdFiles = findMarkdownFiles(inputPath);
+                log(`Found ${mdFiles.length} markdown files to convert...`, 'blue');
+                
+                let successCount = 0;
+                for (const mdFile of mdFiles) {
+                    if (convertMarkdownToHtml(mdFile, outputDir, globalOptions)) {
+                        successCount++;
+                    }
+                }
+                
+                log(`\n✅ Successfully converted ${successCount}/${mdFiles.length} files`, 'green');
+            } else {
+                // Convert single file
+                if (convertMarkdownToHtml(inputPath, outputDir, globalOptions)) {
+                    log('✅ File converted successfully', 'green');
+                } else {
+                    process.exit(1);
                 }
             }
-            
-            console.log(`\n✓ Successfully converted ${successCount}/${mdFiles.length} files`);
-        } else {
-            // Convert single file
-            convertMarkdownToHtml(inputPath, outputDir);
+        } catch (error) {
+            log(`❌ Error: ${error.message}`, 'red');
+            process.exit(1);
         }
         
     } else if (command === 'batch') {
@@ -365,12 +403,17 @@ function main() {
         const outputDir = path.join(process.cwd(), 'dist', 'docs');
         
         if (!fs.existsSync(docsDir)) {
-            console.error('docs directory not found');
+            log('Error: docs directory not found', 'red');
             process.exit(1);
         }
         
+        log('🔄 Starting batch conversion...', 'blue');
+        log(`Input: ${docsDir}`, 'blue');
+        log(`Output: ${outputDir}`, 'blue');
+        log('');
+        
         const mdFiles = findMarkdownFiles(docsDir);
-        console.log(`Found ${mdFiles.length} markdown files to convert...`);
+        log(`Found ${mdFiles.length} markdown files to convert...`, 'blue');
         
         let successCount = 0;
         for (const mdFile of mdFiles) {
@@ -381,7 +424,9 @@ function main() {
             // Ensure output directory exists
             const outputDirPath = path.dirname(outputPath);
             if (!fs.existsSync(outputDirPath)) {
-                fs.mkdirSync(outputDirPath, { recursive: true });
+                if (!globalOptions.dryRun) {
+                    fs.mkdirSync(outputDirPath, { recursive: true });
+                }
             }
             
             try {
@@ -398,37 +443,43 @@ function main() {
                 // Generate HTML with template
                 const fullHtml = htmlTemplate(title, htmlContent, relativePath);
                 
-                // Write HTML file
-                fs.writeFileSync(outputPath, fullHtml);
-                
-                console.log(`✓ Converted ${relativePath} to ${path.relative(process.cwd(), outputPath)}`);
-                successCount++;
+                if (globalOptions.dryRun) {
+                    log(`Would convert: ${relativePath} → ${path.relative(process.cwd(), outputPath)}`, 'blue');
+                    successCount++;
+                } else {
+                    // Write HTML file
+                    fs.writeFileSync(outputPath, fullHtml);
+                    
+                    if (globalOptions.verbose) {
+                        log(`✓ Converted: ${relativePath} → ${path.relative(process.cwd(), outputPath)}`, 'green');
+                    }
+                    successCount++;
+                }
                 
             } catch (error) {
-                console.error(`✗ Error converting ${relativePath}:`, error.message);
+                log(`✗ Error converting ${relativePath}: ${error.message}`, 'red');
             }
         }
         
-        console.log(`\n✓ Successfully converted ${successCount}/${mdFiles.length} files to ${outputDir}`);
+        if (globalOptions.dryRun) {
+            log(`\n✅ Dry run completed! Would convert ${successCount}/${mdFiles.length} files`, 'green');
+        } else {
+            log(`\n✅ Successfully converted ${successCount}/${mdFiles.length} files to ${outputDir}`, 'green');
+        }
         
     } else {
-        console.log(`
-Markdown to HTML Converter
-
-Usage:
-  node convert-md-to-html.js convert <input-file> [output-dir]  Convert a single file or directory
-  node convert-md-to-html.js batch                              Convert all .md files in docs/ to dist/docs/
-
-Examples:
-  node convert-md-to-html.js convert docs/api.md
-  node convert-md-to-html.js convert docs/ dist/docs/
-  node convert-md-to-html.js batch
-        `);
+        log(`Unknown command: ${command}`, 'red');
+        showHelp();
     }
 }
 
 if (require.main === module) {
-    main();
+    try {
+        main();
+    } catch (error) {
+        log(`❌ Unexpected error: ${error.message}`, 'red');
+        process.exit(1);
+    }
 }
 
 module.exports = { convertMarkdownToHtml, findMarkdownFiles };

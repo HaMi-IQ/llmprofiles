@@ -22,13 +22,13 @@ jobs:
       - name: Validate Page Markup (schema contract)
         run: |
           node scripts/validate-ajv.js \
-            faqpage/v1/page.schema.json \
+            profiles/interaction/faqpage/v1/page.schema.json \
             examples/faqpage/minimal.page.jsonld
             
       - name: Validate Extracted Output (RAG contract)
         run: |
           node scripts/validate-ajv.js \
-            faqpage/v1/output.schema.json \
+            profiles/interaction/faqpage/v1/output.schema.json \
             examples/faqpage/sample.output.json
             
       - name: Validate Well-Known Discovery

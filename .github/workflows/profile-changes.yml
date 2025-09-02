@@ -100,23 +100,24 @@ jobs:
             SUMMARY="$SUMMARY, Schemas updated: ${#UNIQUE_SCHEMAS[@]}"
           fi
           if [ ${#UNIQUE_EXAMPLES[@]} -gt 0 ]; then
-            SUMMARY="$SUMMARY, Examples added: ${#UNIQUE_EXAMPLES[@]}"
+            SUMMARY="$SUMMARY, Examples updated: ${#UNIQUE_EXAMPLES[@]}"
           fi
           if [ ${#UNIQUE_TRAINING[@]} -gt 0 ]; then
-            SUMMARY="$SUMMARY, Training data updated: ${#UNIQUE_TRAINING[@]}"
+            SUMMARY="$SUMMARY, Training updated: ${#UNIQUE_TRAINING[@]}"
           fi
           
+          # Output results
           echo "profiles=${UNIQUE_PROFILES[*]}" >> $GITHUB_OUTPUT
           echo "summary=$SUMMARY" >> $GITHUB_OUTPUT
           
-          echo "🔍 Profile Change Detection Results:"
-          echo "📊 $SUMMARY"
-          echo "📁 Changed profiles: ${UNIQUE_PROFILES[*]}"
+          # Log summary
+          echo "📊 Change Summary: $SUMMARY"
+          echo "📁 Profiles: ${UNIQUE_PROFILES[*]}"
           if [ ${#UNIQUE_SCHEMAS[@]} -gt 0 ]; then
-            echo "📋 Schema updates: ${UNIQUE_SCHEMAS[*]}"
+            echo "🔧 Schema updates: ${UNIQUE_SCHEMAS[*]}"
           fi
           if [ ${#UNIQUE_EXAMPLES[@]} -gt 0 ]; then
-            echo "💡 Example additions: ${UNIQUE_EXAMPLES[*]}"
+            echo "💡 Example updates: ${UNIQUE_EXAMPLES[*]}"
           fi
           if [ ${#UNIQUE_TRAINING[@]} -gt 0 ]; then
             echo "🎯 Training updates: ${UNIQUE_TRAINING[*]}"
@@ -205,9 +206,7 @@ jobs:
             echo "No documentation changes to commit"
           else
             git add .
-            git commit -m "docs: update documentation for profile changes
-
-${{ needs.detect-changes.outputs.change-summary }}"
+            git commit -m "docs: update documentation for profile changes - ${{ needs.detect-changes.outputs.change-summary }}"
             git push origin ${{ github.ref }}
           fi
 
@@ -231,7 +230,7 @@ ${{ needs.detect-changes.outputs.change-summary }}"
           echo "Please check the logs for details"
           
       - name: Create Issue for Major Changes
-        if: success() && contains(needs.detect-changes.outputs.profiles-changed, 'schema') && github.event_name == 'push'
+        if: success() && contains(needs.detect-changes.outputs.profiles-changed, 'schema')
         uses: actions/github-script@v7
         with:
           script: |
@@ -239,12 +238,9 @@ ${{ needs.detect-changes.outputs.change-summary }}"
             const schemaProfiles = profiles.filter(p => p.includes('schema'));
             
             if (schemaProfiles.length > 0) {
-              await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: `Schema Changes Detected - ${schemaProfiles.join(', ')}`,
-                body: `## Schema Changes Detected
-            
+              const title = `Schema Changes Detected - ${schemaProfiles.join(', ')}`;
+              const body = `## Schema Changes Detected
+
 The following profiles have schema changes that may require attention:
 
 ${schemaProfiles.map(p => `- **${p}**: Schema validation rules updated`).join('\n')}
@@ -264,7 +260,13 @@ Please review these schema changes to ensure:
 - Branch: ${{ github.ref }}
 
 ---
-*This issue was automatically created by the Profile Change Detection workflow*`,
+*This issue was automatically created by the Profile Change Detection workflow*`;
+
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
                 labels: ['schema-change', 'automated', 'needs-review']
               });
             }

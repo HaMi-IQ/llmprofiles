@@ -187,7 +187,7 @@ profiles/content/new-profile/
 
 ### **3. Update Category Lists**
 Add your new profile to the appropriate category in:
-- `scripts/restructure-repository.js`
+
 - `scripts/validate-structure.js`
 - `docs/DIRECTORY-STRUCTURE.md`
 

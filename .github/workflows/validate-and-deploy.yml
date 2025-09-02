@@ -15,7 +15,7 @@ jobs:
       - run: npm run build:docs
       - run: node scripts/validate-json.js
       - run: |
-          node scripts/validate-ajv.js faqpage/v1/output.schema.json examples/faqpage/sample.output.json
+          node scripts/validate-ajv.js profiles/interaction/faqpage/v1/output.schema.json examples/faqpage/sample.output.json
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
