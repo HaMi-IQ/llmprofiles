@@ -44,11 +44,23 @@ function runCommand(command, description, options = {}) {
   try {
     if (options.verbose) {
       log(`Running: ${command}`, 'blue');
+      log(`Working directory: ${process.cwd()}`, 'blue');
+    }
+    
+    // Check if npm is available
+    if (command.startsWith('npm run')) {
+      try {
+        execSync('npm --version', { encoding: 'utf8', stdio: 'pipe' });
+      } catch (npmError) {
+        log(`❌ npm not available: ${npmError.message}`, 'red');
+        return { success: false, error: 'npm not available' };
+      }
     }
     
     const result = execSync(command, { 
       encoding: 'utf8',
-      stdio: options.verbose ? 'inherit' : 'pipe'
+      stdio: options.verbose ? 'inherit' : 'pipe',
+      cwd: process.cwd()
     });
     
     if (options.verbose) {
@@ -97,6 +109,11 @@ function checkDependencies(options = {}) {
 function runValidationTests(options = {}) {
   log('🧪 Running validation tests...', 'blue');
   
+  // Add debugging information
+  log(`Current working directory: ${process.cwd()}`, 'blue');
+  log(`Node.js version: ${process.version}`, 'blue');
+  log(`Platform: ${process.platform}`, 'blue');
+  
   const tests = [
     {
       command: 'npm run validate:json',
@@ -119,9 +136,13 @@ function runValidationTests(options = {}) {
   let totalTests = tests.length;
   
   for (const test of tests) {
+    log(`Running test: ${test.description}`, 'blue');
     const result = runCommand(test.command, test.description, options);
     if (result.success) {
       passedTests++;
+      log(`✅ ${test.description} passed`, 'green');
+    } else {
+      log(`❌ ${test.description} failed: ${result.error}`, 'red');
     }
   }
   
