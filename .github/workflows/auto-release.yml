@@ -1,0 +1,118 @@
+name: Automated Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      version:
+        description: 'Specific version (leave empty for auto)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no actual release)'
+        required: false
+        default: false
+        type: boolean
+  push:
+    tags:
+      - 'v*'
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Setup Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+      - name: Prepare Release
+        id: release
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual trigger
+            RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+            VERSION="${{ github.event.inputs.version }}"
+            DRY_RUN="${{ github.event.inputs.dry_run }}"
+            
+            if [ "$DRY_RUN" = "true" ]; then
+              npm run release:prepare -- --type $RELEASE_TYPE --version "$VERSION" --dry-run
+            else
+              npm run release:prepare -- --type $RELEASE_TYPE --version "$VERSION"
+            fi
+          else
+            # Tag trigger
+            TAG="${{ github.ref_name }}"
+            VERSION="${TAG#v}"
+            npm run changelog -- --version "$VERSION" --since "HEAD~20"
+          fi
+          
+      - name: Push changes
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true'
+        run: |
+          git push origin main
+          git push origin --tags
+          
+      - name: Create GitHub Release
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.release.outputs.tag || github.ref_name }}
+          release_name: Release ${{ steps.release.outputs.tag || github.ref_name }}
+          body: |
+            ## Changes in this release:
+            
+            ${{ steps.release.outputs.releaseNotes || 'See the changelog for details.' }}
+            
+            ## Build Information
+            - Build Number: ${{ github.run_number }}
+            - Commit: ${{ github.sha }}
+            - Triggered by: ${{ github.actor }}
+          draft: false
+          prerelease: false
+          
+      - name: Notify success
+        if: success()
+        run: |
+          echo "✅ Release created successfully!"
+          echo "Version: ${{ steps.release.outputs.version || 'N/A' }}"
+          echo "Tag: ${{ steps.release.outputs.tag || github.ref_name }}"
+          
+      - name: Notify failure
+        if: failure()
+        run: |
+          echo "❌ Release creation failed!"
+          echo "Please check the logs for details"

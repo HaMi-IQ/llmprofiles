@@ -1,0 +1,48 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "x": "https://llmprofiles.org/vocab#"
+  },
+  "@id": "https://llmprofiles.org/profiles/interaction/event/v1/index.jsonld",
+  "rdfs:seeAlso": "https://schema.org/Event",
+  "skos:prefLabel": "Event",
+  "skos:definition": "An event with date, time, location, and attendance information for scheduling and discovery.",
+  "skos:scopeNote": "Use for conferences, concerts, workshops, webinars, and other scheduled events. Not for ongoing services or permanent locations.",
+  "skos:example": "Conference event page, concert ticket sales, or workshop registration.",
+  "x:dos": [
+    "Use schema:Event with proper startDate, endDate, and location.",
+    "Include organizer information and ticket pricing.",
+    "Add event description and attendee capacity."
+  ],
+  "x:donts": [
+    "Do not use for ongoing services or permanent business locations.",
+    "Do not use for product launches or announcements without dates.",
+    "Do not use for recurring events without specific dates."
+  ],
+  "sh:shapesGraph": {
+    "@type": "sh:NodeShape",
+    "sh:targetClass": "schema:Event",
+    "sh:property": [
+      {
+        "sh:path": "schema:name",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:startDate",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:location",
+        "sh:minCount": 1
+      }
+    ]
+  },
+  "x:pageSchema": "https://llmprofiles.org/profiles/interaction/event/v1/page.schema.json",
+  "x:outputSchema": "https://llmprofiles.org/profiles/interaction/event/v1/output.schema.json",
+  "x:profileVersion": "1.0.0",
+  "x:created": "2025-08-28"
+}
+

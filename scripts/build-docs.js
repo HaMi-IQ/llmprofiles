@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Create dist directory
-const distDir = path.join(__dirname, '..', 'dist');
+const distDir = path.join(__dirname, '..', 'web', 'dist');
 if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true });
 }
@@ -47,41 +47,40 @@ function copyDirAll(src, dest) {
   });
 }
 
-// Copy profile directories
-const profileDirs = [
+// Copy profiles directory structure
+const profilesSrc = path.join(__dirname, '..', 'profiles');
+const profilesDest = path.join(distDir, 'profiles');
+if (fs.existsSync(profilesSrc)) {
+  copyDirAll(profilesSrc, profilesDest);
+}
+
+// Create legacy redirects for backward compatibility
+const legacyProfileDirs = [
   'faqpage', 'qapage', 'article', 'product-offer', 'event', 
-  'course', 'jobposting', 'localbusiness', 'softwareapplication', 'review'
+  'course', 'jobposting', 'localbusiness', 'softwareapplication', 'review',
+  'book', 'dataset', 'howto', 'recipe', 'videoobject', 'software'
 ];
 
-profileDirs.forEach(profile => {
-  const srcPath = path.join(__dirname, '..', profile);
+legacyProfileDirs.forEach(profile => {
   const destPath = path.join(distDir, profile);
-  if (fs.existsSync(srcPath)) {
-    copyFiles(srcPath, destPath);
-  }
-
-  // Ensure profile directory exists in dist for index generation
   if (!fs.existsSync(destPath)) {
     fs.mkdirSync(destPath, { recursive: true });
   }
 
-  // Create {profile}/index.html that redirects to v1/
-  const profileIndexHtml = `<!doctype html><meta http-equiv="refresh" content="0; url=v1/">`;
-  fs.writeFileSync(path.join(destPath, 'index.html'), profileIndexHtml);
-
-  // Create {profile}/v1/index.html that redirects to index.jsonld
-  const v1Path = path.join(destPath, 'v1');
-  if (fs.existsSync(v1Path)) {
-    const v1IndexHtml = `<!doctype html><meta http-equiv="refresh" content="0; url=index.jsonld">`;
-    fs.writeFileSync(path.join(v1Path, 'index.html'), v1IndexHtml);
-    
-    // Create index.json for machine-friendly access (same content as index.jsonld)
-    const indexJsonldPath = path.join(v1Path, 'index.jsonld');
-    if (fs.existsSync(indexJsonldPath)) {
-      const jsonldContent = fs.readFileSync(indexJsonldPath, 'utf8');
-      fs.writeFileSync(path.join(v1Path, 'index.json'), jsonldContent);
-    }
+  // Create {profile}/index.html that redirects to profiles/ structure
+  let redirectPath = '';
+  if (['article', 'book', 'course', 'dataset', 'howto', 'recipe', 'videoobject'].includes(profile)) {
+    redirectPath = `/profiles/content/${profile}/`;
+  } else if (['localbusiness', 'jobposting', 'product-offer', 'event'].includes(profile)) {
+    redirectPath = `/profiles/business/${profile}/`;
+  } else if (['review', 'faqpage', 'qapage'].includes(profile)) {
+    redirectPath = `/profiles/interaction/${profile}/`;
+  } else if (['softwareapplication', 'software'].includes(profile)) {
+    redirectPath = `/profiles/technology/${profile}/`;
   }
+  
+  const profileIndexHtml = `<!doctype html><meta http-equiv="refresh" content="0; url=${redirectPath}">`;
+  fs.writeFileSync(path.join(destPath, 'index.html'), profileIndexHtml);
 });
 
 // Copy main files
@@ -111,14 +110,14 @@ try {
 }
 
 // Copy images directory (all files)
-const imagesSrc = path.join(__dirname, '..', 'images');
+const imagesSrc = path.join(__dirname, '..', 'web', 'images');
 const imagesDest = path.join(distDir, 'images');
 if (fs.existsSync(imagesSrc)) {
   copyDirAll(imagesSrc, imagesDest);
 }
 
 // Copy root logo if present
-const logoSrc = path.join(__dirname, '..', 'logo.png');
+const logoSrc = path.join(__dirname, '..', 'web', 'logo.png');
 if (fs.existsSync(logoSrc)) {
   fs.copyFileSync(logoSrc, path.join(distDir, 'logo.png'));
 }
@@ -138,12 +137,12 @@ if (fs.existsSync(examplesSrc)) {
 }
 
 // Copy CNAME
-fs.copyFileSync(path.join(__dirname, '..', 'CNAME'), path.join(distDir, 'CNAME'));
+fs.copyFileSync(path.join(__dirname, '..', 'web', 'CNAME'), path.join(distDir, 'CNAME'));
 
 // Copy utility HTML pages
 const utilityPages = ['faq.html', 'about.html'];
 utilityPages.forEach(file => {
-  const srcPath = path.join(__dirname, '..', file);
+  const srcPath = path.join(__dirname, '..', 'web', file);
   const destPath = path.join(distDir, file);
   if (fs.existsSync(srcPath)) {
     fs.copyFileSync(srcPath, destPath);
@@ -153,7 +152,7 @@ utilityPages.forEach(file => {
 // Copy article pages
 const articlePages = ['article/standardizing-structured-data.html'];
 articlePages.forEach(file => {
-  const srcPath = path.join(__dirname, '..', file);
+  const srcPath = path.join(__dirname, '..', 'web', file);
   const destPath = path.join(distDir, file);
   if (fs.existsSync(srcPath)) {
     // Ensure directory exists
@@ -168,7 +167,7 @@ articlePages.forEach(file => {
 // Copy course pages
 const coursePages = ['courses/structured-data-101.html'];
 coursePages.forEach(file => {
-  const srcPath = path.join(__dirname, '..', file);
+  const srcPath = path.join(__dirname, '..', 'web', file);
   const destPath = path.join(distDir, file);
   if (fs.existsSync(srcPath)) {
     // Ensure directory exists
@@ -183,7 +182,7 @@ coursePages.forEach(file => {
 // Copy event pages
 const eventPages = ['events/conference-2025.html', 'events/conference-2025/tickets.html'];
 eventPages.forEach(file => {
-  const srcPath = path.join(__dirname, '..', file);
+  const srcPath = path.join(__dirname, '..', 'web', file);
   const destPath = path.join(distDir, file);
   if (fs.existsSync(srcPath)) {
     // Ensure directory exists
@@ -195,23 +194,15 @@ eventPages.forEach(file => {
   }
 });
 
-// Copy software pages
-const softwarePages = ['software/validator.html'];
-softwarePages.forEach(file => {
-  const srcPath = path.join(__dirname, '..', file);
-  const destPath = path.join(distDir, file);
-  if (fs.existsSync(srcPath)) {
-    // Ensure directory exists
-    const destDir = path.dirname(destPath);
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
-    }
-    fs.copyFileSync(srcPath, destPath);
-  }
-});
+// Copy tools directory
+const toolsSrc = path.join(__dirname, '..', 'tools');
+const toolsDest = path.join(distDir, 'tools');
+if (fs.existsSync(toolsSrc)) {
+  copyDirAll(toolsSrc, toolsDest);
+}
 
 // Copy blog directory
-const blogSrc = path.join(__dirname, '..', 'blog');
+const blogSrc = path.join(__dirname, '..', 'web', 'blog');
 const blogDest = path.join(distDir, 'blog');
 if (fs.existsSync(blogSrc)) {
   copyDirAll(blogSrc, blogDest);
@@ -219,7 +210,7 @@ if (fs.existsSync(blogSrc)) {
 // Copy robots.txt, sitemap.xml, and _redirects if they exist
 const seoFiles = ['robots.txt', 'sitemap.xml', '_redirects'];
 seoFiles.forEach(file => {
-  const srcPath = path.join(__dirname, '..', file);
+  const srcPath = path.join(__dirname, '..', 'web', file);
   const destPath = path.join(distDir, file);
   if (fs.existsSync(srcPath)) {
     fs.copyFileSync(srcPath, destPath);
@@ -337,3 +328,4 @@ fs.writeFileSync(path.join(distDir, '.gitignore'), gitignoreContent);
 fs.writeFileSync(path.join(distDir, '.nojekyll'), '');
 
 console.log('✅ Documentation built successfully in dist/ directory');
+

@@ -102,6 +102,11 @@ Returns detailed information about a specific profile.
 - `/profile-localbusiness.json`
 - `/profile-softwareapplication.json`
 - `/profile-review.json`
+- `/profile-recipe.json`
+- `/profile-howto.json`
+- `/profile-videoobject.json`
+- `/profile-book.json`
+- `/profile-dataset.json`
 
 **Example:**
 ```bash
@@ -130,7 +135,7 @@ Each profile in the API response includes:
   "description": "FAQ pages with Q&A pairs, training data, and implementation examples",
   "schemaType": "FAQPage",
   "version": "v1",
-  "profileUrl": "https://llmprofiles.org/faqpage/v1/index.jsonld",
+  "profileUrl": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld",
   "capabilities": {
     "pageSchema": true,
     "outputSchema": true,
@@ -138,13 +143,13 @@ Each profile in the API response includes:
     "examples": true
   },
   "endpoints": {
-    "definition": "https://llmprofiles.org/faqpage/v1/index.jsonld",
-    "pageSchema": "https://llmprofiles.org/faqpage/v1/index.jsonld/page.schema.json",
-    "outputSchema": "https://llmprofiles.org/faqpage/v1/index.jsonld/output.schema.json",
-    "training": "https://llmprofiles.org/faqpage/v1/index.jsonld/training.jsonl",
+    "definition": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld",
+    "pageSchema": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld/page.schema.json",
+    "outputSchema": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld/output.schema.json",
+    "training": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld/training.jsonl",
     "examples": {
-      "minimal": "https://llmprofiles.org/faqpage/v1/index.jsonld/examples/minimal.jsonld",
-      "rich": "https://llmprofiles.org/faqpage/v1/index.jsonld/examples/rich.jsonld"
+      "minimal": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld/examples/minimal.jsonld",
+      "rich": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld/examples/rich.jsonld"
     }
   },
   "useCases": [

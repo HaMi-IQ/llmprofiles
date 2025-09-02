@@ -62,7 +62,7 @@ console.log('Profile definition:', faqProfile['skos:definition']);
 ```javascript
 async function createFAQContent() {
   // Fetch the profile definition
-  const profile = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld');
+  const profile = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld');
   const profileData = await profile.json();
   
   // Create FAQ content using the profile context
@@ -98,7 +98,7 @@ async function createFAQContent() {
 ```javascript
 async function extractFAQData(htmlContent) {
   // Fetch the output schema
-  const schemaResponse = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld/output.schema.json');
+  const schemaResponse = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld/output.schema.json');
   const schema = await schemaResponse.json();
   
   // Simulate content extraction (in real usage, you'd parse HTML)
@@ -146,11 +146,11 @@ class LLMProfilesFAQ:
         self.base_url = 'https://llmprofiles.org'
     
     def get_profile(self):
-        response = requests.get(f'{self.base_url}/faqpage/v1')
+        response = requests.get(f'{self.base_url}/profiles/interaction/faqpage/v1')
         return response.json()
     
     def get_schema(self):
-        response = requests.get(f'{self.base_url}/faqpage/v1/output.schema.json')
+        response = requests.get(f'{self.base_url}/profiles/interaction/faqpage/v1/output.schema.json')
         return response.json()
     
     def create_faq_content(self):
@@ -212,7 +212,7 @@ async function extractFAQsFromWebsite(url) {
   await page.goto(url);
   
   // Fetch the FAQ profile schema
-  const schemaResponse = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld/output.schema.json');
+  const schemaResponse = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld/output.schema.json');
   const schema = await schemaResponse.json();
   
   // Extract FAQ content from the page
@@ -258,7 +258,7 @@ class LLMProfilesWordPress {
   }
   
   async getFAQProfile() {
-    const response = await fetch(`${this.baseUrl}/faqpage/v1/index.jsonld`);
+    const response = await fetch(`${this.baseUrl}/profiles/interaction/faqpage/v1/index.jsonld`);
     return response.json();
   }
   
@@ -426,7 +426,7 @@ const LLMProfilesFAQ = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld');
+      const response = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld');
       const profileData = await response.json();
       setProfile(profileData);
     } catch (err) {

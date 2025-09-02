@@ -2,13 +2,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const ProfileDiscoveryAPI = require('../api/discovery');
+const ProfileDiscoveryAPI = require('../web/api/discovery');
 
 // Initialize API
 const api = new ProfileDiscoveryAPI();
 
-// Create API directory in dist
-const apiDir = path.join(__dirname, '..', 'dist', 'api');
+// Create API directory in web/dist
+const apiDir = path.join(__dirname, '..', 'web', 'dist', 'api');
 if (!fs.existsSync(apiDir)) {
   fs.mkdirSync(apiDir, { recursive: true });
 }

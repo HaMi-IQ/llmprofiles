@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dataset Extracted Content",
+  "description": "JSON Schema for validating extracted Dataset content for RAG/AI applications",
+  "type": "object",
+  "required": ["dataset"],
+  "properties": {
+    "dataset": {
+      "type": "object",
+      "required": ["name", "description"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the dataset"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the dataset content and purpose"
+        },
+        "creator": {
+          "type": "string",
+          "description": "The creator or organization behind the dataset"
+        },
+        "datePublished": {
+          "type": "string",
+          "description": "Date when the dataset was published"
+        },
+        "dateModified": {
+          "type": "string",
+          "description": "Date when the dataset was last modified"
+        },
+        "license": {
+          "type": "string",
+          "description": "License information for the dataset"
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "type": "string",
+                "description": "File format (e.g., CSV, JSON, XML)"
+              },
+              "url": {
+                "type": "string",
+                "description": "Download URL for this format"
+              },
+              "size": {
+                "type": "string",
+                "description": "Size of the dataset file"
+              }
+            },
+            "required": ["format", "url"]
+          }
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Keywords describing the dataset content"
+          }
+        },
+        "language": {
+          "type": "string",
+          "description": "Language of the dataset content"
+        },
+        "topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Topics or subjects covered by the dataset"
+          }
+        },
+        "spatialCoverage": {
+          "type": "string",
+          "description": "Geographic coverage of the dataset"
+        },
+        "temporalCoverage": {
+          "type": "string",
+          "description": "Time period covered by the dataset"
+        },
+        "variables": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Variables or measurements included in the dataset"
+          }
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "References or citations for the dataset"
+          }
+        },
+        "access": {
+          "type": "object",
+          "properties": {
+            "isFree": {
+              "type": "boolean",
+              "description": "Whether the dataset is freely accessible"
+            },
+            "restrictions": {
+              "type": "string",
+              "description": "Any access restrictions or requirements"
+            }
+          }
+        },
+        "quality": {
+          "type": "object",
+          "properties": {
+            "completeness": {
+              "type": "string",
+              "description": "Data completeness information"
+            },
+            "accuracy": {
+              "type": "string",
+              "description": "Data accuracy information"
+            },
+            "provenance": {
+              "type": "string",
+              "description": "Data source and provenance information"
+            }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Additional tags or categories"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "extractedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the content was extracted"
+        },
+        "sourceUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Source URL of the dataset"
+        },
+        "profileVersion": {
+          "type": "string",
+          "const": "dataset.v1",
+          "description": "LLM Profile version used"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

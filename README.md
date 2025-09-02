@@ -59,7 +59,7 @@ Instead of Schema.org's giant vocabulary, we ship **constrained subsets per use 
 **`training.jsonl`** - Publisher-owned export that mirrors your on-page semantics for RAG/fine-tuning.
 
 ### ✅ **Governance & Versioning**
-Canonical, versioned IRIs (`/faqpage/v1`), immutability, CHANGELOG, and community PR checks. **SemVer**: *PATCH = non-breaking schema clarifications; MINOR = additive fields; MAJOR = breaking.*
+Canonical, versioned IRIs (`/profiles/interaction/faqpage/v1`), immutability, CHANGELOG, and community PR checks. **SemVer**: *PATCH = non-breaking schema clarifications; MINOR = additive fields; MAJOR = breaking.*
 
 ### ✅ **Discovery Convention**
 **`/.well-known/llmprofiles.json`** - Let aggregators/partners auto-discover your profile + training feed.
@@ -140,16 +140,16 @@ Built-in stable anchors, language hints, and anti-patterns for better AI retriev
 curl https://llmprofiles.org/api/discovery.json
 
 # Get a specific profile (e.g., FAQPage)
-curl https://llmprofiles.org/faqpage/v1/index.jsonld
+curl https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld
 ```
 
 ### 2. Implement & Validate
 
 ```javascript
 // Fetch the profile and schemas
-const profile = await fetch('https://llmprofiles.org/faqpage/v1/index.jsonld');
-const pageSchema = await fetch('https://llmprofiles.org/faqpage/v1/page.schema.json');
-const outputSchema = await fetch('https://llmprofiles.org/faqpage/v1/output.schema.json');
+const profile = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld');
+const pageSchema = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/page.schema.json');
+const outputSchema = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/output.schema.json');
 
 // Use in your application (AEO-optimized)
 const faqMarkup = {
@@ -157,7 +157,7 @@ const faqMarkup = {
   "@type": "FAQPage",
   "@id": "https://example.com/help#faq",
   "inLanguage": "en",
-  "conformsTo": "https://llmprofiles.org/faqpage/v1/index.jsonld",
+  "conformsTo": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld",
   "mainEntity": [
     {
       "@type": "Question",
@@ -169,7 +169,7 @@ const faqMarkup = {
         "text": "Opinionated, testable structured data profiles for AI & SEO.",
         "isBasedOn": "https://example.com/help#faq"
       },
-      "sameAs": ["https://llmprofiles.org/faqpage/v1/index.jsonld"]
+      "sameAs": ["https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld"]
     }
   ],
   "dateModified": "2025-08-28"
@@ -190,10 +190,10 @@ node scripts/validate-ajv.js faqpage/v1/output.schema.json your-extracted-data.j
 
 ```bash
 # Get training data for LLM fine-tuning
-curl https://llmprofiles.org/faqpage/v1/training.jsonl
+curl https://llmprofiles.org/profiles/interaction/faqpage/v1/training.jsonl
 ```
 
-> **What is `/faqpage/v1/training.jsonl`?**
+> **What is `/profiles/interaction/faqpage/v1/training.jsonl`?**
 > It's a **shape/spec**, not our data. **Publishers** host their own `training.jsonl` with lines that **mirror their on-page semantics**—ready for RAG/fine-tuning.
 
 **Minimal line (example):**
@@ -236,15 +236,15 @@ jobs:
         run: |
           npx ajv validate \
             -s faqpage/v1/page.schema.json \
-            -d examples/faqpage/minimal.page.jsonld
+            -d examples/profiles/interaction/faqpage/minimal.page.jsonld
       - name: Validate Extracted Output (RAG contract)
         run: |
           npx ajv validate \
             -s faqpage/v1/output.schema.json \
-            -d examples/faqpage/sample.output.json
+            -d examples/profiles/interaction/faqpage/sample.output.json
 ```
 
-> Tip: add `examples/faqpage/minimal.page.jsonld` and `examples/faqpage/sample.output.json` to the repo so the CI is turnkey.
+> Tip: add `examples/profiles/interaction/faqpage/minimal.page.jsonld` and `examples/profiles/interaction/faqpage/sample.output.json` to the repo so the CI is turnkey.
 
 ## 🌐 Discovery Snippet (copy-paste ready)
 
@@ -256,9 +256,9 @@ jobs:
     {
       "name": "FAQPage",
       "version": "v1",
-      "iri": "https://llmprofiles.org/faqpage/v1/",
-      "pageSchema": "https://llmprofiles.org/faqpage/v1/page.schema.json",
-      "outputSchema": "https://llmprofiles.org/faqpage/v1/output.schema.json",
+      "iri": "https://llmprofiles.org/profiles/interaction/faqpage/v1/",
+      "pageSchema": "https://llmprofiles.org/profiles/interaction/faqpage/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/interaction/faqpage/v1/output.schema.json",
       "training": "https://example.com/ai/training/faq.v1.jsonl",
       "examples": "https://example.com/ai/examples/faq"
     }

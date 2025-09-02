@@ -3,7 +3,7 @@
   "@type": "FAQPage",
   "@id": "https://example.com/help#faq",
   "inLanguage": "en",
-  "conformsTo": "https://llmprofiles.org/faqpage/v1/index.jsonld",
+  "conformsTo": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld",
   "mainEntity": [
     {
       "@type": "Question",
@@ -15,7 +15,7 @@
         "text": "Opinionated, testable structured data profiles for AI & SEO.",
         "isBasedOn": "https://example.com/help#faq"
       },
-      "sameAs": ["https://llmprofiles.org/faqpage/v1/index.jsonld"]
+      "sameAs": ["https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld"]
     }
   ],
   "dateModified": "2025-08-28"

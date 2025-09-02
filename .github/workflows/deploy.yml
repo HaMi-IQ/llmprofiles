@@ -3,48 +3,80 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      - 'profiles/**'
+      - 'web/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
+
+env:
+  NODE_VERSION: '20'
 
 jobs:
   deploy:
+    name: Deploy Website
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
         
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Validate schemas
-      run: npm run validate
-      
-    - name: Build documentation
-      run: npm run build:docs
-      
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-      
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: './dist'
+      - name: Build website
+        run: npm run build:docs
         
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        run: |
+          # Configure git
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Create or switch to gh-pages branch
+          if git show-ref --verify --quiet refs/heads/gh-pages; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+          fi
+          
+          # Remove all existing files
+          git rm -rf .
+          
+          # Copy built files from web/dist to root
+          cp -r web/dist/* .
+          
+          # Copy .well-known directory (important for domain verification)
+          if [ -d "../.well-known" ]; then
+            cp -r ../.well-known .
+          fi
+          
+          # Copy important web files
+          cp web/CNAME . 2>/dev/null || true
+          cp web/_redirects . 2>/dev/null || true
+          cp web/robots.txt . 2>/dev/null || true
+          cp web/sitemap.xml . 2>/dev/null || true
+          
+          # Add all files
+          git add .
+          
+          # Commit
+          git commit -m "Deploy website - ${{ github.sha }}"
+          
+          # Push to gh-pages branch
+          git push origin gh-pages --force
+          
+      - name: Notify deployment
+        run: |
+          echo "🎉 Website deployed successfully!"
+          echo "🌐 Available at: https://llmprofiles.org"
+          echo "📁 Deployed from: web/dist/"
+          echo "🔗 GitHub Pages branch: gh-pages"

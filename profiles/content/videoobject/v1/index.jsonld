@@ -1,0 +1,62 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "x": "https://llmprofiles.org/vocab#"
+  },
+  "@id": "https://llmprofiles.org/profiles/content/videoobject/v1/index.jsonld",
+  "rdfs:seeAlso": "https://schema.org/VideoObject",
+  "skos:prefLabel": "VideoObject",
+  "skos:definition": "A structured video with metadata, transcripts, and content information optimized for AI processing and rich search results.",
+  "skos:scopeNote": "Use for video content, tutorials, presentations, and media files. Not for video game content or interactive media.",
+  "skos:example": "YouTube video, tutorial video, presentation recording, or educational video content.",
+  "x:dos": [
+    "Use schema:VideoObject with proper name, description, and uploadDate.",
+    "Include duration, thumbnail, and content information.",
+    "Add transcripts and captions when available for AI processing.",
+    "Use structured metadata for better content discovery.",
+    "Include video quality and format information."
+  ],
+  "x:donts": [
+    "Do not use for video game content or interactive media.",
+    "Do not use for general articles or text content.",
+    "Do not use for audio-only content or podcasts.",
+    "Do not use for live streams or real-time content."
+  ],
+  "sh:shapesGraph": {
+    "@type": "sh:NodeShape",
+    "sh:targetClass": "schema:VideoObject",
+    "sh:property": [
+      {
+        "sh:path": "schema:name",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:description",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:uploadDate",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:duration",
+        "sh:minCount": 0
+      },
+      {
+        "sh:path": "schema:thumbnailUrl",
+        "sh:minCount": 0
+      },
+      {
+        "sh:path": "schema:contentUrl",
+        "sh:minCount": 0
+      }
+    ]
+  },
+  "x:pageSchema": "https://llmprofiles.org/profiles/content/videoobject/v1/page.schema.json",
+  "x:outputSchema": "https://llmprofiles.org/profiles/content/videoobject/v1/output.schema.json",
+  "x:profileVersion": "1.0.0",
+  "x:created": "2025-01-15"
+}
