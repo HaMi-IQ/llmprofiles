@@ -43,40 +43,17 @@ try {
 console.log('🧹 Cleaning gh-pages branch...');
 execSync('git rm -rf .', { stdio: 'inherit' });
 
-// Copy built files from web/dist to root
-console.log('📁 Copying built files...');
-const distDir = path.join(__dirname, '..', 'web', 'dist');
-const files = fs.readdirSync(distDir);
+// Copy built files from dist to root of gh-pages branch
+console.log('📁 Copying built website files...');
+const distDir = path.join(__dirname, '..', 'dist');
 
-files.forEach(file => {
-  const srcPath = path.join(distDir, file);
-  const destPath = path.join(__dirname, '..', file);
-  
-  if (fs.statSync(srcPath).isDirectory()) {
-    // Copy directory recursively
-    copyDirRecursive(srcPath, destPath);
-  } else {
-    // Copy file
-    fs.copyFileSync(srcPath, destPath);
-  }
-});
-
-// Copy .well-known directory from root (important for domain verification)
-const wellKnownSrc = path.join(__dirname, '..', '.well-known');
-const wellKnownDest = path.join(__dirname, '..', '.well-known');
-if (fs.existsSync(wellKnownSrc)) {
-  copyDirRecursive(wellKnownSrc, wellKnownDest);
+if (!fs.existsSync(distDir)) {
+  console.error('❌ Build directory not found. Run npm run build:docs first.');
+  process.exit(1);
 }
 
-// Copy CNAME and other important files
-const importantFiles = ['CNAME', '_redirects', 'robots.txt', 'sitemap.xml'];
-importantFiles.forEach(file => {
-  const srcPath = path.join(__dirname, '..', 'web', file);
-  const destPath = path.join(__dirname, '..', file);
-  if (fs.existsSync(srcPath)) {
-    fs.copyFileSync(srcPath, destPath);
-  }
-});
+// Copy all files from dist to the root of gh-pages branch
+copyDirRecursive(distDir, process.cwd());
 
 // Add all files
 console.log('📝 Adding files to git...');
@@ -115,10 +92,15 @@ function copyDirRecursive(src, dest) {
     const srcPath = path.join(src, item);
     const destPath = path.join(dest, item);
     
-    if (fs.statSync(srcPath).isDirectory()) {
-      copyDirRecursive(srcPath, destPath);
-    } else {
-      fs.copyFileSync(srcPath, destPath);
+    try {
+      const stat = fs.statSync(srcPath);
+      if (stat.isDirectory()) {
+        copyDirRecursive(srcPath, destPath);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    } catch (error) {
+      console.warn(`Warning: Could not copy ${item}: ${error.message}`);
     }
   });
 }

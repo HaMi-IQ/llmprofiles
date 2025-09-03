@@ -2,7 +2,7 @@
 
 /**
  * Build documentation script for llmprofiles
- * Copies and builds the website distribution
+ * Creates a clean website distribution for GitHub Pages
  */
 
 const fs = require('fs');
@@ -40,57 +40,14 @@ Examples:
   process.exit(0);
 }
 
-// Create dist directory
+// Create dist directory at root level (not in web/)
 function ensureDistDir() {
-  const distDir = path.join(__dirname, '..', 'web', 'dist');
+  const distDir = path.join(__dirname, '..', 'dist');
   if (!fs.existsSync(distDir)) {
     fs.mkdirSync(distDir, { recursive: true });
     log(`Created dist directory: ${distDir}`, 'green');
   }
   return distDir;
-}
-
-// Copy all JSON and JSONLD files
-function copyFiles(src, dest, options = {}) {
-  if (!fs.existsSync(src)) {
-    if (options.verbose) {
-      log(`Source directory does not exist: ${src}`, 'yellow');
-    }
-    return;
-  }
-  
-  if (!options.dryRun && !fs.existsSync(dest)) {
-    fs.mkdirSync(dest, { recursive: true });
-  }
-  
-  try {
-    const items = fs.readdirSync(src);
-    items.forEach(item => {
-      const srcPath = path.join(src, item);
-      const destPath = path.join(dest, item);
-      
-      try {
-        const stat = fs.statSync(srcPath);
-        
-        if (stat.isDirectory()) {
-          copyFiles(srcPath, destPath, options);
-        } else if (item.endsWith('.json') || item.endsWith('.jsonld') || item.endsWith('.jsonl') || item.endsWith('.md') || item.endsWith('.html')) {
-          if (options.dryRun) {
-            log(`Would copy: ${srcPath} → ${destPath}`, 'blue');
-          } else {
-            fs.copyFileSync(srcPath, destPath);
-            if (options.verbose) {
-              log(`Copied: ${srcPath}`, 'green');
-            }
-          }
-        }
-      } catch (statError) {
-        log(`Warning: Could not stat ${srcPath}: ${statError.message}`, 'yellow');
-      }
-    });
-  } catch (readError) {
-    log(`Warning: Could not read directory ${src}: ${readError.message}`, 'yellow');
-  }
 }
 
 // Copy directory recursively (all files and subfolders)
@@ -123,7 +80,7 @@ function copyDirAll(src, dest, options = {}) {
           } else {
             fs.copyFileSync(srcPath, destPath);
             if (options.verbose) {
-              log(`Copied: ${srcPath}`, 'green');
+              log(`Copied: ${item}`, 'green');
             }
           }
         }
@@ -147,32 +104,22 @@ function cleanDistDir(distDir, options = {}) {
     }
   }
   
-  // Always ensure dist directory is clean of recursive structures
+  // Always ensure dist directory is clean
   if (fs.existsSync(distDir)) {
     try {
-      // Check for recursive web/dist/web structure
-      const webDistPath = path.join(distDir, 'web', 'dist');
-      if (fs.existsSync(webDistPath)) {
-        log(`⚠️  Detected recursive web/dist/web structure, cleaning...`, 'yellow');
-        fs.rmSync(webDistPath, { recursive: true, force: true });
-      }
-      
-      // Check for any other recursive structures
-      const webPath = path.join(distDir, 'web');
-      if (fs.existsSync(webPath)) {
-        const webItems = fs.readdirSync(webPath);
-        webItems.forEach(item => {
-          if (item === 'dist') {
-            const itemPath = path.join(webPath, item);
-            if (fs.existsSync(itemPath)) {
-              log(`⚠️  Removing recursive dist directory: ${itemPath}`, 'yellow');
-              fs.rmSync(itemPath, { recursive: true, force: true });
-            }
-          }
-        });
-      }
+      // Remove any existing content
+      const items = fs.readdirSync(distDir);
+      items.forEach(item => {
+        const itemPath = path.join(distDir, item);
+        if (fs.statSync(itemPath).isDirectory()) {
+          fs.rmSync(itemPath, { recursive: true, force: true });
+        } else {
+          fs.unlinkSync(itemPath);
+        }
+      });
+      log(`🧹 Cleaned existing content in dist directory`, 'yellow');
     } catch (error) {
-      log(`Warning: Could not clean recursive structures: ${error.message}`, 'yellow');
+      log(`Warning: Could not clean existing content: ${error.message}`, 'yellow');
     }
   }
 }
@@ -257,14 +204,21 @@ function main() {
     log('');
   }
   
-  log('🏗️  Building llmprofiles documentation...', 'blue');
+  log('🏗️  Building llmprofiles website for GitHub Pages...', 'blue');
   log('');
   
   try {
     const distDir = ensureDistDir();
     cleanDistDir(distDir, options);
     
-    // Copy profiles directory structure
+    // Copy web assets (the actual website)
+    const webSrc = path.join(__dirname, '..', 'web');
+    if (fs.existsSync(webSrc)) {
+      log('🌐 Copying website files...', 'blue');
+      copyDirAll(webSrc, distDir, options);
+    }
+    
+    // Copy profiles directory structure (for API access)
     const profilesSrc = path.join(__dirname, '..', 'profiles');
     const profilesDest = path.join(distDir, 'profiles');
     if (fs.existsSync(profilesSrc)) {
@@ -272,13 +226,41 @@ function main() {
       copyDirAll(profilesSrc, profilesDest, options);
     }
     
-    // Create legacy redirects
-    log('🔄 Creating legacy redirects...', 'blue');
-    createLegacyRedirects(distDir, options);
+    // Copy schemas directory (for API access)
+    const schemasSrc = path.join(__dirname, '..', 'schemas');
+    const schemasDest = path.join(distDir, 'schemas');
+    if (fs.existsSync(schemasSrc)) {
+      log('🔧 Copying schemas...', 'blue');
+      copyDirAll(schemasSrc, schemasDest, options);
+    }
     
-    // Copy main files
-    const mainFiles = ['index.json', 'README.md', 'CHANGELOG.md', 'LICENSE-CODE', 'LICENSE-CONTENT', 'vocab.json'];
-    log('📄 Copying main files...', 'blue');
+    // Copy examples directory (for documentation)
+    const examplesSrc = path.join(__dirname, '..', 'examples');
+    const examplesDest = path.join(distDir, 'examples');
+    if (fs.existsSync(examplesSrc)) {
+      log('💡 Copying examples...', 'blue');
+      copyDirAll(examplesSrc, examplesDest, options);
+    }
+    
+    // Copy training directory (for documentation)
+    const trainingSrc = path.join(__dirname, '..', 'training');
+    const trainingDest = path.join(distDir, 'training');
+    if (fs.existsSync(trainingSrc)) {
+      log('🎓 Copying training materials...', 'blue');
+      copyDirAll(trainingSrc, trainingDest, options);
+    }
+    
+    // Copy tools directory (for website functionality)
+    const toolsSrc = path.join(__dirname, '..', 'tools');
+    const toolsDest = path.join(distDir, 'tools');
+    if (fs.existsSync(toolsSrc)) {
+      log('🛠️  Copying tools...', 'blue');
+      copyDirAll(toolsSrc, toolsDest, options);
+    }
+    
+    // Copy main index files (for API access)
+    const mainFiles = ['index.json', 'vocab.json'];
+    log('📄 Copying main index files...', 'blue');
     mainFiles.forEach(file => {
       const srcPath = path.join(__dirname, '..', file);
       const destPath = path.join(distDir, file);
@@ -293,79 +275,6 @@ function main() {
         }
       }
     });
-    
-    // Copy docs directory
-    const docsSrc = path.join(__dirname, '..', 'docs');
-    const docsDest = path.join(distDir, 'docs');
-    if (fs.existsSync(docsSrc)) {
-      log('📚 Copying documentation...', 'blue');
-      copyFiles(docsSrc, docsDest, options);
-    }
-    
-    // Copy examples directory
-    const examplesSrc = path.join(__dirname, '..', 'examples');
-    const examplesDest = path.join(distDir, 'examples');
-    if (fs.existsSync(examplesSrc)) {
-      log('💡 Copying examples...', 'blue');
-      copyDirAll(examplesSrc, examplesDest, options);
-    }
-    
-    // Copy training directory
-    const trainingSrc = path.join(__dirname, '..', 'training');
-    const trainingDest = path.join(distDir, 'training');
-    if (fs.existsSync(trainingSrc)) {
-      log('🎓 Copying training materials...', 'blue');
-      copyDirAll(trainingSrc, trainingDest, options);
-    }
-    
-    // Copy schemas directory
-    const schemasSrc = path.join(__dirname, '..', 'schemas');
-    const schemasDest = path.join(distDir, 'schemas');
-    if (fs.existsSync(schemasSrc)) {
-      log('🔧 Copying schemas...', 'blue');
-      copyDirAll(schemasSrc, schemasDest, options);
-    }
-    
-    // Copy tools directory
-    const toolsSrc = path.join(__dirname, '..', 'tools');
-    const toolsDest = path.join(distDir, 'tools');
-    if (fs.existsSync(toolsSrc)) {
-      log('🛠️  Copying tools...', 'blue');
-      copyDirAll(toolsSrc, toolsDest, options);
-    }
-    
-    // Copy web assets (but exclude dist to prevent recursion)
-    const webSrc = path.join(__dirname, '..', 'web');
-    if (fs.existsSync(webSrc)) {
-      log('🌐 Copying web assets...', 'blue');
-      
-      // Copy web files but exclude dist directory to prevent recursion
-      const webItems = fs.readdirSync(webSrc);
-      webItems.forEach(item => {
-        if (item !== 'dist') { // Skip dist directory to prevent recursion
-          const srcPath = path.join(webSrc, item);
-          const destPath = path.join(distDir, item);
-          
-          try {
-            const stat = fs.statSync(srcPath);
-            if (stat.isDirectory()) {
-              copyDirAll(srcPath, destPath, options);
-            } else {
-              if (options.dryRun) {
-                log(`Would copy: ${srcPath} → ${destPath}`, 'blue');
-              } else {
-                fs.copyFileSync(srcPath, destPath);
-                if (options.verbose) {
-                  log(`Copied: ${item}`, 'green');
-                }
-              }
-            }
-          } catch (error) {
-            log(`Warning: Could not copy ${item}: ${error.message}`, 'yellow');
-          }
-        }
-      });
-    }
     
     // Copy images
     const imagesSrc = path.join(__dirname, '..', 'images');
@@ -389,10 +298,32 @@ function main() {
       }
     }
     
+    // Copy .well-known directory (important for domain verification)
+    const wellKnownSrc = path.join(__dirname, '..', '.well-known');
+    const wellKnownDest = path.join(distDir, '.well-known');
+    if (fs.existsSync(wellKnownSrc)) {
+      log('🔐 Copying .well-known directory...', 'blue');
+      copyDirAll(wellKnownSrc, wellKnownDest, options);
+    }
+    
+    // Create legacy redirects for backward compatibility
+    log('🔄 Creating legacy redirects...', 'blue');
+    createLegacyRedirects(distDir, options);
+    
+    // Create .nojekyll file to disable Jekyll processing
+    const nojekyllPath = path.join(distDir, '.nojekyll');
+    if (!options.dryRun) {
+      fs.writeFileSync(nojekyllPath, '');
+      log('📝 Created .nojekyll file', 'green');
+    } else {
+      log(`Would create: ${nojekyllPath}`, 'blue');
+    }
+    
     if (!options.dryRun) {
       log('');
-      log('✅ Build completed successfully!', 'green');
+      log('✅ Website build completed successfully!', 'green');
       log(`📁 Output directory: ${distDir}`, 'blue');
+      log('🚀 Ready for deployment to GitHub Pages', 'green');
     } else {
       log('');
       log('✅ Dry run completed!', 'green');
@@ -417,7 +348,6 @@ if (require.main === module) {
 
 module.exports = {
   ensureDistDir,
-  copyFiles,
   copyDirAll,
   createLegacyRedirects
 };
