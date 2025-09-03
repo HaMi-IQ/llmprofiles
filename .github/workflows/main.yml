@@ -98,9 +98,19 @@ jobs:
        github.event.inputs.mode != 'deploy' && 
        github.event.inputs.mode != 'release')
     steps:
-      - uses: ./.github/actions/setup
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
           
       - name: Detect Profile Changes
         id: changes
@@ -163,7 +173,7 @@ jobs:
           # Determine change type
           if [ ${#UNIQUE_SCHEMAS[@]} -gt 0 ]; then
             CHANGE_TYPE="schema"
-          elif [ ${#UNIQUE_PROFILES[@]} -gt 0 ]; then
+          elif [ ${#UNIQUE_SCHEMAS[@]} -gt 0 ]; then
             CHANGE_TYPE="profile"
           else
             CHANGE_TYPE="general"
@@ -194,13 +204,54 @@ jobs:
        github.event.inputs.mode == 'full' || 
        github.event.inputs.mode == 'validate')
     steps:
-      - uses: ./.github/actions/setup
-      - uses: ./.github/actions/validate
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          validate-json: 'true'
-          validate-ajv: 'true'
-          test-well-known: 'true'
-          run-tests: 'true'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run validation
+        run: npm run validate
+        
+      - name: Run tests
+        run: npm run test
+        
+      - name: Run CI validation
+        run: npm run test-ci -- --verbose
+        
+      - name: Test well-known endpoints
+        run: npm run test-well-known
+        
+      - name: Lint JSON/JSON-LD
+        run: node scripts/validate-json.js
+        
+      - name: Validate Page Markup (schema contract)
+        run: |
+          node scripts/validate-ajv.js \
+            profiles/interaction/faqpage/v1/page.schema.json \
+            examples/faqpage/minimal.page.jsonld
+            
+      - name: Validate Extracted Output (RAG contract)
+        run: |
+          node scripts/validate-ajv.js \
+            profiles/interaction/faqpage/v1/output.schema.json \
+            examples/faqpage/sample.output.json
+            
+      - name: Validate Well-Known Discovery
+        run: |
+          node scripts/validate-ajv.js \
+            .well-known/llmprofiles.schema.json \
+            .well-known/llmprofiles.json || true
+            
+      - name: Test Discovery Endpoint
+        run: |
+          curl -fsSL https://llmprofiles.org/.well-known/llmprofiles.json | jq . || true
 
   build:
     name: Build and Generate
@@ -215,17 +266,39 @@ jobs:
        github.event.inputs.mode == 'full' || 
        github.event.inputs.mode == 'build')
     steps:
-      - uses: ./.github/actions/setup
-      - uses: ./.github/actions/build
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          build-docs: 'true'
-          build-md: 'true'
-          generate-api: 'true'
-          create-readmes: 'true'
-          generate-images: 'true'
-          upload-artifacts: 'true'
-          artifact-name: 'build-output'
-          artifact-path: 'web/dist/'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build documentation
+        run: npm run build:docs
+        
+      - name: Convert markdown to HTML
+        run: npm run build:md
+        
+      - name: Generate API documentation
+        run: npm run generate-api
+        
+      - name: Create profile READMEs
+        run: npm run create-readmes
+        
+      - name: Generate generic images
+        run: npm run generate-images
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: web/dist/
+          retention-days: 30
 
   deploy:
     name: Deploy to GitHub Pages
@@ -246,12 +319,26 @@ jobs:
     environment:
       name: github-pages
     steps:
-      - uses: ./.github/actions/deploy
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
         with:
-          source-path: 'dist/'
-          download-artifacts: 'true'
-          artifact-name: 'build-output'
-          artifact-path: 'dist/'
+          name: build-output
+          path: dist/
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   release:
     name: Create Release
@@ -268,9 +355,19 @@ jobs:
       pull-requests: write
       actions: read
     steps:
-      - uses: ./.github/actions/setup
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
           
       - name: Setup Git
         run: |
@@ -336,9 +433,19 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: ./.github/actions/setup
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
           
       - name: Update Profile READMEs
         run: |
