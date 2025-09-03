@@ -1,44 +1,671 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Content Profiles - LLM Profiles</title>
-    <meta name="description" content="Profiles for content and media structured data">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Primary Meta Tags -->
+    <title>Content Profiles - LLMProfiles</title>
+    <meta name="title" content="Content Profiles - LLMProfiles">
+    <meta name="description" content="Profiles for various content types including articles, books, courses, datasets, and multimedia content.">
+    <meta name="keywords" content="llm, ai, structured data, json-ld, schema.org, semantic web">
+    <meta name="author" content="LLMProfiles">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://llmprofiles.org/profiles/content/">
+    <meta property="og:title" content="Content Profiles - LLMProfiles">
+    <meta property="og:description" content="Profiles for various content types including articles, books, courses, datasets, and multimedia content.">
+    <meta property="og:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+    <meta property="og:site_name" content="LLMProfiles">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://llmprofiles.org/profiles/content/">
+    <meta property="twitter:title" content="Content Profiles - LLMProfiles">
+    <meta property="twitter:description" content="Profiles for various content types including articles, books, courses, datasets, and multimedia content.">
+    <meta property="twitter:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://llmprofiles.org/profiles/content/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    
+    <!-- Schema.org structured data -->
+    
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- CSS -->
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #e1e5e9; }
-        .header h1 { color: #2c3e50; margin-bottom: 10px; }
-        .header p { color: #7f8c8d; }
-        .content { background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 20px; }
-        .content h2 { color: #2c3e50; margin-top: 0; }
-        .profile-list { list-style: none; padding: 0; }
-        .profile-list li { margin-bottom: 15px; }
-        .profile-list a { color: #3498db; text-decoration: none; font-weight: 500; display: block; padding: 15px; background: white; border-radius: 6px; border: 1px solid #e1e5e9; transition: all 0.3s ease; }
-        .profile-list a:hover { background: #f8f9fa; border-color: #3498db; transform: translateY(-2px); }
-        .profile-list .version { color: #6b7280; font-size: 0.9em; margin-left: 10px; }
-        .back-link { text-align: center; margin-top: 30px; }
-        .back-link a { color: #3498db; text-decoration: none; }
-        .back-link a:hover { text-decoration: underline; }
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --background: #ffffff;
+            --background-secondary: #f8fafc;
+            --background-muted: #f1f5f9;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--background-secondary);
+            font-size: 16px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .container-narrow {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header */
+        .site-header {
+            background: var(--background);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        
+        .logo img {
+            width: 32px;
+            height: 32px;
+            margin-right: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav a:hover,
+        .nav a.active {
+            color: var(--primary-color);
+        }
+        
+        /* Main content */
+        .main-content {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-footer {
+            padding: 1rem 1.5rem;
+            background: var(--background-muted);
+            border-top: 1px solid var(--border-light);
+        }
+        
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0 0 1rem 0;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        p {
+            margin: 0 0 1rem 0;
+            color: var(--text-secondary);
+        }
+        
+        .lead {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+        
+        .text-muted {
+            color: var(--text-muted);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--background-muted);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+        }
+        
+        /* Links */
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Breadcrumbs */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1rem;
+            background: var(--background);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--primary-color);
+        }
+        
+        .breadcrumb-separator {
+            color: var(--text-muted);
+        }
+        
+        /* Footer */
+        .site-footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-section a {
+            color: #cbd5e1;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container, .container-narrow {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .nav a {
+                font-size: 0.875rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Custom page styles placeholder */
+        
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Content Profiles</h1>
-        <p>Profiles for content and media structured data</p>
-    </div>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only">Skip to main content</a>
     
-    <div class="content">
-        <h2>Available Profiles</h2>
-        <ul class="profile-list">
-            <li><a href="article/v1/">Article <span class="version">v1</span></a></li><li><a href="book/v1/">Book <span class="version">v1</span></a></li><li><a href="course/v1/">Course <span class="version">v1</span></a></li><li><a href="dataset/v1/">Dataset <span class="version">v1</span></a></li><li><a href="howto/v1/">Howto <span class="version">v1</span></a></li><li><a href="recipe/v1/">Recipe <span class="version">v1</span></a></li><li><a href="videoobject/v1/">Videoobject <span class="version">v1</span></a></li>
-        </ul>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <img src="/logo.png" alt="LLMProfiles">
+                    LLMProfiles
+                </a>
+                <nav class="nav">
+                    <a href="/profiles/" class="active">Profiles</a>
+                    <a href="/tools/validator.html" >Tools</a>
+                    <a href="/examples/" >Examples</a>
+                    <a href="/api/" >API</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main content -->
+    <main id="main-content" class="main-content">
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a><span class="breadcrumb-separator">/</span><a href="/profiles/">Profiles</a><span class="breadcrumb-separator">/</span><span>Content</span>
+            </nav>
+        </div>
         
-        <div class="back-link">
-            <a href="/profiles/">← Back to All Profiles</a> | 
-            <a href="/profile-viewer.html">Profile Viewer</a> | 
-            <a href="/">Home</a>
+        <div class="container">
+    <div class="category-header">
+        <div class="category-icon">📄</div>
+        <div>
+            <h1>Content Profiles</h1>
+            <p class="lead">Profiles for various content types including articles, books, courses, datasets, and multimedia content.</p>
         </div>
     </div>
+    
+    <div class="profiles-grid">
+        
+        <div class="card profile-card">
+            <div class="card-header">
+                <div class="profile-icon">📰</div>
+                <h3>Article</h3>
+            </div>
+            <div class="card-body">
+                <p>Blog posts, articles, and editorial content</p>
+                <div class="profile-meta">
+                    <span class="schema-type">Article</span>
+                    <span class="version">v1</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="article/v1/" class="btn btn-primary">View Profile</a>
+                <a href="/tools/validator.html?profile=article" class="btn btn-secondary">Validate</a>
+            </div>
+        </div>
+        
+        <div class="card profile-card">
+            <div class="card-header">
+                <div class="profile-icon">📚</div>
+                <h3>Book</h3>
+            </div>
+            <div class="card-body">
+                <p>Books, eBooks, and published literature</p>
+                <div class="profile-meta">
+                    <span class="schema-type">Book</span>
+                    <span class="version">v1</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="book/v1/" class="btn btn-primary">View Profile</a>
+                <a href="/tools/validator.html?profile=book" class="btn btn-secondary">Validate</a>
+            </div>
+        </div>
+        
+        <div class="card profile-card">
+            <div class="card-header">
+                <div class="profile-icon">🎓</div>
+                <h3>Course</h3>
+            </div>
+            <div class="card-body">
+                <p>Educational courses and training programs</p>
+                <div class="profile-meta">
+                    <span class="schema-type">Course</span>
+                    <span class="version">v1</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="course/v1/" class="btn btn-primary">View Profile</a>
+                <a href="/tools/validator.html?profile=course" class="btn btn-secondary">Validate</a>
+            </div>
+        </div>
+        
+        <div class="card profile-card">
+            <div class="card-header">
+                <div class="profile-icon">📊</div>
+                <h3>Dataset</h3>
+            </div>
+            <div class="card-body">
+                <p>Data collections and scientific datasets</p>
+                <div class="profile-meta">
+                    <span class="schema-type">Dataset</span>
+                    <span class="version">v1</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="dataset/v1/" class="btn btn-primary">View Profile</a>
+                <a href="/tools/validator.html?profile=dataset" class="btn btn-secondary">Validate</a>
+            </div>
+        </div>
+        
+        <div class="card profile-card">
+            <div class="card-header">
+                <div class="profile-icon">📝</div>
+                <h3>How-to</h3>
+            </div>
+            <div class="card-body">
+                <p>Step-by-step guides and tutorials</p>
+                <div class="profile-meta">
+                    <span class="schema-type">HowTo</span>
+                    <span class="version">v1</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="howto/v1/" class="btn btn-primary">View Profile</a>
+                <a href="/tools/validator.html?profile=howto" class="btn btn-secondary">Validate</a>
+            </div>
+        </div>
+        
+        <div class="card profile-card">
+            <div class="card-header">
+                <div class="profile-icon">🍳</div>
+                <h3>Recipe</h3>
+            </div>
+            <div class="card-body">
+                <p>Cooking recipes and food preparation</p>
+                <div class="profile-meta">
+                    <span class="schema-type">Recipe</span>
+                    <span class="version">v1</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="recipe/v1/" class="btn btn-primary">View Profile</a>
+                <a href="/tools/validator.html?profile=recipe" class="btn btn-secondary">Validate</a>
+            </div>
+        </div>
+        
+        <div class="card profile-card">
+            <div class="card-header">
+                <div class="profile-icon">🎥</div>
+                <h3>Video Object</h3>
+            </div>
+            <div class="card-body">
+                <p>Videos and multimedia content</p>
+                <div class="profile-meta">
+                    <span class="schema-type">VideoObject</span>
+                    <span class="version">v1</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="videoobject/v1/" class="btn btn-primary">View Profile</a>
+                <a href="/tools/validator.html?profile=videoobject" class="btn btn-secondary">Validate</a>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<style>
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.category-icon {
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-muted);
+    border-radius: var(--radius-lg);
+}
+
+.profiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.profile-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-card .profile-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+}
+
+.profile-card h3 {
+    margin: 0;
+}
+
+.profile-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.schema-type,
+.version {
+    padding: 0.25rem 0.5rem;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.card-footer {
+    display: flex;
+    gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .category-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profiles-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-footer {
+        flex-direction: column;
+    }
+}
+</style>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>LLMProfiles</h3>
+                    <p style="color: #cbd5e1;">Structured data profiles for AI applications and semantic web.</p>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles">View on GitHub</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="/profiles/">Browse Profiles</a>
+                    <a href="/tools/validator.html">Validator Tool</a>
+                    <a href="/examples/">Examples</a>
+                    <a href="/api/">API Documentation</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <a href="/profiles/business/">Business</a>
+                    <a href="/profiles/content/">Content</a>
+                    <a href="/profiles/interaction/">Interaction</a>
+                    <a href="/profiles/technology/">Technology</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles/issues">Report Issues</a>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles/discussions">Discussions</a>
+                    <a href="/api/">API Reference</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 LLMProfiles. Open source structured data for AI. Licensed under MIT.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Analytics placeholder -->
+    
 </body>
 </html>

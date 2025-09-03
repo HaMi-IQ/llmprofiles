@@ -1,0 +1,473 @@
+<!-- Profile Viewer -->
+<div class="{{container_class}}">
+    <div class="profile-viewer">
+        <div class="viewer-header">
+            <h1>Profile Viewer</h1>
+            <p class="lead">Interactive viewer for LLMProfiles structured data definitions</p>
+        </div>
+        
+        <div class="viewer-controls">
+            <div class="profile-selector">
+                <label for="profile-select">Select Profile:</label>
+                <select id="profile-select">
+                    <option value="">Choose a profile...</option>
+                    {{#each categories}}
+                    <optgroup label="{{title}}">
+                        {{#each profiles}}
+                        <option value="{{../key}}/{{key}}/v1/index.jsonld">{{name}} ({{../name}})</option>
+                        {{/each}}
+                    </optgroup>
+                    {{/each}}
+                </select>
+            </div>
+            
+            <div class="viewer-actions">
+                <button id="load-profile" class="btn btn-primary" disabled>Load Profile</button>
+                <button id="validate-profile" class="btn btn-secondary" disabled>Validate</button>
+                <button id="download-profile" class="btn btn-secondary" disabled>Download</button>
+            </div>
+        </div>
+        
+        <div class="viewer-content">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="raw">Raw JSON-LD</button>
+                <button class="tab-btn" data-tab="formatted">Formatted View</button>
+                <button class="tab-btn" data-tab="schema">Schema Info</button>
+                <button class="tab-btn" data-tab="examples">Examples</button>
+            </div>
+            
+            <div class="tab-content active" id="raw">
+                <div class="code-viewer">
+                    <pre><code id="profile-json" class="language-json">Select a profile to view its definition...</code></pre>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="formatted">
+                <div class="formatted-content">
+                    <div id="profile-details">
+                        <p>Select a profile to view formatted details...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="schema">
+                <div class="schema-info">
+                    <div id="schema-details">
+                        <p>Select a profile to view schema information...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="examples">
+                <div class="examples-content">
+                    <div id="profile-examples">
+                        <p>Select a profile to view usage examples...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-viewer {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.viewer-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.viewer-controls {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--background);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+}
+
+.profile-selector label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.profile-selector select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 1rem;
+}
+
+.viewer-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.viewer-content {
+    background: var(--background);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--background-muted);
+}
+
+.tab-btn {
+    padding: 1rem 1.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+    background: var(--background);
+    border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+    padding: 2rem;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.code-viewer {
+    background: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.code-viewer pre {
+    margin: 0;
+    padding: 1.5rem;
+    overflow-x: auto;
+    background: none;
+    border: none;
+}
+
+.code-viewer code {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.formatted-content,
+.schema-info,
+.examples-content {
+    min-height: 400px;
+}
+
+.property-grid {
+    display: grid;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.property-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+}
+
+.property-label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.property-value {
+    color: var(--text-secondary);
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: var(--text-muted);
+}
+
+.error {
+    padding: 1rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius);
+    color: #dc2626;
+}
+
+@media (max-width: 768px) {
+    .viewer-controls {
+        grid-template-columns: 1fr;
+    }
+    
+    .viewer-actions {
+        justify-content: center;
+    }
+    
+    .tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const profileSelect = document.getElementById('profile-select');
+    const loadBtn = document.getElementById('load-profile');
+    const validateBtn = document.getElementById('validate-profile');
+    const downloadBtn = document.getElementById('download-profile');
+    const profileJsonEl = document.getElementById('profile-json');
+    const profileDetailsEl = document.getElementById('profile-details');
+    const schemaDetailsEl = document.getElementById('schema-details');
+    const profileExamplesEl = document.getElementById('profile-examples');
+    
+    let currentProfile = null;
+    
+    // Tab functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            this.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+    
+    // Profile selection
+    profileSelect.addEventListener('change', function() {
+        const selected = this.value;
+        loadBtn.disabled = !selected;
+        validateBtn.disabled = true;
+        downloadBtn.disabled = true;
+    });
+    
+    // Load profile
+    loadBtn.addEventListener('click', async function() {
+        const profilePath = profileSelect.value;
+        if (!profilePath) return;
+        
+        try {
+            loadBtn.disabled = true;
+            loadBtn.textContent = 'Loading...';
+            
+            const response = await fetch(`/profiles/${profilePath}`);
+            if (!response.ok) {
+                throw new Error(`Failed to load profile: ${response.statusText}`);
+            }
+            
+            currentProfile = await response.json();
+            
+            // Update raw view
+            profileJsonEl.textContent = JSON.stringify(currentProfile, null, 2);
+            
+            // Update formatted view
+            updateFormattedView(currentProfile);
+            
+            // Update schema view
+            updateSchemaView(currentProfile);
+            
+            // Update examples view
+            updateExamplesView(profilePath);
+            
+            validateBtn.disabled = false;
+            downloadBtn.disabled = false;
+            
+        } catch (error) {
+            profileJsonEl.textContent = `Error loading profile: ${error.message}`;
+            profileDetailsEl.innerHTML = `<div class="error">Error loading profile: ${error.message}</div>`;
+        } finally {
+            loadBtn.disabled = false;
+            loadBtn.textContent = 'Load Profile';
+        }
+    });
+    
+    // Validate profile
+    validateBtn.addEventListener('click', function() {
+        if (!currentProfile) return;
+        
+        const profilePath = profileSelect.value;
+        const profileKey = profilePath.split('/')[1];
+        
+        window.open(`/tools/validator.html?profile=${profileKey}`, '_blank');
+    });
+    
+    // Download profile
+    downloadBtn.addEventListener('click', function() {
+        if (!currentProfile) return;
+        
+        const blob = new Blob([JSON.stringify(currentProfile, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'profile.jsonld';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+    
+    function updateFormattedView(profile) {
+        const properties = [
+            { label: 'ID', value: profile['@id'] },
+            { label: 'Type', value: profile['@type'] },
+            { label: 'Label', value: profile['skos:prefLabel'] },
+            { label: 'Definition', value: profile['skos:definition'] },
+            { label: 'Scope Note', value: profile['skos:scopeNote'] },
+            { label: 'Example', value: profile['skos:example'] },
+            { label: 'See Also', value: profile['rdfs:seeAlso'] }
+        ];
+        
+        const html = `
+            <div class="property-grid">
+                ${properties.map(prop => 
+                    prop.value ? `
+                        <div class="property-item">
+                            <div class="property-label">${prop.label}:</div>
+                            <div class="property-value">${prop.value}</div>
+                        </div>
+                    ` : ''
+                ).join('')}
+            </div>
+            
+            ${profile['x:dos'] ? `
+                <h3>✅ Best Practices</h3>
+                <ul>
+                    ${profile['x:dos'].map(item => `<li>${item}</li>`).join('')}
+                </ul>
+            ` : ''}
+            
+            ${profile['x:donts'] ? `
+                <h3>❌ Avoid These</h3>
+                <ul>
+                    ${profile['x:donts'].map(item => `<li>${item}</li>`).join('')}
+                </ul>
+            ` : ''}
+        `;
+        
+        profileDetailsEl.innerHTML = html;
+    }
+    
+    function updateSchemaView(profile) {
+        const schemaUrl = profile['rdfs:seeAlso'];
+        const schemaType = schemaUrl ? schemaUrl.split('/').pop() : 'Unknown';
+        
+        const html = `
+            <h3>Schema.org Information</h3>
+            <div class="property-grid">
+                <div class="property-item">
+                    <div class="property-label">Schema Type:</div>
+                    <div class="property-value">
+                        <a href="${schemaUrl}" target="_blank">${schemaType}</a>
+                    </div>
+                </div>
+                <div class="property-item">
+                    <div class="property-label">Context:</div>
+                    <div class="property-value">${JSON.stringify(profile['@context'])}</div>
+                </div>
+            </div>
+            
+            <h3>Validation Resources</h3>
+            <ul>
+                <li><a href="${schemaUrl}" target="_blank">Schema.org ${schemaType}</a></li>
+                <li><a href="https://validator.schema.org/" target="_blank">Schema.org Validator</a></li>
+                <li><a href="https://search.google.com/test/rich-results" target="_blank">Google Rich Results Test</a></li>
+            </ul>
+        `;
+        
+        schemaDetailsEl.innerHTML = html;
+    }
+    
+    function updateExamplesView(profilePath) {
+        const basePath = profilePath.replace('/index.jsonld', '');
+        
+        const html = `
+            <h3>Implementation Examples</h3>
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Minimal Example</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Basic implementation with required properties only</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/profiles/${basePath}/examples/minimal.jsonld" class="btn btn-primary" target="_blank">View Example</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Rich Example</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Full-featured implementation with optional properties</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/profiles/${basePath}/examples/rich.jsonld" class="btn btn-primary" target="_blank">View Example</a>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Schema Files</h3>
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Page Schema</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>JSON Schema for validating page markup</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/profiles/${basePath}/page.schema.json" class="btn btn-secondary" target="_blank">View Schema</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Output Schema</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>JSON Schema for RAG/ML output validation</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/profiles/${basePath}/output.schema.json" class="btn btn-secondary" target="_blank">View Schema</a>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        profileExamplesEl.innerHTML = html;
+    }
+});
+</script>

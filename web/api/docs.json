@@ -8,7 +8,7 @@
   "description": "Complete API documentation for LLM Profiles discovery and access",
   "version": "1.0.0",
   "baseUrl": "https://llmprofiles.org",
-  "lastUpdated": "2025-09-03T15:06:37.667Z",
+  "lastUpdated": "2025-09-03T16:07:07.850Z",
   "endpoints": {
     "discovery": {
       "path": "/api/discovery.json",

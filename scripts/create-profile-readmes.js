@@ -532,18 +532,44 @@ For questions about this profile:
 `;
 }
 
+// Profile category mapping
+const PROFILE_CATEGORIES = {
+  'article': 'content',
+  'product-offer': 'business',
+  'event': 'interaction',
+  'course': 'content',
+  'jobposting': 'business',
+  'localbusiness': 'business',
+  'softwareapplication': 'technology',
+  'review': 'business',
+  'book': 'content',
+  'dataset': 'content',
+  'howto': 'content',
+  'recipe': 'content',
+  'videoobject': 'content',
+  'faqpage': 'interaction',
+  'qapage': 'interaction',
+  'software': 'technology'
+};
+
 // Create READMEs for all profiles
 Object.entries(profiles).forEach(([profileKey, profileData]) => {
-  const profileDir = path.join(__dirname, '..', profileKey);
+  const category = PROFILE_CATEGORIES[profileKey];
+  if (!category) {
+    console.log(`⚠️  No category mapping found for profile: ${profileKey}`);
+    return;
+  }
+  
+  const profileDir = path.join(__dirname, '..', 'profiles', category, profileKey, 'v1');
   const readmePath = path.join(profileDir, 'README.md');
   
   // Check if profile directory exists
   if (fs.existsSync(profileDir)) {
     const readmeContent = generateREADME(profileKey, profileData);
     fs.writeFileSync(readmePath, readmeContent);
-    console.log(`✅ Created README for ${profileData.name} profile`);
+    console.log(`✅ Created README for ${profileData.name} profile at ${category}/${profileKey}/v1/`);
   } else {
-    console.log(`⚠️  Profile directory not found: ${profileKey}`);
+    console.log(`⚠️  Profile directory not found: profiles/${category}/${profileKey}/v1/`);
   }
 });
 

@@ -4,15 +4,19 @@ Allow: /
 # Sitemaps
 Sitemap: https://llmprofiles.org/sitemap.xml
 
-# Allow access to all profile directories
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow certain paths
+Disallow: /api/server.js
+Disallow: /.well-known/
+Disallow: /dist/
+
+# Allow important resources
 Allow: /profiles/
-Allow: /schemas/
-Allow: /examples/
-Allow: /training/
 Allow: /tools/
-
-# Well-known directory for discovery
-Allow: /.well-known/
-
-# API endpoints
-Allow: /api/
+Allow: /examples/
+Allow: /schemas/
+Allow: /training/
+Allow: /images/
+Allow: /logo.png

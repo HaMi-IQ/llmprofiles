@@ -272,8 +272,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Build documentation
+      - name: Generate home page
+        run: npm run build:home
+        
+      - name: Build enhanced documentation
         run: npm run build:docs
+        
+      - name: Generate profile viewer
+        run: npm run build:viewer
         
       - name: Convert markdown to HTML
         run: npm run build:md

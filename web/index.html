@@ -1,108 +1,709 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LLMProfiles - Structured Data for AI</title>
-    <meta name="description" content="Profile Registry & Remote Context Graphs for LLM-friendly structured data">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Primary Meta Tags -->
+    <title>LLMProfiles - Structured Data for AI Applications</title>
+    <meta name="title" content="LLMProfiles - Structured Data for AI Applications">
+    <meta name="description" content="Profile Registry & Remote Context Graphs for LLM-friendly structured data. Discover, validate, and implement structured data profiles designed for AI applications and semantic web.">
+    <meta name="keywords" content="llm profiles, structured data, ai, json-ld, schema.org, semantic web, seo, machine learning, artificial intelligence">
+    <meta name="author" content="LLMProfiles">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://llmprofiles.org/">
+    <meta property="og:title" content="LLMProfiles - Structured Data for AI Applications">
+    <meta property="og:description" content="Profile Registry & Remote Context Graphs for LLM-friendly structured data. Discover, validate, and implement structured data profiles designed for AI applications and semantic web.">
+    <meta property="og:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+    <meta property="og:site_name" content="LLMProfiles">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://llmprofiles.org/">
+    <meta property="twitter:title" content="LLMProfiles - Structured Data for AI Applications">
+    <meta property="twitter:description" content="Profile Registry & Remote Context Graphs for LLM-friendly structured data. Discover, validate, and implement structured data profiles designed for AI applications and semantic web.">
+    <meta property="twitter:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://llmprofiles.org/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "LLMProfiles",
+  "description": "Open source structured data profiles for AI applications and semantic web",
+  "url": "https://llmprofiles.org",
+  "image": "https://llmprofiles.org/images/llmprofiles-overview.jpg",
+  "author": {
+    "@type": "Organization",
+    "name": "LLMProfiles",
+    "url": "https://llmprofiles.org"
+  }
+}
+</script>
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- CSS -->
     <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --background: #ffffff;
+            --background-secondary: #f8fafc;
+            --background-muted: #f1f5f9;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--background-secondary);
+            font-size: 16px;
+        }
+        
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            background: #f8f9fa;
+            padding: 0 1rem;
         }
-        .header {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        
+        .container-narrow {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
+        
+        /* Header */
+        .site-header {
+            background: var(--background);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        
+        .logo img {
+            width: 32px;
+            height: 32px;
+            margin-right: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav a:hover,
+        .nav a.active {
+            color: var(--primary-color);
+        }
+        
+        /* Main content */
+        .main-content {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-footer {
+            padding: 1rem 1.5rem;
+            background: var(--background-muted);
+            border-top: 1px solid var(--border-light);
+        }
+        
+        /* Grid layouts */
         .grid {
             display: grid;
+            gap: 1.5rem;
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+        
+        .grid-3 {
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
         }
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
-        .card h3 {
-            color: #2563eb;
-            margin-top: 0;
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0 0 1rem 0;
+            line-height: 1.2;
+            color: var(--text-primary);
         }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        p {
+            margin: 0 0 1rem 0;
+            color: var(--text-secondary);
+        }
+        
+        .lead {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+        
+        .text-muted {
+            color: var(--text-muted);
+        }
+        
+        /* Buttons */
         .btn {
-            display: inline-block;
-            background: #2563eb;
-            color: white;
-            padding: 12px 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 500;
             text-decoration: none;
-            border-radius: 6px;
-            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
         }
-        .btn:hover {
-            background: #1d4ed8;
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
         }
-        .logo {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 20px;
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            color: white;
         }
+        
+        .btn-secondary {
+            background: var(--background-muted);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+        }
+        
+        /* Links */
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Breadcrumbs */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1rem;
+            background: var(--background);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--primary-color);
+        }
+        
+        .breadcrumb-separator {
+            color: var(--text-muted);
+        }
+        
+        /* Footer */
+        .site-footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-section a {
+            color: #cbd5e1;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container, .container-narrow {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .nav a {
+                font-size: 0.875rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Custom page styles placeholder */
+        
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="/logo.png" alt="LLMProfiles" class="logo">
-        <h1>LLMProfiles</h1>
-        <p>Profile Registry & Remote Context Graphs for LLM-friendly structured data</p>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only">Skip to main content</a>
+    
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <img src="/logo.png" alt="LLMProfiles">
+                    LLMProfiles
+                </a>
+                <nav class="nav">
+                    <a href="/profiles/" >Profiles</a>
+                    <a href="/tools/validator.html" >Tools</a>
+                    <a href="/examples/" >Examples</a>
+                    <a href="/api/" >API</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main content -->
+    <main id="main-content" class="main-content">
+        
+        
+        <!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>LLMProfiles</h1>
+                <p class="lead">Profile Registry & Remote Context Graphs for LLM-friendly structured data</p>
+                <p>Discover, validate, and implement structured data profiles designed specifically for AI applications, semantic web, and enhanced SEO.</p>
+                <div class="hero-actions">
+                    <a href="/profiles/" class="btn btn-primary">Browse Profiles</a>
+                    <a href="/tools/validator.html" class="btn btn-secondary">Try Validator</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="/images/llmprofiles-overview.jpg" alt="LLMProfiles Overview" />
+            </div>
+        </div>
     </div>
+</section>
 
-    <div class="grid">
-        <div class="card">
-            <h3>📋 Profiles</h3>
-            <p>Browse our comprehensive collection of structured data profiles for various content types and business scenarios.</p>
-            <a href="/profiles/" class="btn">View Profiles</a>
-        </div>
+<!-- Features Grid -->
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">What You Can Do</h2>
+        <div class="grid grid-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3>📋 Browse Profiles</h3>
+                </div>
+                <div class="card-body">
+                    <p>Explore our comprehensive collection of structured data profiles for various content types and business scenarios.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/profiles/" class="btn btn-primary">View Profiles</a>
+                </div>
+            </div>
 
-        <div class="card">
-            <h3>🔧 Tools</h3>
-            <p>Validate your structured data with our validation tools and ensure compliance with LLMProfiles standards.</p>
-            <a href="/tools/validator.html" class="btn">Validator Tool</a>
-        </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>🔧 Validate Data</h3>
+                </div>
+                <div class="card-body">
+                    <p>Use our validation tools to ensure your structured data complies with LLMProfiles standards and schema definitions.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/tools/validator.html" class="btn btn-primary">Validator Tool</a>
+                </div>
+            </div>
 
-        <div class="card">
-            <h3>📚 Examples</h3>
-            <p>Explore real-world examples and implementations to understand how to use LLMProfiles effectively.</p>
-            <a href="/examples/" class="btn">View Examples</a>
-        </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>💡 View Examples</h3>
+                </div>
+                <div class="card-body">
+                    <p>Learn from real-world examples and implementations to understand how to use LLMProfiles effectively.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/examples/" class="btn btn-primary">View Examples</a>
+                </div>
+            </div>
 
-        <div class="card">
-            <h3>🎓 Training</h3>
-            <p>Access training datasets and learning materials to understand structured data patterns.</p>
-            <a href="/training/" class="btn">Training Data</a>
-        </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>🎓 Training Data</h3>
+                </div>
+                <div class="card-body">
+                    <p>Access training datasets and learning materials to understand structured data patterns for AI applications.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/training/" class="btn btn-primary">Training Data</a>
+                </div>
+            </div>
 
-        <div class="card">
-            <h3>🔗 Schemas</h3>
-            <p>JSON Schema definitions for validation and documentation of structured data formats.</p>
-            <a href="/schemas/" class="btn">View Schemas</a>
-        </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>📖 Schema Docs</h3>
+                </div>
+                <div class="card-body">
+                    <p>Review JSON Schema definitions for validation and comprehensive documentation of data formats.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/schemas/" class="btn btn-primary">View Schemas</a>
+                </div>
+            </div>
 
-        <div class="card">
-            <h3>🌐 API</h3>
-            <p>Programmatic access to LLMProfiles data and discovery endpoints.</p>
-            <a href="/api/" class="btn">API Documentation</a>
+            <div class="card">
+                <div class="card-header">
+                    <h3>🌐 API Access</h3>
+                </div>
+                <div class="card-body">
+                    <p>Integrate LLMProfiles into your applications with our comprehensive API and discovery endpoints.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/api/" class="btn btn-primary">API Documentation</a>
+                </div>
+            </div>
         </div>
     </div>
+</section>
 
-    <footer style="text-align: center; margin-top: 40px; color: #666;">
-        <p>&copy; 2024 LLMProfiles. Open source structured data for AI.</p>
+<!-- Profile Categories -->
+<section class="categories">
+    <div class="container">
+        <h2 class="section-title">Profile Categories</h2>
+        <div class="grid grid-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>🏢 Business Profiles</h3>
+                </div>
+                <div class="card-body">
+                    <p>Structured data for business listings, job postings, product offers, and reviews.</p>
+                    <ul style="list-style: none; padding: 0; margin: 1rem 0 0 0;">
+                        <li><a href="/profiles/business/localbusiness/v1/">Local Business</a></li>
+                        <li><a href="/profiles/business/jobposting/v1/">Job Posting</a></li>
+                        <li><a href="/profiles/business/product-offer/v1/">Product Offer</a></li>
+                        <li><a href="/profiles/business/review/v1/">Review</a></li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/profiles/business/" class="btn btn-secondary">View All Business</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>📄 Content Profiles</h3>
+                </div>
+                <div class="card-body">
+                    <p>Profiles for articles, books, courses, datasets, and various content types.</p>
+                    <ul style="list-style: none; padding: 0; margin: 1rem 0 0 0;">
+                        <li><a href="/profiles/content/article/v1/">Article</a></li>
+                        <li><a href="/profiles/content/book/v1/">Book</a></li>
+                        <li><a href="/profiles/content/course/v1/">Course</a></li>
+                        <li><a href="/profiles/content/recipe/v1/">Recipe</a></li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/profiles/content/" class="btn btn-secondary">View All Content</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>🤝 Interaction Profiles</h3>
+                </div>
+                <div class="card-body">
+                    <p>Structured data for user interactions, FAQ pages, Q&A, and events.</p>
+                    <ul style="list-style: none; padding: 0; margin: 1rem 0 0 0;">
+                        <li><a href="/profiles/interaction/faqpage/v1/">FAQ Page</a></li>
+                        <li><a href="/profiles/interaction/qapage/v1/">Q&A Page</a></li>
+                        <li><a href="/profiles/interaction/event/v1/">Event</a></li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/profiles/interaction/" class="btn btn-secondary">View All Interaction</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>💻 Technology Profiles</h3>
+                </div>
+                <div class="card-body">
+                    <p>Profiles for software applications, tools, and technology-related content.</p>
+                    <ul style="list-style: none; padding: 0; margin: 1rem 0 0 0;">
+                        <li><a href="/profiles/technology/softwareapplication/v1/">Software Application</a></li>
+                        <li><a href="/profiles/technology/software/v1/">Software</a></li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/profiles/technology/" class="btn btn-secondary">View All Technology</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.hero-text h1 {
+    color: white;
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-text .lead {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.hero-text p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2rem;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+}
+
+.features, .categories {
+    padding: 4rem 0;
+}
+
+.categories {
+    background: var(--background-muted);
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-actions {
+        justify-content: center;
+    }
+}
+</style>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>LLMProfiles</h3>
+                    <p style="color: #cbd5e1;">Structured data profiles for AI applications and semantic web.</p>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles">View on GitHub</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="/profiles/">Browse Profiles</a>
+                    <a href="/tools/validator.html">Validator Tool</a>
+                    <a href="/examples/">Examples</a>
+                    <a href="/api/">API Documentation</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <a href="/profiles/business/">Business</a>
+                    <a href="/profiles/content/">Content</a>
+                    <a href="/profiles/interaction/">Interaction</a>
+                    <a href="/profiles/technology/">Technology</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles/issues">Report Issues</a>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles/discussions">Discussions</a>
+                    <a href="/api/">API Reference</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 LLMProfiles. Open source structured data for AI. Licensed under MIT.</p>
+            </div>
+        </div>
     </footer>
+    
+    <!-- Analytics placeholder -->
+    
 </body>
 </html>

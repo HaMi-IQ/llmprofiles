@@ -1,61 +1,992 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Article Profile - LLM Profiles</title>
-    <meta name="description" content="Article structured data profile for AI applications and SEO optimization">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Primary Meta Tags -->
+    <title>Article Profile - LLMProfiles</title>
+    <meta name="title" content="Article Profile - LLMProfiles">
+    <meta name="description" content="Blog posts, articles, and editorial content. Schema.org Article profile for AI applications and structured data.">
+    <meta name="keywords" content="article, article, structured data, schema.org, json-ld, ai, llm">
+    <meta name="author" content="LLMProfiles">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://llmprofiles.org/profiles/content/article/v1/">
+    <meta property="og:title" content="Article Profile - LLMProfiles">
+    <meta property="og:description" content="Blog posts, articles, and editorial content. Schema.org Article profile for AI applications and structured data.">
+    <meta property="og:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+    <meta property="og:site_name" content="LLMProfiles">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://llmprofiles.org/profiles/content/article/v1/">
+    <meta property="twitter:title" content="Article Profile - LLMProfiles">
+    <meta property="twitter:description" content="Blog posts, articles, and editorial content. Schema.org Article profile for AI applications and structured data.">
+    <meta property="twitter:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://llmprofiles.org/profiles/content/article/v1/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Article Profile - LLMProfiles",
+  "description": "Blog posts, articles, and editorial content. Schema.org Article profile for AI applications and structured data.",
+  "url": "https://llmprofiles.org/profiles/content/article/v1/",
+  "dateModified": "2025-09-03T16:07:04.691Z"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://llmprofiles.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Profiles",
+      "item": "https://llmprofiles.org/profiles/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Content",
+      "item": "https://llmprofiles.org/profiles/content/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Article"
+    }
+  ]
+}
+</script>
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- CSS -->
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #e1e5e9; }
-        .header h1 { color: #2c3e50; margin-bottom: 10px; }
-        .header p { color: #7f8c8d; }
-        .content { background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 20px; }
-        .content h2 { color: #2c3e50; margin-top: 0; }
-        .file-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
-        .file-link { background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e5e9; text-decoration: none; color: #3498db; display: block; }
-        .file-link:hover { background: #f8f9fa; }
-        .file-link h3 { margin: 0 0 10px 0; color: #2c3e50; }
-        .file-link p { margin: 0; color: #6b7280; font-size: 0.9em; }
-        .back-link { text-align: center; margin-top: 30px; }
-        .back-link a { color: #3498db; text-decoration: none; }
-        .back-link a:hover { text-decoration: underline; }
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --background: #ffffff;
+            --background-secondary: #f8fafc;
+            --background-muted: #f1f5f9;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--background-secondary);
+            font-size: 16px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .container-narrow {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header */
+        .site-header {
+            background: var(--background);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        
+        .logo img {
+            width: 32px;
+            height: 32px;
+            margin-right: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav a:hover,
+        .nav a.active {
+            color: var(--primary-color);
+        }
+        
+        /* Main content */
+        .main-content {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-footer {
+            padding: 1rem 1.5rem;
+            background: var(--background-muted);
+            border-top: 1px solid var(--border-light);
+        }
+        
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+        
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .grid-4 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0 0 1rem 0;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        p {
+            margin: 0 0 1rem 0;
+            color: var(--text-secondary);
+        }
+        
+        .lead {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+        
+        .text-muted {
+            color: var(--text-muted);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--background-muted);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--border-light);
+            color: var(--text-primary);
+        }
+        
+        /* Links */
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Breadcrumbs */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            padding: 0.75rem 1rem;
+            background: var(--background);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--primary-color);
+        }
+        
+        .breadcrumb-separator {
+            color: var(--text-muted);
+        }
+        
+        /* Footer */
+        .site-footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-section a {
+            color: #cbd5e1;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container, .container-narrow {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .nav a {
+                font-size: 0.875rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Custom page styles placeholder */
+        
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Article Profile</h1>
-        <p>Content Category - Version v1</p>
-    </div>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only">Skip to main content</a>
     
-    <div class="content">
-        <h2>Profile Files</h2>
-        <p>This directory contains the following files for the Article profile:</p>
-        
-        <div class="file-links">
-            <a href="index.jsonld" class="file-link">
-                <h3>Profile Definition</h3>
-                <p>JSON-LD profile definition with all properties and constraints</p>
-            </a>
-            <a href="page.schema.json" class="file-link">
-                <h3>Page Schema</h3>
-                <p>JSON Schema for validating page markup</p>
-            </a>
-            <a href="output.schema.json" class="file-link">
-                <h3>Output Schema</h3>
-                <p>JSON Schema for RAG/ML output validation</p>
-            </a>
-            <a href="training.jsonl" class="file-link">
-                <h3>Training Data</h3>
-                <p>Sample training data in JSONL format</p>
-            </a>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <img src="/logo.png" alt="LLMProfiles">
+                    LLMProfiles
+                </a>
+                <nav class="nav">
+                    <a href="/profiles/" class="active">Profiles</a>
+                    <a href="/tools/validator.html" >Tools</a>
+                    <a href="/examples/" >Examples</a>
+                    <a href="/api/" >API</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main content -->
+    <main id="main-content" class="main-content">
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a><span class="breadcrumb-separator">/</span><a href="/profiles/">Profiles</a><span class="breadcrumb-separator">/</span><a href="/profiles/content/">Content</a><span class="breadcrumb-separator">/</span><span>Article</span>
+            </nav>
         </div>
         
-        <div class="back-link">
-            <a href="/profiles/">← Back to All Profiles</a> | 
-            <a href="/profile-viewer.html">Profile Viewer</a> | 
-            <a href="/">Home</a>
+        <!-- Profile Header -->
+<section class="profile-header">
+    <div class="container">
+        <div class="profile-title">
+            <div class="profile-icon">📰</div>
+            <div>
+                <h1>Article Profile</h1>
+                <p class="profile-meta">Content Category • Version v1</p>
+            </div>
+        </div>
+        <p class="profile-description">Blog posts, articles, and editorial content</p>
+    </div>
+</section>
+
+<!-- Profile Navigation -->
+<section class="profile-nav">
+    <div class="container">
+        <nav class="profile-tabs">
+            <button class="tab-btn active" data-tab="overview">Overview</button>
+            <button class="tab-btn" data-tab="files">Files</button>
+            <button class="tab-btn" data-tab="examples">Examples</button>
+            <button class="tab-btn" data-tab="schema">Schema</button>
+        </nav>
+    </div>
+</section>
+
+<!-- Profile Content -->
+<section class="profile-content">
+    <div class="container">
+        <!-- Overview Tab -->
+        <div class="tab-content active" id="overview">
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Profile Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>Schema Type:</strong>
+                                <span>Article</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Version:</strong>
+                                <span>v1</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Category:</strong>
+                                <span>Content</span>
+                            </div>
+                            <div class="info-item">
+                                <strong>Profile URL:</strong>
+                                <span><a href="https://llmprofiles.org/profiles/content/article/v1/" target="_blank">https://llmprofiles.org/profiles/content/article/v1/</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="action-buttons">
+                            <a href="index.jsonld" class="btn btn-primary" target="_blank">
+                                📄 View Profile Definition
+                            </a>
+                            <a href="/tools/validator.html?profile=article" class="btn btn-secondary">
+                                ✅ Validate Data
+                            </a>
+                            <a href="examples/" class="btn btn-secondary">
+                                💡 View Examples
+                            </a>
+                            <a href="training.jsonl" class="btn btn-secondary" download>
+                                📊 Download Training Data
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div class="grid grid-2">
+                
+                <div class="card success-card">
+                    <div class="card-header">
+                        <h3>✅ Best Practices</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            
+                            <li>Use schema:Article with proper author, datePublished, and headline.</li>
+                            
+                            <li>Include articleBody or text content.</li>
+                            
+                            <li>Add relevant keywords and categories.</li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                
+
+                
+                <div class="card warning-card">
+                    <div class="card-header">
+                        <h3>❌ Avoid These</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            
+                            <li>Do not use for product descriptions or promotional content.</li>
+                            
+                            <li>Do not use for FAQ pages or Q&A content.</li>
+                            
+                            <li>Do not use for event listings or job postings.</li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Files Tab -->
+        <div class="tab-content" id="files">
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📄 Profile Definition</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>JSON-LD profile definition with all properties and constraints</p>
+                        <div class="file-meta">
+                            <span class="file-type">JSON-LD</span>
+                            <span class="file-size">~2KB</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="index.jsonld" class="btn btn-primary" target="_blank">View File</a>
+                        <a href="index.jsonld" class="btn btn-secondary" download>Download</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔧 Page Schema</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>JSON Schema for validating page markup and on-page structured data</p>
+                        <div class="file-meta">
+                            <span class="file-type">JSON Schema</span>
+                            <span class="file-size">~3KB</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="page.schema.json" class="btn btn-primary" target="_blank">View Schema</a>
+                        <a href="page.schema.json" class="btn btn-secondary" download>Download</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📊 Output Schema</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>JSON Schema for RAG/ML output validation and data extraction</p>
+                        <div class="file-meta">
+                            <span class="file-type">JSON Schema</span>
+                            <span class="file-size">~4KB</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="output.schema.json" class="btn btn-primary" target="_blank">View Schema</a>
+                        <a href="output.schema.json" class="btn btn-secondary" download>Download</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🎓 Training Data</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Sample training data in JSONL format for fine-tuning LLMs</p>
+                        <div class="file-meta">
+                            <span class="file-type">JSONL</span>
+                            <span class="file-size">~5KB</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="training.jsonl" class="btn btn-primary" target="_blank">View Data</a>
+                        <a href="training.jsonl" class="btn btn-secondary" download>Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Examples Tab -->
+        <div class="tab-content" id="examples">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Implementation Examples</h3>
+                </div>
+                <div class="card-body">
+                    <p>Learn how to implement this profile with real-world examples:</p>
+                    <div class="grid grid-2">
+                        <div class="example-card">
+                            <h4>Minimal Example</h4>
+                            <p>Basic implementation with required properties only</p>
+                            <a href="examples/minimal.jsonld" class="btn btn-secondary" target="_blank">View Example</a>
+                        </div>
+                        <div class="example-card">
+                            <h4>Rich Example</h4>
+                            <p>Full-featured implementation with all optional properties</p>
+                            <a href="examples/rich.jsonld" class="btn btn-secondary" target="_blank">View Example</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code snippet example -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Basic Implementation</h3>
+                </div>
+                <div class="card-body">
+                    <pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://llmprofiles.org/profiles/content/article/v1/",
+  "@type": "Article",
+  "name": "Example Article",
+  "description": "This is an example Article implementation."
+}
+&lt;/script&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schema Tab -->
+        <div class="tab-content" id="schema">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Schema Information</h3>
+                </div>
+                <div class="card-body">
+                    <p>This profile is based on <a href="https://schema.org/Article" target="_blank">Schema.org Article</a> and extends it with LLM-specific properties and constraints.</p>
+                    
+                    <h4>Key Properties:</h4>
+                    <ul>
+                        <li><strong>@context:</strong> Profile context URL</li>
+                        <li><strong>@type:</strong> Article</li>
+                        <li><strong>name:</strong> Required name/title</li>
+                        <li><strong>description:</strong> Required description</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Validation Tools</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Use these tools to validate your implementation:</p>
+                        <ul>
+                            <li><a href="/tools/validator.html?profile=article">LLMProfiles Validator</a></li>
+                            <li><a href="https://validator.schema.org/" target="_blank">Schema.org Validator</a></li>
+                            <li><a href="https://search.google.com/test/rich-results" target="_blank">Google Rich Results Test</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Related Resources</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li><a href="https://schema.org/Article" target="_blank">Schema.org Article</a></li>
+                            <li><a href="https://json-ld.org/" target="_blank">JSON-LD Specification</a></li>
+                            <li><a href="https://developers.google.com/search/docs/advanced/structured-data" target="_blank">Google Structured Data</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</section>
+
+<style>
+.profile-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 3rem 0;
+}
+
+.profile-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.profile-icon {
+    font-size: 3rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+}
+
+.profile-title h1 {
+    color: white;
+    margin: 0;
+}
+
+.profile-meta {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.profile-description {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.125rem;
+    max-width: 800px;
+}
+
+.profile-nav {
+    background: var(--background);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    position: sticky;
+    top: 73px;
+    z-index: 90;
+}
+
+.profile-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tab-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all 0.2s;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.profile-content {
+    padding: 2rem 0;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.info-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.action-buttons {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.use-cases-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.use-cases-list li {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--primary-color);
+}
+
+.success-card .card-header {
+    background: #ecfdf5;
+    border-bottom: 1px solid #d1fae5;
+}
+
+.warning-card .card-header {
+    background: #fef3c7;
+    border-bottom: 1px solid #fde68a;
+}
+
+.file-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.file-type,
+.file-size {
+    padding: 0.25rem 0.5rem;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.example-card {
+    padding: 1rem;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+}
+
+.example-card h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.example-card p {
+    margin: 0 0 1rem 0;
+    font-size: 0.875rem;
+}
+
+pre {
+    background: var(--background-muted);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+    overflow-x: auto;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+}
+
+code {
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .profile-title {
+        text-align: center;
+        flex-direction: column;
+    }
+    
+    .profile-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+}
+</style>
+
+<script>
+// Tab functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            
+            // Remove active class from all buttons and contents
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding content
+            this.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+});
+</script>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>LLMProfiles</h3>
+                    <p style="color: #cbd5e1;">Structured data profiles for AI applications and semantic web.</p>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles">View on GitHub</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="/profiles/">Browse Profiles</a>
+                    <a href="/tools/validator.html">Validator Tool</a>
+                    <a href="/examples/">Examples</a>
+                    <a href="/api/">API Documentation</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <a href="/profiles/business/">Business</a>
+                    <a href="/profiles/content/">Content</a>
+                    <a href="/profiles/interaction/">Interaction</a>
+                    <a href="/profiles/technology/">Technology</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles/issues">Report Issues</a>
+                    <a href="https://github.com/HaMi-IQ/llmprofiles/discussions">Discussions</a>
+                    <a href="/api/">API Reference</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 LLMProfiles. Open source structured data for AI. Licensed under MIT.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Analytics placeholder -->
+    
 </body>
 </html>

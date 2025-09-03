@@ -1,0 +1,114 @@
+<div class="container">
+    <div class="category-header">
+        <div class="category-icon">{{category_icon}}</div>
+        <div>
+            <h1>{{category_title}}</h1>
+            <p class="lead">{{category_description}}</p>
+        </div>
+    </div>
+    
+    <div class="profiles-grid">
+        {{#each profiles}}
+        <div class="card profile-card">
+            <div class="card-header">
+                <div class="profile-icon">{{icon}}</div>
+                <h3>{{name}}</h3>
+            </div>
+            <div class="card-body">
+                <p>{{description}}</p>
+                <div class="profile-meta">
+                    <span class="schema-type">{{schemaType}}</span>
+                    <span class="version">v1</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{key}}/v1/" class="btn btn-primary">View Profile</a>
+                <a href="/tools/validator.html?profile={{key}}" class="btn btn-secondary">Validate</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<style>
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.category-icon {
+    font-size: 4rem;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-muted);
+    border-radius: var(--radius-lg);
+}
+
+.profiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.profile-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-card .profile-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+}
+
+.profile-card h3 {
+    margin: 0;
+}
+
+.profile-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.schema-type,
+.version {
+    padding: 0.25rem 0.5rem;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.card-footer {
+    display: flex;
+    gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .category-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profiles-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-footer {
+        flex-direction: column;
+    }
+}
+</style>

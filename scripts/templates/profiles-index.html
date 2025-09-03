@@ -1,0 +1,104 @@
+<div class="container">
+    <div class="profiles-header">
+        <h1>All Profiles</h1>
+        <p class="lead">Discover structured data profiles designed for AI applications and semantic web.</p>
+    </div>
+    
+    <div class="categories-grid">
+        {{#each categories}}
+        <div class="card category-card">
+            <div class="card-header">
+                <div class="category-icon">{{icon}}</div>
+                <h2>{{title}}</h2>
+            </div>
+            <div class="card-body">
+                <p>{{description}}</p>
+                <div class="profile-list">
+                    {{profile_links_html}}
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{key}}/" class="btn btn-primary">View All {{name}}</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<style>
+.profiles-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+}
+
+.category-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.category-card .category-icon {
+    font-size: 2.5rem;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+}
+
+.category-card h2 {
+    margin: 0;
+}
+
+.profile-list {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--background-muted);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.profile-link:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.profile-link .profile-icon {
+    font-size: 1.25rem;
+}
+
+.profile-link .profile-name {
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .category-card .card-header {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>

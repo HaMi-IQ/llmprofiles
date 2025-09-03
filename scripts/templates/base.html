@@ -1,41 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" prefix="og: http://ogp.me/ns#">
+<html lang="{{lang}}" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2563eb">
     
     <!-- Primary Meta Tags -->
-    <title>All Profiles - LLMProfiles</title>
-    <meta name="title" content="All Profiles - LLMProfiles">
-    <meta name="description" content="Browse all available structured data profiles for AI applications and semantic web.">
-    <meta name="keywords" content="llm, ai, structured data, json-ld, schema.org, semantic web">
-    <meta name="author" content="LLMProfiles">
+    <title>{{title}}</title>
+    <meta name="title" content="{{title}}">
+    <meta name="description" content="{{description}}">
+    <meta name="keywords" content="{{keywords}}">
+    <meta name="author" content="{{author}}">
     
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://llmprofiles.org/profiles/">
-    <meta property="og:title" content="All Profiles - LLMProfiles">
-    <meta property="og:description" content="Browse all available structured data profiles for AI applications and semantic web.">
-    <meta property="og:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+    <meta property="og:type" content="{{og_type}}">
+    <meta property="og:url" content="{{canonical_url}}">
+    <meta property="og:title" content="{{title}}">
+    <meta property="og:description" content="{{description}}">
+    <meta property="og:image" content="{{og_image}}">
     <meta property="og:site_name" content="LLMProfiles">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://llmprofiles.org/profiles/">
-    <meta property="twitter:title" content="All Profiles - LLMProfiles">
-    <meta property="twitter:description" content="Browse all available structured data profiles for AI applications and semantic web.">
-    <meta property="twitter:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+    <meta property="twitter:url" content="{{canonical_url}}">
+    <meta property="twitter:title" content="{{title}}">
+    <meta property="twitter:description" content="{{description}}">
+    <meta property="twitter:image" content="{{og_image}}">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://llmprofiles.org/profiles/">
+    <link rel="canonical" href="{{canonical_url}}">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
     
     <!-- Schema.org structured data -->
-    
+    {{structured_data}}
     
     <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -371,7 +371,7 @@
         }
         
         /* Custom page styles placeholder */
-        
+        {{custom_styles}}
     </style>
 </head>
 <body>
@@ -387,10 +387,10 @@
                     LLMProfiles
                 </a>
                 <nav class="nav">
-                    <a href="/profiles/" class="active">Profiles</a>
-                    <a href="/tools/validator.html" >Tools</a>
-                    <a href="/examples/" >Examples</a>
-                    <a href="/api/" >API</a>
+                    <a href="/profiles/" {{#if nav_profiles}}class="active"{{/if}}>Profiles</a>
+                    <a href="/tools/validator.html" {{#if nav_tools}}class="active"{{/if}}>Tools</a>
+                    <a href="/examples/" {{#if nav_examples}}class="active"{{/if}}>Examples</a>
+                    <a href="/api/" {{#if nav_api}}class="active"{{/if}}>API</a>
                 </nav>
             </div>
         </div>
@@ -398,213 +398,9 @@
     
     <!-- Main content -->
     <main id="main-content" class="main-content">
-        <div class="container">
-            <nav class="breadcrumb" aria-label="Breadcrumb">
-                <a href="/">Home</a><span class="breadcrumb-separator">/</span><span>Profiles</span>
-            </nav>
-        </div>
+        {{breadcrumb_html}}
         
-        <div class="container">
-    <div class="profiles-header">
-        <h1>All Profiles</h1>
-        <p class="lead">Discover structured data profiles designed for AI applications and semantic web.</p>
-    </div>
-    
-    <div class="categories-grid">
-        
-        <div class="card category-card">
-            <div class="card-header">
-                <div class="category-icon">🏢</div>
-                <h2>Business Profiles</h2>
-            </div>
-            <div class="card-body">
-                <p>Structured data profiles for business-related content including local business listings, job postings, product offers, and reviews.</p>
-                <div class="profile-list">
-                    <a href="business/localbusiness/v1/" class="profile-link">
-                    <span class="profile-icon">🏢</span>
-                    <span class="profile-name">Local Business</span>
-                </a><a href="business/jobposting/v1/" class="profile-link">
-                    <span class="profile-icon">💼</span>
-                    <span class="profile-name">Job Posting</span>
-                </a><a href="business/product-offer/v1/" class="profile-link">
-                    <span class="profile-icon">🛍️</span>
-                    <span class="profile-name">Product Offer</span>
-                </a><a href="business/review/v1/" class="profile-link">
-                    <span class="profile-icon">⭐</span>
-                    <span class="profile-name">Review</span>
-                </a>
-                </div>
-            </div>
-            <div class="card-footer">
-                <a href="business/" class="btn btn-primary">View All Business</a>
-            </div>
-        </div>
-        
-        <div class="card category-card">
-            <div class="card-header">
-                <div class="category-icon">📄</div>
-                <h2>Content Profiles</h2>
-            </div>
-            <div class="card-body">
-                <p>Profiles for various content types including articles, books, courses, datasets, and multimedia content.</p>
-                <div class="profile-list">
-                    <a href="content/article/v1/" class="profile-link">
-                    <span class="profile-icon">📰</span>
-                    <span class="profile-name">Article</span>
-                </a><a href="content/book/v1/" class="profile-link">
-                    <span class="profile-icon">📚</span>
-                    <span class="profile-name">Book</span>
-                </a><a href="content/course/v1/" class="profile-link">
-                    <span class="profile-icon">🎓</span>
-                    <span class="profile-name">Course</span>
-                </a><a href="content/dataset/v1/" class="profile-link">
-                    <span class="profile-icon">📊</span>
-                    <span class="profile-name">Dataset</span>
-                </a><a href="content/howto/v1/" class="profile-link">
-                    <span class="profile-icon">📝</span>
-                    <span class="profile-name">How-to</span>
-                </a><a href="content/recipe/v1/" class="profile-link">
-                    <span class="profile-icon">🍳</span>
-                    <span class="profile-name">Recipe</span>
-                </a><a href="content/videoobject/v1/" class="profile-link">
-                    <span class="profile-icon">🎥</span>
-                    <span class="profile-name">Video Object</span>
-                </a>
-                </div>
-            </div>
-            <div class="card-footer">
-                <a href="content/" class="btn btn-primary">View All Content</a>
-            </div>
-        </div>
-        
-        <div class="card category-card">
-            <div class="card-header">
-                <div class="category-icon">🤝</div>
-                <h2>Interaction Profiles</h2>
-            </div>
-            <div class="card-body">
-                <p>Structured data for user interactions including FAQ pages, Q&A pages, and events.</p>
-                <div class="profile-list">
-                    <a href="interaction/faqpage/v1/" class="profile-link">
-                    <span class="profile-icon">❓</span>
-                    <span class="profile-name">FAQ Page</span>
-                </a><a href="interaction/qapage/v1/" class="profile-link">
-                    <span class="profile-icon">💬</span>
-                    <span class="profile-name">Q&A Page</span>
-                </a><a href="interaction/event/v1/" class="profile-link">
-                    <span class="profile-icon">📅</span>
-                    <span class="profile-name">Event</span>
-                </a>
-                </div>
-            </div>
-            <div class="card-footer">
-                <a href="interaction/" class="btn btn-primary">View All Interaction</a>
-            </div>
-        </div>
-        
-        <div class="card category-card">
-            <div class="card-header">
-                <div class="category-icon">💻</div>
-                <h2>Technology Profiles</h2>
-            </div>
-            <div class="card-body">
-                <p>Profiles for software applications, development tools, and technology-related content.</p>
-                <div class="profile-list">
-                    <a href="technology/softwareapplication/v1/" class="profile-link">
-                    <span class="profile-icon">💻</span>
-                    <span class="profile-name">Software Application</span>
-                </a><a href="technology/software/v1/" class="profile-link">
-                    <span class="profile-icon">⚙️</span>
-                    <span class="profile-name">Software</span>
-                </a>
-                </div>
-            </div>
-            <div class="card-footer">
-                <a href="technology/" class="btn btn-primary">View All Technology</a>
-            </div>
-        </div>
-        
-    </div>
-</div>
-
-<style>
-.profiles-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding: 2rem 0;
-}
-
-.categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2rem;
-}
-
-.category-card .card-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.category-card .category-icon {
-    font-size: 2.5rem;
-    width: 70px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--background-muted);
-    border-radius: var(--radius);
-}
-
-.category-card h2 {
-    margin: 0;
-}
-
-.profile-list {
-    display: grid;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-.profile-link {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    background: var(--background-muted);
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all 0.2s;
-}
-
-.profile-link:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-1px);
-}
-
-.profile-link .profile-icon {
-    font-size: 1.25rem;
-}
-
-.profile-link .profile-name {
-    font-weight: 500;
-}
-
-@media (max-width: 768px) {
-    .categories-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .category-card .card-header {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-</style>
-
+        {{content}}
     </main>
     
     <!-- Footer -->
@@ -644,6 +440,6 @@
     </footer>
     
     <!-- Analytics placeholder -->
-    
+    {{analytics_code}}
 </body>
 </html>
