@@ -1,0 +1,23 @@
+{
+  "name": "Review",
+  "type": "review",
+  "category": "business",
+  "version": "1.0.0",
+  "urls": {
+    "profile": "https://llmprofiles.org/profiles/business/review/v1/index.jsonld",
+    "documentation": "https://llmprofiles.org/profiles/business/review/"
+  },
+  "schemas": {
+    "page": "https://llmprofiles.org/profiles/business/review/v1/page.schema.json",
+    "output": "https://llmprofiles.org/profiles/business/review/v1/output.schema.json"
+  },
+  "examples": {
+    "minimal": "https://llmprofiles.org/profiles/business/review/v1/examples/minimal.jsonld",
+    "rich": "https://llmprofiles.org/profiles/business/review/v1/examples/rich.jsonld"
+  },
+  "hasTrainingData": true,
+  "hasPageSchema": true,
+  "hasOutputSchema": true,
+  "trainingData": "https://llmprofiles.org/profiles/business/review/v1/training.jsonl",
+  "description": "User reviews and rating content"
+}

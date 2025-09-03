@@ -1,0 +1,23 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/"
+  },
+  "@type": "CapabilitiesSummary",
+  "name": "LLM Profiles Capabilities Summary",
+  "description": "Summary of available profile capabilities and features",
+  "lastUpdated": "2025-09-03T15:06:37.665Z",
+  "totalProfiles": 15,
+  "categoryCounts": {
+    "business": 4,
+    "content": 7,
+    "interaction": 3,
+    "technology": 1
+  },
+  "supportedSchemaTypes": [],
+  "featureCounts": {
+    "trainingData": 15,
+    "pageSchema": 15,
+    "outputSchema": 15
+  }
+}

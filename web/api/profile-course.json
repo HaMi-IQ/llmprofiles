@@ -1,0 +1,23 @@
+{
+  "name": "Course",
+  "type": "course",
+  "category": "content",
+  "version": "1.0.0",
+  "urls": {
+    "profile": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld",
+    "documentation": "https://llmprofiles.org/profiles/content/course/"
+  },
+  "schemas": {
+    "page": "https://llmprofiles.org/profiles/content/course/v1/page.schema.json",
+    "output": "https://llmprofiles.org/profiles/content/course/v1/output.schema.json"
+  },
+  "examples": {
+    "minimal": "https://llmprofiles.org/profiles/content/course/v1/examples/minimal.jsonld",
+    "rich": "https://llmprofiles.org/profiles/content/course/v1/examples/rich.jsonld"
+  },
+  "hasTrainingData": true,
+  "hasPageSchema": true,
+  "hasOutputSchema": true,
+  "trainingData": "https://llmprofiles.org/profiles/content/course/v1/training.jsonl",
+  "description": "Educational courses and learning materials"
+}

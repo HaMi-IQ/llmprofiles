@@ -1,0 +1,51 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/"
+  },
+  "@type": "APIIndex",
+  "name": "LLM Profiles API Index",
+  "description": "Index of all available API endpoints",
+  "version": "1.0.0",
+  "baseUrl": "https://llmprofiles.org/api",
+  "endpoints": {
+    "discovery": {
+      "url": "/discovery.json",
+      "description": "Get all available profiles with metadata",
+      "method": "GET"
+    },
+    "capabilities": {
+      "url": "/capabilities.json",
+      "description": "Get summary of profile capabilities",
+      "method": "GET"
+    },
+    "docs": {
+      "url": "/docs.json",
+      "description": "Get API documentation",
+      "method": "GET"
+    },
+    "searchExamples": {
+      "url": "/search-examples.json",
+      "description": "Get search examples",
+      "method": "GET"
+    },
+    "recommendationExamples": {
+      "url": "/recommendation-examples.json",
+      "description": "Get recommendation examples",
+      "method": "GET"
+    }
+  },
+  "profiles": [
+    "profile-faqpage.json",
+    "profile-qapage.json",
+    "profile-article.json",
+    "profile-product-offer.json",
+    "profile-event.json",
+    "profile-course.json",
+    "profile-jobposting.json",
+    "profile-localbusiness.json",
+    "profile-softwareapplication.json",
+    "profile-review.json"
+  ],
+  "lastUpdated": "2025-09-03T15:06:37.696Z"
+}

@@ -1,0 +1,360 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/"
+  },
+  "@type": "ProfileDiscovery",
+  "name": "LLM Profiles Discovery API",
+  "description": "Discovery endpoint for all available LLM profiles",
+  "version": "1.0.0",
+  "baseUrl": "https://llmprofiles.org",
+  "totalProfiles": 15,
+  "lastUpdated": "2025-09-03T15:06:37.658Z",
+  "profiles": [
+    {
+      "name": "Jobposting",
+      "type": "jobposting",
+      "category": "business",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/business/jobposting/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/business/jobposting/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/business/jobposting/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/business/jobposting/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/business/jobposting/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/business/jobposting/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/business/jobposting/v1/training.jsonl",
+      "description": "Job listings and employment opportunities"
+    },
+    {
+      "name": "Localbusiness",
+      "type": "localbusiness",
+      "category": "business",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/business/localbusiness/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/business/localbusiness/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/business/localbusiness/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/business/localbusiness/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/business/localbusiness/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/business/localbusiness/v1/training.jsonl",
+      "description": "Local business listings and directory entries"
+    },
+    {
+      "name": "Product Offer",
+      "type": "product-offer",
+      "category": "business",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/business/product-offer/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/business/product-offer/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/business/product-offer/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/business/product-offer/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/business/product-offer/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/business/product-offer/v1/training.jsonl",
+      "description": "E-commerce product listings and commercial offers"
+    },
+    {
+      "name": "Review",
+      "type": "review",
+      "category": "business",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/business/review/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/business/review/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/business/review/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/business/review/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/business/review/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/business/review/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/business/review/v1/training.jsonl",
+      "description": "User reviews and rating content"
+    },
+    {
+      "name": "Article",
+      "type": "article",
+      "category": "content",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/content/article/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/content/article/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/content/article/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/content/article/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/content/article/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/content/article/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/content/article/v1/training.jsonl",
+      "description": "News articles, blog posts, and editorial content"
+    },
+    {
+      "name": "Book",
+      "type": "book",
+      "category": "content",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/content/book/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/content/book/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/content/book/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/content/book/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/content/book/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/content/book/v1/training.jsonl",
+      "description": "Books, publications, and written works"
+    },
+    {
+      "name": "Course",
+      "type": "course",
+      "category": "content",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/content/course/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/content/course/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/content/course/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/content/course/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/content/course/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/content/course/v1/training.jsonl",
+      "description": "Educational courses and learning materials"
+    },
+    {
+      "name": "Dataset",
+      "type": "dataset",
+      "category": "content",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/content/dataset/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/content/dataset/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/content/dataset/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/content/dataset/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/content/dataset/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/content/dataset/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/content/dataset/v1/training.jsonl",
+      "description": "Data collections and research datasets"
+    },
+    {
+      "name": "Howto",
+      "type": "howto",
+      "category": "content",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/content/howto/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/content/howto/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/content/howto/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/content/howto/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/content/howto/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/content/howto/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/content/howto/v1/training.jsonl",
+      "description": "Step-by-step instructional guides"
+    },
+    {
+      "name": "Recipe",
+      "type": "recipe",
+      "category": "content",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/content/recipe/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/content/recipe/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/content/recipe/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/content/recipe/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/content/recipe/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/content/recipe/v1/training.jsonl",
+      "description": "Cooking recipes and food preparation instructions"
+    },
+    {
+      "name": "Videoobject",
+      "type": "videoobject",
+      "category": "content",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/content/videoobject/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/content/videoobject/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/content/videoobject/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/content/videoobject/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/content/videoobject/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/content/videoobject/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/content/videoobject/v1/training.jsonl",
+      "description": "Video content and multimedia presentations"
+    },
+    {
+      "name": "Event",
+      "type": "event",
+      "category": "interaction",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/interaction/event/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/interaction/event/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/interaction/event/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/interaction/event/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/interaction/event/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/interaction/event/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/interaction/event/v1/training.jsonl",
+      "description": "Events, conferences, and scheduled activities"
+    },
+    {
+      "name": "Faqpage",
+      "type": "faqpage",
+      "category": "interaction",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/interaction/faqpage/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/interaction/faqpage/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/interaction/faqpage/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/interaction/faqpage/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/interaction/faqpage/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/interaction/faqpage/v1/training.jsonl",
+      "description": "Frequently Asked Questions page with structured Q&A content"
+    },
+    {
+      "name": "Qapage",
+      "type": "qapage",
+      "category": "interaction",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/interaction/qapage/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/interaction/qapage/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/interaction/qapage/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/interaction/qapage/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/interaction/qapage/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/interaction/qapage/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/interaction/qapage/v1/training.jsonl",
+      "description": "Question and Answer page for community-driven content"
+    },
+    {
+      "name": "Softwareapplication",
+      "type": "softwareapplication",
+      "category": "technology",
+      "version": "1.0.0",
+      "urls": {
+        "profile": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/index.jsonld",
+        "documentation": "https://llmprofiles.org/profiles/technology/softwareapplication/"
+      },
+      "schemas": {
+        "page": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/page.schema.json",
+        "output": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/output.schema.json"
+      },
+      "examples": {
+        "minimal": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/examples/minimal.jsonld",
+        "rich": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/examples/rich.jsonld"
+      },
+      "hasTrainingData": true,
+      "hasPageSchema": true,
+      "hasOutputSchema": true,
+      "trainingData": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/training.jsonl",
+      "description": "Software applications and digital tools"
+    }
+  ]
+}

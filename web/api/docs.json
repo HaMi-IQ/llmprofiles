@@ -1,0 +1,64 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/"
+  },
+  "@type": "APIDocumentation",
+  "name": "LLM Profiles API Documentation",
+  "description": "Complete API documentation for LLM Profiles discovery and access",
+  "version": "1.0.0",
+  "baseUrl": "https://llmprofiles.org",
+  "lastUpdated": "2025-09-03T15:06:37.667Z",
+  "endpoints": {
+    "discovery": {
+      "path": "/api/discovery.json",
+      "method": "GET",
+      "description": "Get all available profiles with metadata",
+      "response": {
+        "type": "ProfileDiscovery",
+        "contentType": "application/json"
+      }
+    },
+    "capabilities": {
+      "path": "/api/capabilities.json",
+      "method": "GET",
+      "description": "Get summary of profile capabilities",
+      "response": {
+        "type": "CapabilitiesSummary",
+        "contentType": "application/json"
+      }
+    },
+    "profileAccess": {
+      "path": "/profiles/{category}/{type}/v1/index.jsonld",
+      "method": "GET",
+      "description": "Get specific profile definition",
+      "parameters": {
+        "category": "Profile category (business, content, interaction, technology)",
+        "type": "Profile type (e.g., faqpage, article, product-offer)"
+      },
+      "response": {
+        "type": "Profile",
+        "contentType": "application/ld+json"
+      }
+    },
+    "schemaAccess": {
+      "path": "/profiles/{category}/{type}/v1/{schema}.schema.json",
+      "method": "GET",
+      "description": "Get profile validation schemas",
+      "parameters": {
+        "category": "Profile category",
+        "type": "Profile type",
+        "schema": "Schema type (page or output)"
+      },
+      "response": {
+        "type": "JSONSchema",
+        "contentType": "application/json"
+      }
+    }
+  },
+  "examples": {
+    "getFAQProfile": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld",
+    "getArticleSchema": "https://llmprofiles.org/profiles/content/article/v1/page.schema.json",
+    "getAllProfiles": "https://llmprofiles.org/api/discovery.json"
+  }
+}

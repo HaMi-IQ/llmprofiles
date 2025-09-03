@@ -1,0 +1,36 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/"
+  },
+  "@type": "SearchExamples",
+  "examples": [
+    {
+      "name": "FAQ Search",
+      "description": "Search for FAQ-related profiles",
+      "url": "https://llmprofiles.org/api/search.json?q=faq&hasPageSchema=true",
+      "query": "faq",
+      "filters": {
+        "hasPageSchema": true
+      }
+    },
+    {
+      "name": "E-commerce Search",
+      "description": "Search for e-commerce related profiles",
+      "url": "https://llmprofiles.org/api/search.json?q=e-commerce&hasTrainingData=true",
+      "query": "e-commerce",
+      "filters": {
+        "hasTrainingData": true
+      }
+    },
+    {
+      "name": "Article Search",
+      "description": "Search for article and content profiles",
+      "url": "https://llmprofiles.org/api/search.json?q=article&schemaType=Article",
+      "query": "article",
+      "filters": {
+        "schemaType": "Article"
+      }
+    }
+  ]
+}

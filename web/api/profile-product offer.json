@@ -1,0 +1,23 @@
+{
+  "name": "Product Offer",
+  "type": "product-offer",
+  "category": "business",
+  "version": "1.0.0",
+  "urls": {
+    "profile": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld",
+    "documentation": "https://llmprofiles.org/profiles/business/product-offer/"
+  },
+  "schemas": {
+    "page": "https://llmprofiles.org/profiles/business/product-offer/v1/page.schema.json",
+    "output": "https://llmprofiles.org/profiles/business/product-offer/v1/output.schema.json"
+  },
+  "examples": {
+    "minimal": "https://llmprofiles.org/profiles/business/product-offer/v1/examples/minimal.jsonld",
+    "rich": "https://llmprofiles.org/profiles/business/product-offer/v1/examples/rich.jsonld"
+  },
+  "hasTrainingData": true,
+  "hasPageSchema": true,
+  "hasOutputSchema": true,
+  "trainingData": "https://llmprofiles.org/profiles/business/product-offer/v1/training.jsonl",
+  "description": "E-commerce product listings and commercial offers"
+}
