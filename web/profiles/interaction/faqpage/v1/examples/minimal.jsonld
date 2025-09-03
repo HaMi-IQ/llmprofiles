@@ -21,5 +21,17 @@
     "text": "By standardizing Schema.org fields and validation and providing training exports, LLM Profiles improves retrieval for chatbots and answer engines, increasing AI-surface impressions and CTR."
     }
     }
+    ],
+    "@id": "https://llmprofiles.org/faq/getting-started",
+    "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles FAQPage Schema",
+      "url": "https://llmprofiles.org/profiles/interaction/faqpage/v1/",
+      "description": "This FAQ page follows LLM Profiles v1 specification for FAQPage implementation"
+    }
+    ],
+    "sameAs": [
+    "https://llmprofiles.org/profiles/interaction/faqpage/v1/"
     ]
     }

@@ -17,5 +17,18 @@
     "url": "https://llmprofiles.org/software/validator"
   },
   "reviewBody": "Excellent tool for validating structured data. The interface is intuitive and the validation results are comprehensive.",
-  "datePublished": "2025-08-28"
+  "datePublished": "2025-08-28",
+  "@id": "https://llmprofiles.org/reviews/validator-review-2025",
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Review Schema",
+      "url": "https://llmprofiles.org/profiles/business/review/v1/",
+      "description": "This review follows LLM Profiles v1 specification for Review implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/business/review/v1/"
+  ]
 }

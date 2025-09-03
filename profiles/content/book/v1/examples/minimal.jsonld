@@ -13,5 +13,15 @@
   "publisher": "No Starch Press",
   "genre": "Programming",
   "keywords": "python, programming, tutorial, beginner, web development, data visualization",
-  "conformsTo": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld"
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Book Schema",
+      "url": "https://llmprofiles.org/profiles/content/book/v1/",
+      "description": "This book follows LLM Profiles v1 specification for Book implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/content/book/v1/"
+  ]
 }

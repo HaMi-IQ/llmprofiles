@@ -21,5 +21,18 @@
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock",
     "url": "https://llmprofiles.org/courses/structured-data-101"
-  }
+  },
+  "@id": "https://llmprofiles.org/courses/structured-data-fundamentals",
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Course Schema",
+      "url": "https://llmprofiles.org/profiles/content/course/v1/",
+      "description": "This course follows LLM Profiles v1 specification for Course implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/content/course/v1/"
+  ]
 }

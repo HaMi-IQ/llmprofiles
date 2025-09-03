@@ -413,25 +413,15 @@
                 <label for="profile-select">Select Profile:</label>
                 <select id="profile-select">
                     <option value="">Choose a profile...</option>
-                    
                     <optgroup label="Business Profiles">
-                        {{#each profiles}}
-                        <option value="{{../key}}/business/v1/index.jsonld">{{name}} ({{../name}})</option>
-                        
-                    <optgroup label="Content Profiles">
-                        {{#each profiles}}
-                        <option value="{{../key}}/content/v1/index.jsonld">{{name}} ({{../name}})</option>
-                        
-                    <optgroup label="Interaction Profiles">
-                        {{#each profiles}}
-                        <option value="{{../key}}/interaction/v1/index.jsonld">{{name}} ({{../name}})</option>
-                        
-                    <optgroup label="Technology Profiles">
-                        {{#each profiles}}
-                        <option value="{{../key}}/technology/v1/index.jsonld">{{name}} ({{../name}})</option>
-                        
-                    </optgroup>
-                    {{/each}}
+            <option value="business/localbusiness/v1/index.jsonld">Local Business (Business Profiles)</option><option value="business/jobposting/v1/index.jsonld">Job Posting (Business Profiles)</option><option value="business/product-offer/v1/index.jsonld">Product Offer (Business Profiles)</option><option value="business/review/v1/index.jsonld">Review (Business Profiles)</option>
+        </optgroup><optgroup label="Content Profiles">
+            <option value="content/article/v1/index.jsonld">Article (Content Profiles)</option><option value="content/book/v1/index.jsonld">Book (Content Profiles)</option><option value="content/course/v1/index.jsonld">Course (Content Profiles)</option><option value="content/dataset/v1/index.jsonld">Dataset (Content Profiles)</option><option value="content/howto/v1/index.jsonld">How-to (Content Profiles)</option><option value="content/recipe/v1/index.jsonld">Recipe (Content Profiles)</option><option value="content/videoobject/v1/index.jsonld">Video Object (Content Profiles)</option>
+        </optgroup><optgroup label="Interaction Profiles">
+            <option value="interaction/faqpage/v1/index.jsonld">FAQ Page (Interaction Profiles)</option><option value="interaction/qapage/v1/index.jsonld">Q&A Page (Interaction Profiles)</option><option value="interaction/event/v1/index.jsonld">Event (Interaction Profiles)</option>
+        </optgroup><optgroup label="Technology Profiles">
+            <option value="technology/softwareapplication/v1/index.jsonld">Software Application (Technology Profiles)</option><option value="technology/software/v1/index.jsonld">Software (Technology Profiles)</option>
+        </optgroup>
                 </select>
             </div>
             

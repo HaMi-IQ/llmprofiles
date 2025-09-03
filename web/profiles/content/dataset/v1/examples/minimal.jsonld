@@ -27,5 +27,15 @@
     "Vaccination Rates"
   ],
   "isAccessibleForFree": true,
-  "conformsTo": "https://llmprofiles.org/profiles/content/dataset/v1/index.jsonld"
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Dataset Schema",
+      "url": "https://llmprofiles.org/profiles/content/dataset/v1/",
+      "description": "This dataset follows LLM Profiles v1 specification for Dataset implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/content/dataset/v1/"
+  ]
 }

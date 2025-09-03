@@ -38,14 +38,30 @@ function generateProfileViewer() {
         'technology': { title: 'Technology Profiles' }
     };
     
-    // Group profiles by category
-    const categories = Object.entries(CATEGORY_METADATA).map(([key, data]) => ({
-        key,
-        ...data,
-        profiles: Object.entries(PROFILE_METADATA)
+    // Group profiles by category and generate select options HTML
+    const categories = Object.entries(CATEGORY_METADATA).map(([key, data]) => {
+        const profiles = Object.entries(PROFILE_METADATA)
             .filter(([profileKey, profileData]) => profileData.category === key)
-            .map(([profileKey, profileData]) => ({ key: profileKey, ...profileData }))
-    }));
+            .map(([profileKey, profileData]) => ({ key: profileKey, ...profileData }));
+        
+        const optionsHtml = profiles.map(profile => 
+            `<option value="${key}/${profile.key}/v1/index.jsonld">${profile.name} (${data.title})</option>`
+        ).join('');
+        
+        return {
+            key,
+            ...data,
+            profiles: profiles,
+            options_html: optionsHtml
+        };
+    });
+
+    // Generate complete select options HTML
+    const allOptionsHtml = categories.map(category => 
+        `<optgroup label="${category.title}">
+            ${category.options_html}
+        </optgroup>`
+    ).join('');
 
     // Create page data
     const pageData = engine.createPageData({
@@ -54,7 +70,8 @@ function generateProfileViewer() {
         keywords: 'profile viewer, structured data, json-ld, interactive tool, llm profiles',
         path: '/profile-viewer.html',
         nav_profiles: true,
-        categories: categories
+        categories: categories,
+        profile_options_html: allOptionsHtml
     });
 
     // Render the page

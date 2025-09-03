@@ -15,5 +15,18 @@
   "articleBody": "LLM Profiles provides standardized, validated schemas for common web content types that LLMs can reliably parse and understand. Each profile includes JSON-LD context definitions with SKOS and SHACL constraints, output schemas for structured data extraction, best practices and usage guidelines, and validation rules for quality assurance.",
   "keywords": "llmprofiles,structured data,AI,JSON-LD,schema.org",
   "articleSection": "Technology",
-  "wordCount": 45
+  "wordCount": 45,
+  "@id": "https://llmprofiles.org/articles/standardizing-structured-data",
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Article Schema",
+      "url": "https://llmprofiles.org/profiles/content/article/v1/",
+      "description": "This article follows LLM Profiles v1 specification for Article implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/content/article/v1/"
+  ]
 }

@@ -23,5 +23,18 @@
   "salaryCurrency": "USD",
   "salaryMinValue": 80000,
   "salaryMaxValue": 120000,
-  "salaryUnit": "YEAR"
+  "salaryUnit": "YEAR",
+  "@id": "https://llmprofiles.org/jobs/frontend-developer-2025",
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles JobPosting Schema",
+      "url": "https://llmprofiles.org/profiles/business/jobposting/v1/",
+      "description": "This job posting follows LLM Profiles v1 specification for JobPosting implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/business/jobposting/v1/"
+  ]
 }

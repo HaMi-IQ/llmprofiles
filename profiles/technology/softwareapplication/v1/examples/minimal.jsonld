@@ -18,5 +18,18 @@
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock",
     "url": "https://llmprofiles.org/software/validator"
-  }
+  },
+  "@id": "https://llmprofiles.org/software/validator",
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles SoftwareApplication Schema",
+      "url": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/",
+      "description": "This software application follows LLM Profiles v1 specification for SoftwareApplication implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/technology/softwareapplication/v1/"
+  ]
 }

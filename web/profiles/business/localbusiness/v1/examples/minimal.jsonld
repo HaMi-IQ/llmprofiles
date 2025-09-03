@@ -14,5 +14,18 @@
   "telephone": "+1-555-0123",
   "email": "contact@llmprofiles.org",
   "url": "https://llmprofiles.org",
-  "priceRange": "$$"
+  "priceRange": "$$",
+  "@id": "https://llmprofiles.org/business/tech-consulting",
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles LocalBusiness Schema",
+      "url": "https://llmprofiles.org/profiles/business/localbusiness/v1/",
+      "description": "This local business follows LLM Profiles v1 specification for LocalBusiness implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/business/localbusiness/v1/"
+  ]
 }

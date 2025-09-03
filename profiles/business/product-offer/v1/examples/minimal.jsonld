@@ -1,19 +1,92 @@
 {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "LLM Profiles Validator Pro",
-  "description": "Advanced validation tool with bulk processing and API access for enterprise users.",
+  "@id": "https://llmprofiles.org/products/aeo-implementation-service",
+  "name": "Answer Engine Optimization Implementation Service",
+  "description": "Professional service to implement LLM Profiles structured data on your website. Our experts analyze your content, select appropriate profiles, implement AEO-optimized JSON-LD markup, and ensure your site becomes discoverable by AI systems and answer engines like ChatGPT, Claude, and Google Bard.",
   "brand": {
     "@type": "Brand",
-    "name": "HAMI"
+    "name": "HAMI",
+    "url": "https://llmprofiles.org"
   },
-  "category": "Developer Tools",
-  "sku": "LLMP-VAL-PRO-001",
+  "category": "Professional Services",
+  "sku": "AEO-SERVICE-2025",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://llmprofiles.org/images/aeo-service.jpg",
+    "width": 1200,
+    "height": 630
+  },
   "offers": {
     "@type": "Offer",
-    "price": "299",
+    "price": "2999.00",
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock",
-    "url": "https://llmprofiles.org/products/validator-pro"
-  }
+    "priceValidUntil": "2025-12-31",
+    "url": "https://llmprofiles.org/services/aeo-implementation",
+    "seller": {
+      "@type": "Organization",
+      "name": "HAMI",
+      "url": "https://llmprofiles.org",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-555-AEO-HELP",
+        "contactType": "sales"
+      }
+    },
+    "warranty": {
+      "@type": "WarrantyPromise",
+      "durationOfWarranty": "P6M",
+      "warrantyScope": "Full implementation support and 6 months of updates"
+    }
+  },
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "AI Understanding Improvement",
+      "value": "95%",
+      "description": "Average improvement in AI content understanding after implementation"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Answer Engine Visibility Increase",
+      "value": "300%",
+      "description": "Typical increase in content appearing in AI-generated responses"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Implementation Timeline",
+      "value": "2-4 weeks",
+      "description": "Professional implementation completed within 2-4 weeks"
+    }
+  ],
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Business owners and marketing teams seeking AI content optimization"
+  },
+  "serviceType": "AEO Implementation",
+  "provider": {
+    "@type": "Organization",
+    "name": "HAMI",
+    "url": "https://llmprofiles.org"
+  },
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Methodology",
+      "url": "https://llmprofiles.org/profiles/business/product-offer/v1/",
+      "description": "This example follows LLM Profiles v1 specification for Product schema"
+    },
+    {
+      "@type": "Thing", 
+      "name": "Answer Engine Optimization",
+      "url": "https://llmprofiles.org/guides/aeo-implementation",
+      "description": "AEO best practices for AI content understanding"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/services/aeo-implementation",
+    "https://llmprofiles.org/profiles/business/product-offer/v1/"
+  ]
 }

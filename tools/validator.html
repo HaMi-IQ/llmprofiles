@@ -3,116 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LLM Profiles Validator - Software Tools</title>
-    <link rel="canonical" href="https://llmprofiles.org/">
-    <meta name="description" content="LLM Profiles Validator - Validate your structured data against LLM Profiles">
+    <title>LLM Profiles Interactive Validator</title>
+    <link rel="canonical" href="https://llmprofiles.org/tools/validator.html">
+    <meta name="description" content="Interactive validator for LLM Profiles - Validate your structured data against opinionated profiles for AI & SEO">
+    
+    <!-- Modern CSS Framework -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- JSON Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.2/jsoneditor.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.10.2/jsoneditor.min.css" rel="stylesheet">
+    
+    <!-- Define fallback functions first -->
+    <script>
+        // Modern fallback loading without document.write
+        function loadAJVFallback() {
+            console.log('Loading AJV fallback...');
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/ajv@8/dist/bundle/ajv.min.js';
+            script.onload = () => console.log('AJV loaded from jsdelivr fallback');
+            script.onerror = () => console.warn('AJV fallback also failed - validation will be limited');
+            document.head.appendChild(script);
+        }
+        
+        function loadAJVFormatsFallback() {
+            console.log('Loading AJV Formats fallback...');
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/ajv-formats@2/dist/ajv-formats.min.js';
+            script.onload = () => console.log('AJV Formats loaded from jsdelivr fallback');
+            script.onerror = () => console.warn('AJV Formats fallback also failed');
+            document.head.appendChild(script);
+        }
+        
+        // Try to load AJV directly for localhost development
+        function loadAJVForLocalhost() {
+            console.log('Attempting to load AJV for localhost...');
+            
+            // Create a simple AJV-like validator for development
+            if (!window.ajv) {
+                window.ajv = {
+                    default: function(options) {
+                        return {
+                            compile: function(schema) {
+                                return function(data) {
+                                    // Simple validation logic
+                                    if (schema.required) {
+                                        for (const field of schema.required) {
+                                            if (!data[field]) {
+                                                this.errors = [{ 
+                                                    message: `${field} is required`,
+                                                    instancePath: `/${field}`
+                                                }];
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    this.errors = [];
+                                    return true;
+                                };
+                            }
+                        };
+                    }
+                };
+                console.log('Created fallback AJV for localhost development');
+            }
+        }
+    </script>
+    
+    <!-- Standalone AJV fallback for localhost -->
+    <script src="ajv-standalone.js"></script>
+    
+    <!-- AJV for validation (will override standalone if successful) -->
+    <script src="https://unpkg.com/ajv@8/dist/bundle/ajv.min.js" 
+            onerror="console.warn('AJV CDN failed, using standalone version')" 
+            onload="console.log('✅ AJV loaded from unpkg CDN')"></script>
+    <script src="https://unpkg.com/ajv-formats@2/dist/ajv-formats.min.js" 
+            onerror="console.warn('AJV Formats CDN failed')"
+            onload="console.log('✅ AJV Formats loaded from unpkg CDN')"></script>
+    
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; margin-bottom: 40px; }
-        .content { background: #f8f9fa; padding: 30px; border-radius: 8px; }
-        .redirect-notice { background: #e3f2fd; border: 1px solid #2196f3; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
-        .tool-features { background: white; padding: 20px; border-radius: 6px; margin: 20px 0; }
-        .tool-features h3 { color: #1976d2; margin-top: 0; }
-        .code-example { background: #f5f5f5; padding: 15px; border-radius: 4px; font-family: monospace; margin: 15px 0; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .json-editor { min-height: 400px; }
+        .error-highlight { border-left: 4px solid #ef4444; background-color: #fef2f2; }
+        .success-highlight { border-left: 4px solid #10b981; background-color: #f0fdf4; }
+        .warning-highlight { border-left: 4px solid #f59e0b; background-color: #fffbeb; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .spinner { border: 2px solid #f3f3f3; border-top: 2px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .code-block { background: #1e293b; color: #e2e8f0; border-radius: 8px; padding: 1rem; font-family: 'Courier New', monospace; }
+        .profile-card { transition: all 0.3s ease; cursor: pointer; }
+        .profile-card:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .profile-card.selected { border: 2px solid #667eea; background: #f8fafc; }
     </style>
 </head>
-<body>
-    <div class="header">
-        <h1>LLM Profiles Validator</h1>
-        <p>Validate your structured data against LLM Profiles</p>
-    </div>
-
-    <div class="redirect-notice">
-        <strong>Note:</strong> This is a tool overview. For complete documentation, visit <a href="https://llmprofiles.org/">https://llmprofiles.org/</a>
-    </div>
-
-    <div class="content">
-        <h2>Tool Overview</h2>
-        <p>The LLM Profiles Validator helps you validate your structured data implementations against our opinionated profiles. Ensure your JSON-LD markup follows best practices for both SEO and AI applications.</p>
-
-        <div class="tool-features">
-            <h3>Key Features</h3>
-            <ul>
-                <li><strong>Profile Validation:</strong> Validate against specific LLM Profiles (FAQPage, Article, Course, etc.)</li>
-                <li><strong>Schema Compliance:</strong> Check JSON-LD against page.schema.json and output.schema.json</li>
-                <li><strong>AEO Optimization:</strong> Verify Answer Engine Optimization best practices</li>
-                <li><strong>Training Data Export:</strong> Generate training.jsonl exports for AI applications</li>
-                <li><strong>CI/CD Integration:</strong> Integrate validation into your deployment pipeline</li>
-            </ul>
+<body class="bg-gray-50 min-h-screen">
+    
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold mb-2">
+                    <i class="fas fa-check-circle mr-3"></i>
+                    LLM Profiles Interactive Validator
+                </h1>
+                <p class="text-xl opacity-90">Validate your structured data against opinionated profiles for AI & SEO</p>
+                <div class="mt-4 flex justify-center space-x-4">
+                    <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-robot mr-1"></i> AEO-Ready
+                    </span>
+                    <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-cogs mr-1"></i> Real-time Validation
+                    </span>
+                    <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-download mr-1"></i> Export Training Data
+                    </span>
+                </div>
+            </div>
         </div>
+    </header>
 
-        <h2>Usage Examples</h2>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
         
-        <h3>Command Line Validation</h3>
-        <div class="code-example">
-# Validate JSON-LD against FAQPage profile
-node scripts/validate-ajv.js faqpage/v1/page.schema.json your-markup.json
-
-# Validate extracted output
-node scripts/validate-ajv.js faqpage/v1/output.schema.json your-extracted-data.json
+        <!-- Quick Start Steps -->
+        <div class="mb-8 bg-white rounded-lg card-shadow p-6">
+            <h2 class="text-2xl font-bold mb-4 flex items-center">
+                <i class="fas fa-rocket mr-2 text-blue-600"></i>
+                Quick Start
+            </h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="text-center p-4 bg-blue-50 rounded-lg">
+                    <div class="text-3xl text-blue-600 mb-2">1</div>
+                    <h3 class="font-semibold mb-2">Choose Profile</h3>
+                    <p class="text-sm text-gray-600">Select the profile that matches your content type</p>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <div class="text-3xl text-green-600 mb-2">2</div>
+                    <h3 class="font-semibold mb-2">Input JSON-LD</h3>
+                    <p class="text-sm text-gray-600">Paste your JSON-LD markup or start with an example</p>
+                </div>
+                <div class="text-center p-4 bg-purple-50 rounded-lg">
+                    <div class="text-3xl text-purple-600 mb-2">3</div>
+                    <h3 class="font-semibold mb-2">Validate & Export</h3>
+                    <p class="text-sm text-gray-600">Get validation results and export training data</p>
+                </div>
+            </div>
         </div>
 
-        <h3>CI/CD Integration</h3>
-        <div class="code-example">
-# GitHub Actions workflow
-- name: Validate LLM Profiles
-  run: |
-    node scripts/validate-json.js
-    node scripts/validate-ajv.js faqpage/v1/page.schema.json examples/profiles/interaction/faqpage/minimal.page.jsonld
+        <!-- Profile Selection -->
+        <div class="mb-8 bg-white rounded-lg card-shadow p-6">
+            <h2 class="text-2xl font-bold mb-4 flex items-center">
+                <i class="fas fa-list mr-2 text-blue-600"></i>
+                Step 1: Select Profile
+            </h2>
+            <div id="profileSelection" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- All 15 profiles will be loaded here dynamically -->
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                    <p>Loading profiles...</p>
+                </div>
+            </div>
         </div>
 
-        <h3>API Validation</h3>
-        <div class="code-example">
-# Fetch and validate profile
-const profile = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld');
-const schema = await fetch('https://llmprofiles.org/profiles/interaction/faqpage/v1/page.schema.json');
+        <!-- Schema Information -->
+        <div id="schemaInfo" class="mb-8 bg-white rounded-lg card-shadow p-6 hidden">
+            <h2 class="text-2xl font-bold mb-4 flex items-center">
+                <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                Profile Information
+            </h2>
+            <div id="schemaDetails" class="grid md:grid-cols-2 gap-6">
+                <!-- Schema details will be loaded here -->
+            </div>
         </div>
 
-        <h2>Validation Rules</h2>
-        <p>The validator checks for:</p>
-        <ul>
-            <li><strong>Required Fields:</strong> All mandatory fields for the profile</li>
-            <li><strong>Data Types:</strong> Correct data types and formats</li>
-            <li><strong>Stable IDs:</strong> Persistent @id values for entities</li>
-            <li><strong>Language Hints:</strong> Proper inLanguage specification</li>
-            <li><strong>Evidence Anchors:</strong> isBasedOn and url references</li>
-            <li><strong>Disambiguation:</strong> sameAs links for entity resolution</li>
-        </ul>
+        <!-- Input and Validation -->
+        <div class="grid lg:grid-cols-2 gap-8">
+            
+            <!-- Input Section -->
+            <div class="bg-white rounded-lg card-shadow p-6">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-edit mr-2 text-green-600"></i>
+                    Step 2: Input JSON-LD
+                </h2>
+                
+                <div class="mb-4 flex flex-wrap gap-2">
+                    <button id="loadExampleBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-download mr-1"></i> Load Example
+                    </button>
+                    <button id="clearInputBtn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-trash mr-1"></i> Clear
+                    </button>
+                    <button id="validateBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-check mr-1"></i> Validate
+                    </button>
+                </div>
+                
+                <div id="jsonInput" class="json-editor border rounded-lg"></div>
+            </div>
 
-        <h2>Available Profiles</h2>
-        <p>Validate against these profiles:</p>
-        <ul>
-            <li><a href="https://llmprofiles.org/profiles/interaction/faqpage/v1/">FAQPage</a> - FAQ pages with Q&A pairs</li>
-            <li><a href="https://llmprofiles.org/profiles/content/article/v1/">Article</a> - Blog posts and articles</li>
-            <li><a href="https://llmprofiles.org/profiles/content/course/v1/">Course</a> - Educational courses</li>
-            <li><a href="https://llmprofiles.org/profiles/interaction/event/v1/">Event</a> - Event information</li>
-            <li><a href="https://llmprofiles.org/profiles/business/product-offer/v1/">ProductOffer</a> - Product listings</li>
-            <li><a href="https://llmprofiles.org/profiles/interaction/qapage/v1/">QAPage</a> - Single Q&A pages</li>
-        </ul>
+            <!-- Results Section -->
+            <div class="bg-white rounded-lg card-shadow p-6">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-clipboard-check mr-2 text-purple-600"></i>
+                    Step 3: Validation Results
+                </h2>
+                
+                <div id="validationResults" class="space-y-4">
+                    <div class="text-center text-gray-500 py-8">
+                        <i class="fas fa-hourglass-start text-4xl mb-4"></i>
+                        <p>Select a profile and input JSON-LD to see validation results</p>
+                    </div>
+                </div>
+                
+                <!-- Export Options -->
+                <div id="exportOptions" class="mt-6 hidden">
+                    <h3 class="text-lg font-semibold mb-3">Export Options</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="exportTrainingBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-download mr-1"></i> Training Data (JSONL)
+                        </button>
+                        <button id="exportOutputBtn" class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-file-export mr-1"></i> Normalized Output (JSON)
+                        </button>
+                        <button id="copyCICommandBtn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-copy mr-1"></i> Copy CI Command
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <h2>Getting Started</h2>
-        <ol>
-            <li>Choose a profile that matches your content type</li>
-            <li>Download the validation schemas from the profile directory</li>
-            <li>Implement JSON-LD markup following the profile guidelines</li>
-            <li>Run validation using the provided scripts</li>
-            <li>Integrate validation into your CI/CD pipeline</li>
-        </ol>
+        <!-- Additional Resources -->
+        <div class="mt-8 bg-white rounded-lg card-shadow p-6">
+            <h2 class="text-2xl font-bold mb-4 flex items-center">
+                <i class="fas fa-book mr-2 text-red-600"></i>
+                Resources & Documentation
+            </h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <a href="https://llmprofiles.org/docs/" target="_blank" class="block p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-book-open text-blue-600 text-2xl mb-2"></i>
+                    <h3 class="font-semibold">Documentation</h3>
+                    <p class="text-sm text-gray-600">Complete guides and specifications</p>
+                </a>
+                <a href="https://llmprofiles.org/examples/" target="_blank" class="block p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-code text-green-600 text-2xl mb-2"></i>
+                    <h3 class="font-semibold">Examples</h3>
+                    <p class="text-sm text-gray-600">Real-world implementation examples</p>
+                </a>
+                <a href="https://github.com/HaMi-IQ/llmprofiles" target="_blank" class="block p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fab fa-github text-purple-600 text-2xl mb-2"></i>
+                    <h3 class="font-semibold">GitHub</h3>
+                    <p class="text-sm text-gray-600">Source code and contributions</p>
+                </a>
+                <a href="https://llmprofiles.org/api/discovery.json" target="_blank" class="block p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-plug text-orange-600 text-2xl mb-2"></i>
+                    <h3 class="font-semibold">API</h3>
+                    <p class="text-sm text-gray-600">Profile discovery and integration</p>
+                </a>
+            </div>
+        </div>
+    </main>
 
-        <h2>Resources</h2>
-        <ul>
-            <li><a href="https://llmprofiles.org/docs/">Documentation</a></li>
-            <li><a href="https://llmprofiles.org/examples/">Examples</a></li>
-            <li><a href="https://github.com/HaMi-IQ/llmprofiles">GitHub Repository</a></li>
-            <li><a href="https://llmprofiles.org/profiles/interaction/faqpage/v1/examples/">FAQPage Examples</a></li>
-        </ul>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">&copy; 2024 HAMI-IQ. All rights reserved.</p>
+            <p class="text-gray-400">LLM Profiles - Bridging SEO and AI with structured data</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="https://llmprofiles.org/" class="text-blue-400 hover:text-blue-300">Website</a>
+                <a href="https://github.com/HaMi-IQ/llmprofiles" class="text-blue-400 hover:text-blue-300">GitHub</a>
+                <a href="https://llmprofiles.org/docs/" class="text-blue-400 hover:text-blue-300">Docs</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg p-6 text-center">
+            <div class="spinner mx-auto mb-4"></div>
+            <p>Loading schema and examples...</p>
+        </div>
     </div>
 
-    <script>
-        // Redirect to main site after 10 seconds
-        setTimeout(() => {
-            window.location.href = 'https://llmprofiles.org/';
-        }, 10000);
-    </script>
+    <script src="validator.js?v=2025010202"></script>
 </body>
 </html>

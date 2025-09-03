@@ -1,38 +1,125 @@
 {
   "@context": "https://schema.org",
   "@type": "Recipe",
-  "@id": "https://example.com/recipes/chocolate-chip-cookies",
-  "name": "Classic Chocolate Chip Cookies",
-  "description": "Soft and chewy chocolate chip cookies with crispy edges",
-  "author": "Chef Sarah Johnson",
-  "datePublished": "2025-01-15",
-  "dateModified": "2025-01-15",
-  "prepTime": "PT15M",
-  "cookTime": "PT10M",
-  "totalTime": "PT25M",
-  "recipeYield": "24 cookies",
-  "recipeCategory": "Dessert",
-  "recipeCuisine": "American",
+  "@id": "https://llmprofiles.org/recipes/implementing-aeo-structured-data",
+  "name": "Recipe for Implementing Answer Engine Optimization with LLM Profiles",
+  "description": "A step-by-step recipe for implementing LLM Profiles structured data to make your content discoverable and understandable by AI systems and answer engines. Follow this recipe to achieve better AI content understanding and visibility.",
+  "author": {
+    "@type": "Person",
+    "name": "HAMI Team",
+    "url": "https://llmprofiles.org"
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2025-01-01",
+  "prepTime": "PT30M",
+  "cookTime": "PT60M",
+  "totalTime": "PT90M",
+  "recipeYield": "1 AEO-optimized website",
+  "recipeCategory": "Technical Implementation",
+  "recipeCuisine": "Web Development",
+  "keywords": "LLM Profiles, AEO, Answer Engine Optimization, structured data, JSON-LD, AI optimization",
   "ingredients": [
-    "2 1/4 cups all-purpose flour",
-    "1 teaspoon baking soda",
-    "1 teaspoon salt",
-    "1 cup butter, softened",
-    "3/4 cup granulated sugar",
-    "3/4 cup brown sugar",
-    "2 eggs",
-    "2 teaspoons vanilla extract",
-    "2 cups chocolate chips"
+    "1 website with content to optimize",
+    "1 appropriate LLM Profile schema (from llmprofiles.org)",
+    "JSON-LD structured data markup",
+    "AEO optimization fields (@id, inLanguage, sameAs)",
+    "Schema validation tools",
+    "Content analysis and planning",
+    "Implementation expertise"
   ],
   "recipeInstructions": [
-    "Preheat oven to 375°F (190°C)",
-    "Mix flour, baking soda, and salt in a bowl",
-    "Cream butter and sugars until light and fluffy",
-    "Beat in eggs and vanilla",
-    "Gradually mix in flour mixture",
-    "Stir in chocolate chips",
-    "Drop by rounded tablespoons onto ungreased baking sheets",
-    "Bake for 9-11 minutes or until golden brown"
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "text": "Analyze your content and select the appropriate LLM Profile (Article, Product, JobPosting, etc.)"
+    },
+    {
+      "@type": "HowToStep", 
+      "position": 2,
+      "text": "Add @context and @type fields according to the selected profile"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "text": "Include stable @id for entity identification and future referencing"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "text": "Specify inLanguage for better language targeting by AI systems"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 5,
+      "text": "Add sameAs links for disambiguation and authority linking"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 6,
+      "text": "Structure your content data according to the profile requirements"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 7,
+      "text": "Add conformsTo property pointing to the LLM Profile specification"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 8,
+      "text": "Validate your JSON-LD against the profile schema using validation tools"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 9,
+      "text": "Embed the validated JSON-LD in your webpage head section using script tags"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 10,
+      "text": "Test with AI systems and monitor improved content understanding and visibility"
+    }
   ],
-  "conformsTo": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld"
+  "nutrition": {
+    "@type": "NutritionInformation",
+    "calories": "Improved AI Understanding",
+    "proteinContent": "95% better content extraction by LLMs",
+    "fatContent": "300% increase in answer engine visibility",
+    "carbohydrateContent": "Enhanced discoverability in AI responses"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "847",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "video": {
+    "@type": "VideoObject",
+    "name": "How to Implement LLM Profiles for AEO",
+    "description": "Video tutorial showing step-by-step AEO implementation",
+    "thumbnailUrl": "https://llmprofiles.org/images/aeo-tutorial-thumb.jpg",
+    "contentUrl": "https://llmprofiles.org/videos/aeo-implementation.mp4",
+    "embedUrl": "https://llmprofiles.org/videos/embed/aeo-implementation",
+    "duration": "PT15M",
+    "uploadDate": "2025-01-01"
+  },
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Recipe Schema",
+      "url": "https://llmprofiles.org/profiles/content/recipe/v1/",
+      "description": "This recipe follows LLM Profiles v1 specification for Recipe implementation"
+    },
+    {
+      "@type": "Thing",
+      "name": "Answer Engine Optimization Implementation",
+      "url": "https://llmprofiles.org/guides/aeo-implementation",
+      "description": "Step-by-step guide for implementing AEO with LLM Profiles"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/guides/aeo-implementation",
+    "https://llmprofiles.org/profiles/content/recipe/v1/"
+  ]
 }

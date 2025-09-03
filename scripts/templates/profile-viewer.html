@@ -11,13 +11,7 @@
                 <label for="profile-select">Select Profile:</label>
                 <select id="profile-select">
                     <option value="">Choose a profile...</option>
-                    {{#each categories}}
-                    <optgroup label="{{title}}">
-                        {{#each profiles}}
-                        <option value="{{../key}}/{{key}}/v1/index.jsonld">{{name}} ({{../name}})</option>
-                        {{/each}}
-                    </optgroup>
-                    {{/each}}
+                    {{profile_options_html}}
                 </select>
             </div>
             

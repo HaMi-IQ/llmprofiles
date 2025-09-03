@@ -29,5 +29,18 @@
     "availability": "https://schema.org/InStock",
     "url": "https://llmprofiles.org/events/conference-2025/tickets"
   },
-  "eventStatus": "https://schema.org/EventScheduled"
+  "eventStatus": "https://schema.org/EventScheduled",
+  "@id": "https://llmprofiles.org/events/conference-2025",
+  "inLanguage": "en",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Event Schema",
+      "url": "https://llmprofiles.org/profiles/interaction/event/v1/",
+      "description": "This event follows LLM Profiles v1 specification for Event implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/interaction/event/v1/"
+  ]
 }
