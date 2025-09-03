@@ -190,25 +190,25 @@ function runBuildTests(options = {}) {
 function checkOutputFiles(options = {}) {
   log('📁 Checking output files...', 'blue');
   
-  const distDir = path.join(process.cwd(), 'dist');
-  if (!fs.existsSync(distDir)) {
-    log('❌ Dist directory not found', 'red');
+  const webDir = path.join(process.cwd(), 'web');
+  if (!fs.existsSync(webDir)) {
+    log('❌ Web directory not found', 'red');
     return false;
   }
   
   const requiredFiles = ['index.json', 'vocab.json'];
-  const requiredDirs = ['profiles', 'docs'];
+  const requiredDirs = ['profiles'];
   
   let missingItems = [];
   
   for (const file of requiredFiles) {
-    if (!fs.existsSync(path.join(distDir, file))) {
+    if (!fs.existsSync(path.join(webDir, file))) {
       missingItems.push(file);
     }
   }
   
   for (const dir of requiredDirs) {
-    if (!fs.existsSync(path.join(distDir, dir))) {
+    if (!fs.existsSync(path.join(webDir, dir))) {
       missingItems.push(dir);
     }
   }

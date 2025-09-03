@@ -109,22 +109,30 @@ function cleanWebDir(webDir, options = {}) {
     }
   }
   
-  // Always ensure dist directory is clean
+  // Only clean specific dynamic directories, preserve static site files
   if (fs.existsSync(webDir)) {
     try {
-      // Remove any existing content
-      const items = fs.readdirSync(webDir);
-      items.forEach(item => {
-        const itemPath = path.join(webDir, item);
-        if (fs.statSync(itemPath).isDirectory()) {
-          fs.rmSync(itemPath, { recursive: true, force: true });
-        } else {
-          fs.unlinkSync(itemPath);
+      const dynamicDirs = ['profiles', 'schemas', 'examples', 'training', 'tools'];
+      const dynamicFiles = ['index.json', 'vocab.json'];
+      
+      // Remove only dynamic content that will be regenerated
+      dynamicDirs.forEach(dir => {
+        const dirPath = path.join(webDir, dir);
+        if (fs.existsSync(dirPath)) {
+          fs.rmSync(dirPath, { recursive: true, force: true });
         }
       });
-      log(`🧹 Cleaned existing content in dist directory`, 'yellow');
+      
+      dynamicFiles.forEach(file => {
+        const filePath = path.join(webDir, file);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      });
+      
+      log(`🧹 Cleaned dynamic content, preserved static site files`, 'yellow');
     } catch (error) {
-      log(`Warning: Could not clean existing content: ${error.message}`, 'yellow');
+      log(`Warning: Could not clean dynamic content: ${error.message}`, 'yellow');
     }
   }
 }
@@ -494,12 +502,8 @@ function main() {
     const webDir = ensureWebDir();
     cleanWebDir(webDir, options);
     
-    // Copy web assets (the actual website)
-    const webSrc = path.join(__dirname, '..', 'web');
-    if (fs.existsSync(webSrc)) {
-      log('🌐 Copying website files...', 'blue');
-      copyDirAll(webSrc, webDir, options);
-    }
+    // The web directory already contains static site files
+    // We only need to update/add the dynamic content
     
     // Copy profiles directory structure (for API access)
     const profilesSrc = path.join(__dirname, '..', 'profiles');

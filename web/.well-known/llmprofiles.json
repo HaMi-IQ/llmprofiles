@@ -1,24 +1,139 @@
 {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "LLMProfiles",
-  "url": "https://llmprofiles.org",
-  "description": "Profile Registry & Remote Context Graphs for LLM-friendly structured data",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "technical support",
-    "url": "https://github.com/HaMi-IQ/llmprofiles/issues"
-  },
-  "mainEntity": {
-    "@type": "Dataset",
-    "name": "LLMProfiles Registry",
-    "description": "Structured data profiles for AI and machine learning applications",
-    "distribution": [
-      {
-        "@type": "DataDownload",
-        "contentUrl": "https://llmprofiles.org/profiles/",
-        "encodingFormat": "application/ld+json"
-      }
-    ]
-  }
+  "profiles": [
+    {
+      "name": "FAQPage",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/interaction/faqpage/v1/",
+      "fetch": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/interaction/faqpage/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/interaction/faqpage/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/interaction/faqpage/v1/training.jsonl"
+    },
+    {
+      "name": "Article",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/content/article/v1/",
+      "fetch": "https://llmprofiles.org/profiles/content/article/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/content/article/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/content/article/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/content/article/v1/training.jsonl"
+    },
+    {
+      "name": "ProductOffer",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/business/product-offer/v1/",
+      "fetch": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/business/product-offer/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/business/product-offer/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/business/product-offer/v1/training.jsonl"
+    },
+    {
+      "name": "Event",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/interaction/event/v1/",
+      "fetch": "https://llmprofiles.org/profiles/interaction/event/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/interaction/event/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/interaction/event/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/interaction/event/v1/training.jsonl"
+    },
+    {
+      "name": "Course",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/content/course/v1/",
+      "fetch": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/content/course/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/content/course/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/content/course/v1/training.jsonl"
+    },
+    {
+      "name": "JobPosting",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/business/jobposting/v1/",
+      "fetch": "https://llmprofiles.org/profiles/business/jobposting/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/business/jobposting/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/business/jobposting/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/business/jobposting/v1/training.jsonl"
+    },
+    {
+      "name": "LocalBusiness",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/business/localbusiness/v1/",
+      "fetch": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/business/localbusiness/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/business/localbusiness/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/business/localbusiness/v1/training.jsonl"
+    },
+    {
+      "name": "SoftwareApplication",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/",
+      "fetch": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/training.jsonl"
+    },
+    {
+      "name": "Review",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/business/review/v1/",
+      "fetch": "https://llmprofiles.org/profiles/business/review/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/business/review/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/business/review/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/business/review/v1/training.jsonl"
+    },
+    {
+      "name": "QAPage",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/interaction/qapage/v1/",
+      "fetch": "https://llmprofiles.org/profiles/interaction/qapage/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/interaction/qapage/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/interaction/qapage/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/interaction/qapage/v1/training.jsonl"
+    },
+    {
+      "name": "Recipe",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/content/recipe/v1/",
+      "fetch": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/content/recipe/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/content/recipe/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/content/recipe/v1/training.jsonl"
+    },
+    {
+      "name": "HowTo",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/content/howto/v1/",
+      "fetch": "https://llmprofiles.org/profiles/content/howto/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/content/howto/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/content/howto/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/content/howto/v1/training.jsonl"
+    },
+    {
+      "name": "VideoObject",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/content/videoobject/v1/",
+      "fetch": "https://llmprofiles.org/profiles/content/videoobject/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/content/videoobject/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/content/videoobject/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/content/videoobject/v1/training.jsonl"
+    },
+    {
+      "name": "Book",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/content/book/v1/",
+      "fetch": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/content/book/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/content/book/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/content/book/v1/training.jsonl"
+    },
+    {
+      "name": "Dataset",
+      "version": "v1",
+      "iri": "https://llmprofiles.org/profiles/content/dataset/v1/",
+      "fetch": "https://llmprofiles.org/profiles/content/dataset/v1/index.jsonld",
+      "pageSchema": "https://llmprofiles.org/profiles/content/dataset/v1/page.schema.json",
+      "outputSchema": "https://llmprofiles.org/profiles/content/dataset/v1/output.schema.json",
+      "training": "https://llmprofiles.org/profiles/content/dataset/v1/training.jsonl"
+    }
+  ]
 }
