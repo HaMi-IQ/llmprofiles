@@ -66,6 +66,11 @@ function copyDirAll(src, dest, options = {}) {
   try {
     const items = fs.readdirSync(src);
     items.forEach(item => {
+      // Skip node_modules and other unnecessary directories
+      if (item === 'node_modules' || item === '.git' || item === '.github' || item === 'scripts') {
+        return;
+      }
+      
       const srcPath = path.join(src, item);
       const destPath = path.join(dest, item);
 
