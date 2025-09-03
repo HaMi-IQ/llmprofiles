@@ -1,0 +1,27 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "@id": "https://example.com/books/python-crash-course",
+  "name": "Python Crash Course: A Hands-On, Project-Based Introduction to Programming",
+  "description": "A comprehensive introduction to Python programming for beginners with hands-on projects and practical examples.",
+  "author": "Eric Matthes",
+  "datePublished": "2019-05-03",
+  "bookFormat": "Paperback",
+  "isbn": "978-1593279288",
+  "numberOfPages": 544,
+  "inLanguage": "en",
+  "publisher": "No Starch Press",
+  "genre": "Programming",
+  "keywords": "python, programming, tutorial, beginner, web development, data visualization",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "LLM Profiles Book Schema",
+      "url": "https://llmprofiles.org/profiles/content/book/v1/",
+      "description": "This book follows LLM Profiles v1 specification for Book implementation"
+    }
+  ],
+  "sameAs": [
+    "https://llmprofiles.org/profiles/content/book/v1/"
+  ]
+}

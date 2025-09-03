@@ -439,6 +439,59 @@ ${urls.map(url => `  <url>
         }
     }
 
+    // Copy tools directory for website functionality
+    copyToolsDirectory() {
+        const toolsSrc = path.join(__dirname, '..', 'tools');
+        const toolsDest = path.join(this.webDir, 'tools');
+        
+        if (!fs.existsSync(toolsSrc)) {
+            console.warn('⚠️  Tools directory not found, skipping copy');
+            return;
+        }
+
+        // Create destination directory if it doesn't exist
+        if (!fs.existsSync(toolsDest)) {
+            fs.mkdirSync(toolsDest, { recursive: true });
+        }
+
+        // Copy all files from tools directory
+        const files = fs.readdirSync(toolsSrc);
+        files.forEach(file => {
+            const srcPath = path.join(toolsSrc, file);
+            const destPath = path.join(toolsDest, file);
+            
+            if (fs.statSync(srcPath).isDirectory()) {
+                // Recursively copy directories
+                this.copyDirectory(srcPath, destPath);
+            } else {
+                // Copy files
+                fs.copyFileSync(srcPath, destPath);
+                console.log(`   📄 Copied ${file}`);
+            }
+        });
+        
+        console.log(`✅ Tools directory copied to ${toolsDest}`);
+    }
+
+    // Helper method to recursively copy directories
+    copyDirectory(src, dest) {
+        if (!fs.existsSync(dest)) {
+            fs.mkdirSync(dest, { recursive: true });
+        }
+        
+        const files = fs.readdirSync(src);
+        files.forEach(file => {
+            const srcPath = path.join(src, file);
+            const destPath = path.join(dest, file);
+            
+            if (fs.statSync(srcPath).isDirectory()) {
+                this.copyDirectory(srcPath, destPath);
+            } else {
+                fs.copyFileSync(srcPath, destPath);
+            }
+        });
+    }
+
     // Build all pages
     build() {
         log('🏗️  Building enhanced documentation with new template system...', 'blue');
@@ -466,6 +519,10 @@ ${urls.map(url => `  <url>
         // Generate sitemap
         log('🗺️  Generating sitemap...', 'blue');
         this.generateSitemap();
+
+        // Copy tools directory (for website functionality including validator)
+        log('🛠️  Copying tools directory...', 'blue');
+        this.copyToolsDirectory();
 
         log('✅ Enhanced documentation build completed!', 'green');
     }

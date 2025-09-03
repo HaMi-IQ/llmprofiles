@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HowTo Extracted Content",
+  "description": "JSON Schema for validating extracted HowTo content for RAG/AI applications",
+  "type": "object",
+  "required": ["howto"],
+  "properties": {
+    "howto": {
+      "type": "object",
+      "required": ["name", "description", "steps"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the how-to guide"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of what the how-to guide teaches"
+        },
+        "author": {
+          "type": "string",
+          "description": "The author or creator of the guide"
+        },
+        "totalTime": {
+          "type": "string",
+          "description": "Total time to complete in human-readable format"
+        },
+        "estimatedCost": {
+          "type": "string",
+          "description": "Estimated cost to complete the task"
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["Beginner", "Intermediate", "Advanced", "Expert"],
+          "description": "Difficulty level of the task"
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Skills or knowledge required before starting"
+          }
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Tools needed to complete the task"
+          }
+        },
+        "supplies": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Materials and supplies needed"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["step", "text"],
+            "properties": {
+              "step": {
+                "type": "integer",
+                "description": "The step number"
+              },
+              "name": {
+                "type": "string",
+                "description": "Optional name for the step"
+              },
+              "text": {
+                "type": "string",
+                "description": "The instruction text for this step"
+              },
+              "image": {
+                "type": "string",
+                "description": "URL to image illustrating this step"
+              },
+              "time": {
+                "type": "string",
+                "description": "Time for this step if specified"
+              }
+            }
+          }
+        },
+        "tips": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Helpful tips for completing the task"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Safety warnings or important notes"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Additional tags or keywords"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "extractedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the content was extracted"
+        },
+        "sourceUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Source URL of the how-to guide"
+        },
+        "profileVersion": {
+          "type": "string",
+          "const": "howto.v1",
+          "description": "LLM Profile version used"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

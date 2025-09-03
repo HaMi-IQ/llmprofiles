@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { background-color: #e8f5e8; border-color: #4caf50; }
+        .error { background-color: #ffebee; border-color: #f44336; }
+    </style>
+</head>
+<body>
+    <h1>AJV Validation Test</h1>
+    
+    <div id="tests"></div>
+    
+    <script src="ajv-standalone.js"></script>
+    
+    <script>
+        const testsContainer = document.getElementById('tests');
+        
+        function addTest(name, success, message) {
+            const div = document.createElement('div');
+            div.className = `test ${success ? 'success' : 'error'}`;
+            div.innerHTML = `
+                <h3>${name}</h3>
+                <p>${message}</p>
+            `;
+            testsContainer.appendChild(div);
+        }
+        
+        // Test 1: Check if AJV is available
+        const ajvAvailable = window.ajv && window.ajv.default;
+        addTest('AJV Availability', ajvAvailable, 
+            ajvAvailable ? '✅ AJV is available' : '❌ AJV is not available');
+        
+        if (ajvAvailable) {
+            try {
+                // Test 2: Basic validation
+                const ajv = new window.ajv.default();
+                const schema = {
+                    type: 'object',
+                    properties: {
+                        name: { type: 'string', minLength: 1 },
+                        age: { type: 'number' }
+                    },
+                    required: ['name']
+                };
+                
+                const validate = ajv.compile(schema);
+                
+                // Valid data
+                const validData = { name: 'John', age: 30 };
+                const isValid1 = validate(validData);
+                addTest('Valid Data Test', isValid1, 
+                    isValid1 ? '✅ Valid data passes validation' : '❌ Valid data failed validation');
+                
+                // Invalid data
+                const invalidData = { age: 30 }; // missing required 'name'
+                const isValid2 = validate(invalidData);
+                addTest('Invalid Data Test', !isValid2, 
+                    !isValid2 ? '✅ Invalid data correctly fails validation' : '❌ Invalid data incorrectly passes');
+                
+                if (!isValid2 && validate.errors) {
+                    addTest('Error Reporting', validate.errors.length > 0,
+                        `✅ Errors reported: ${validate.errors.map(e => e.message).join(', ')}`);
+                }
+                
+                // Test 3: FAQ schema validation
+                const faqSchema = {
+                    type: 'object',
+                    properties: {
+                        '@type': { const: 'FAQPage' },
+                        mainEntity: {
+                            type: 'array',
+                            minItems: 1,
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    '@type': { const: 'Question' },
+                                    name: { type: 'string', minLength: 3 },
+                                    acceptedAnswer: {
+                                        type: 'object',
+                                        properties: {
+                                            '@type': { const: 'Answer' },
+                                            text: { type: 'string', minLength: 1 }
+                                        },
+                                        required: ['@type', 'text']
+                                    }
+                                },
+                                required: ['@type', 'name', 'acceptedAnswer']
+                            }
+                        }
+                    },
+                    required: ['@type', 'mainEntity']
+                };
+                
+                const faqValidate = ajv.compile(faqSchema);
+                const faqData = {
+                    '@type': 'FAQPage',
+                    mainEntity: [{
+                        '@type': 'Question',
+                        name: 'What is this?',
+                        acceptedAnswer: {
+                            '@type': 'Answer',
+                            text: 'This is a test FAQ.'
+                        }
+                    }]
+                };
+                
+                const isFaqValid = faqValidate(faqData);
+                addTest('FAQ Schema Test', isFaqValid,
+                    isFaqValid ? '✅ FAQ schema validation works' : `❌ FAQ validation failed: ${faqValidate.errors?.map(e => e.message).join(', ')}`);
+                
+            } catch (error) {
+                addTest('Validation Error', false, `❌ Error during validation: ${error.message}`);
+            }
+        }
+        
+        console.log('🧪 Validation tests completed');
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Book Extracted Content",
+  "description": "JSON Schema for validating extracted Book content for RAG/AI applications",
+  "type": "object",
+  "required": ["book"],
+  "properties": {
+    "book": {
+      "type": "object",
+      "required": ["name", "author"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The title of the book"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the book content"
+        },
+        "author": {
+          "type": "string",
+          "description": "The author of the book"
+        },
+        "publisher": {
+          "type": "string",
+          "description": "The publisher of the book"
+        },
+        "datePublished": {
+          "type": "string",
+          "description": "Date when the book was published"
+        },
+        "bookFormat": {
+          "type": "string",
+          "description": "Format of the book (e.g., Hardcover, Paperback, EBook)"
+        },
+        "isbn": {
+          "type": "string",
+          "description": "The ISBN of the book"
+        },
+        "numberOfPages": {
+          "type": "integer",
+          "description": "Number of pages in the book"
+        },
+        "language": {
+          "type": "string",
+          "description": "Language of the book content"
+        },
+        "genre": {
+          "type": "string",
+          "description": "Genre of the book"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Keywords describing the book content"
+          }
+        },
+        "about": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Topics or subjects the book covers"
+          }
+        },
+        "audience": {
+          "type": "string",
+          "description": "Target audience for the book"
+        },
+        "image": {
+          "type": "string",
+          "description": "URL to the book cover image"
+        },
+        "rating": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 5,
+              "description": "Average rating value"
+            },
+            "count": {
+              "type": "integer",
+              "description": "Number of reviews"
+            }
+          }
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "author": {
+                "type": "string",
+                "description": "Review author"
+              },
+              "text": {
+                "type": "string",
+                "description": "Review content"
+              },
+              "rating": {
+                "type": "number",
+                "description": "Individual review rating"
+              }
+            }
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Additional tags or categories"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "extractedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the content was extracted"
+        },
+        "sourceUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Source URL of the book"
+        },
+        "profileVersion": {
+          "type": "string",
+          "const": "book.v1",
+          "description": "LLM Profile version used"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
