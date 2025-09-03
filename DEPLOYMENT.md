@@ -1,120 +1,82 @@
-# 🚀 Deployment Guide
+# Deployment Guide
 
-This document explains how the website deployment works with GitHub Pages and the custom domain `llmprofiles.org`.
+## Overview
 
-## 🌐 **How It Works**
+This repository uses **GitHub Actions** for automated deployment to GitHub Pages. The manual deployment script has been disabled to prevent duplication issues.
 
-### **Repository Structure**
+## Deployment Workflow
+
+### Automatic Deployment (Recommended)
+
+1. **Push to main branch** - Triggers automatic CI/CD pipeline
+2. **GitHub Actions builds** the website in the `dist/` directory
+3. **GitHub Actions deploys** directly to GitHub Pages from the `dist/` directory
+4. **No manual intervention required**
+
+### Manual Deployment (Emergency only)
+
+If you need to manually deploy in an emergency:
+
+1. **Build the website:**
+   ```bash
+   npm run ci:full
+   ```
+
+2. **Trigger manual workflow:**
+   - Go to Actions tab in GitHub
+   - Select "Unified CI/CD Pipeline"
+   - Click "Run workflow"
+   - Choose "deploy" mode
+   - Click "Run workflow"
+
+## Important Notes
+
+### ❌ What NOT to do:
+- **Don't run** `npm run deploy` (script disabled)
+- **Don't manually copy** files to gh-pages branch
+- **Don't manually push** to gh-pages branch
+
+### ✅ What happens automatically:
+- Website builds in `dist/` directory
+- GitHub Actions deploys from `dist/` to GitHub Pages
+- gh-pages branch stays clean with only a README
+
+## GitHub Pages Configuration
+
+Ensure your repository settings are configured correctly:
+
+1. **Settings > Pages**
+2. **Source:** "GitHub Actions"
+3. **No branch selection needed** (Actions handles this)
+
+## Troubleshooting
+
+### If deployment fails:
+1. Check the Actions tab for error logs
+2. Verify the build step completed successfully
+3. Check that the `dist/` directory contains built files
+
+### If you see duplicate content:
+1. The gh-pages branch should only contain a README.md
+2. If you see website files, run: `npm run clean:gh-pages`
+3. This will reset the branch to clean state
+
+## File Structure
+
 ```
-llmprofiles-hami/
-├── web/                    # 🌐 Website source files
-│   ├── dist/              # 📦 Built website (generated)
-│   ├── blog/              # 📝 Blog content
-│   ├── api/               # 🔌 API endpoints
-│   ├── images/            # 🖼️ Website images
-│   └── ...                # Other web content
-├── profiles/               # 📋 Core LLM profiles
-├── schemas/                # 🏗️ Schema definitions
-└── ...                    # Other project files
-```
+gh-pages branch (managed by GitHub Actions):
+├── README.md (placeholder only)
 
-### **Deployment Flow**
-1. **Source**: Files are built to `web/dist/`
-2. **Deployment**: Files are copied to `gh-pages` branch root
-3. **GitHub Pages**: Serves files from `gh-pages` branch root
-4. **Domain**: `llmprofiles.org` points to the served files
-
-## 🔧 **Deployment Methods**
-
-### **Method 1: Manual Deployment**
-```bash
-# Build the website
-npm run build:docs
-
-# Deploy to GitHub Pages
-npm run deploy
-```
-
-### **Method 2: Automatic Deployment (GitHub Actions)**
-The website automatically deploys when you push changes to the `main` branch.
-
-## 📋 **GitHub Pages Configuration**
-
-### **Required Settings**
-1. Go to your repository **Settings** > **Pages**
-2. Set **Source** to "Deploy from a branch"
-3. Select **Branch**: `gh-pages`
-4. Select **Folder**: `/ (root)`
-5. Click **Save**
-
-### **Custom Domain**
-- **Domain**: `llmprofiles.org`
-- **CNAME file**: Automatically copied during deployment
-- **SSL**: GitHub Pages provides automatic HTTPS
-
-## 🚨 **Important Notes**
-
-### **File Locations**
-- **Development**: Work with files in `web/` directory
-- **Build Output**: Generated in `web/dist/` directory
-- **Deployment**: Files copied to `gh-pages` branch root
-- **Live Website**: Served from `gh-pages` branch root
-
-### **Domain Verification**
-- `.well-known/` directory is preserved during deployment
-- CNAME file is automatically copied
-- Domain verification should work automatically
-
-### **Build Process**
-```bash
-npm run build:docs  # Builds to web/dist/
-npm run deploy      # Copies web/dist/* to gh-pages branch
-```
-
-## 🔍 **Troubleshooting**
-
-### **Website Not Updating**
-1. Check if `gh-pages` branch was updated
-2. Verify GitHub Pages is configured correctly
-3. Wait a few minutes for changes to propagate
-
-### **Domain Not Working**
-1. Verify CNAME file exists in `gh-pages` branch
-2. Check DNS settings with your domain provider
-3. Ensure `.well-known/` directory is present
-
-### **Build Failures**
-1. Check Node.js version (requires 20+)
-2. Verify all dependencies are installed
-3. Check for syntax errors in source files
-
-## 📚 **Related Commands**
-
-```bash
-# Build website
-npm run build:docs
-
-# Deploy manually
-npm run deploy
-
-# Validate structure
-npm run validate:structure
-
-# Check links
-npm run links:validate
-
-# Full CI process
-npm run ci:full
+main branch:
+├── dist/ (built website - created by build process)
+├── .github/workflows/main.yml (deployment workflow)
+└── scripts/ (build scripts)
 ```
 
-## 🌟 **Benefits of This Setup**
+## Benefits of This Approach
 
-1. **Clean Separation**: Web content separate from core profiles
-2. **Automatic Deployment**: Push to main = automatic website update
-3. **Domain Support**: Custom domain with automatic HTTPS
-4. **Version Control**: All changes tracked in git
-5. **Easy Rollback**: Can revert to previous deployment
-
----
-
-**Need Help?** Check the [GitHub Issues](https://github.com/HaMi-IQ/llmprofiles/issues) or create a new one.
+1. **No duplication** - Single source of truth in `dist/`
+2. **Automated** - No manual deployment steps
+3. **Consistent** - Same process every time
+4. **Clean** - gh-pages branch stays minimal
+5. **Modern** - Uses GitHub's recommended deployment method
