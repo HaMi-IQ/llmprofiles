@@ -1,0 +1,19 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "LLM Profiles Validator Pro",
+  "description": "Advanced validation tool with bulk processing and API access for enterprise users.",
+  "brand": {
+    "@type": "Brand",
+    "name": "HAMI"
+  },
+  "category": "Developer Tools",
+  "sku": "LLMP-VAL-PRO-001",
+  "offers": {
+    "@type": "Offer",
+    "price": "299",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "url": "https://llmprofiles.org/products/validator-pro"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "x": "https://llmprofiles.org/vocab#"
+  },
+  "@id": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld",
+  "rdfs:seeAlso": "https://schema.org/Course",
+  "skos:prefLabel": "Course",
+  "skos:definition": "An educational course with curriculum, instructor, and enrollment information for learning platforms.",
+  "skos:scopeNote": "Use for online courses, university courses, workshops, and educational programs. Not for individual lessons or tutorials.",
+  "skos:example": "Coursera course page, university course catalog, or online learning platform course.",
+  "x:dos": [
+    "Use schema:Course with proper provider, instructor, and coursePrerequisites.",
+    "Include course description, duration, and learning outcomes.",
+    "Add enrollment information and pricing details."
+  ],
+  "x:donts": [
+    "Do not use for individual lessons or tutorial videos.",
+    "Do not use for product training without educational structure.",
+    "Do not use for conference sessions or one-time workshops."
+  ],
+  "sh:shapesGraph": {
+    "@type": "sh:NodeShape",
+    "sh:targetClass": "schema:Course",
+    "sh:property": [
+      {
+        "sh:path": "schema:name",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:provider",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:coursePrerequisites",
+        "sh:minCount": 0
+      }
+    ]
+  },
+  "x:pageSchema": "https://llmprofiles.org/profiles/content/course/v1/page.schema.json",
+  "x:outputSchema": "https://llmprofiles.org/profiles/content/course/v1/output.schema.json",
+  "x:profileVersion": "1.0.0",
+  "x:created": "2025-08-28"
+}
+
