@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://llmprofiles.org/profiles/interaction/event/v1/output.schema.json",
+  "title": "Event Extracted Content",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the event"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Event name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Event description"
+    },
+    "dates": {
+      "type": "object",
+      "required": ["start"],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Event start date and time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Event end date and time"
+        },
+        "doorsOpen": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When doors open for the event"
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Venue or location name"
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "street": {
+              "type": "string",
+              "description": "Street address"
+            },
+            "city": {
+              "type": "string",
+              "description": "City"
+            },
+            "state": {
+              "type": "string",
+              "description": "State or province"
+            },
+            "postalCode": {
+              "type": "string",
+              "description": "Postal code"
+            },
+            "country": {
+              "type": "string",
+              "description": "Country"
+            }
+          }
+        },
+        "coordinates": {
+          "type": "object",
+          "properties": {
+            "latitude": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90,
+              "description": "Latitude coordinate"
+            },
+            "longitude": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180,
+              "description": "Longitude coordinate"
+            }
+          }
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Venue website"
+        }
+      }
+    },
+    "organizer": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Organizer name"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Organizer website"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Organizer email"
+        }
+      }
+    },
+    "tickets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "price"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Ticket type name"
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Ticket price"
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "Currency code"
+          },
+          "available": {
+            "type": "boolean",
+            "description": "Whether tickets are available"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Ticket purchase URL"
+          }
+        }
+      },
+      "description": "Available ticket types"
+    },
+    "category": {
+      "type": "string",
+      "description": "Event category (concert, conference, workshop, etc.)"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Event tags or keywords"
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Event image URL"
+        },
+        "alt": {
+          "type": "string",
+          "description": "Image alt text"
+        }
+      }
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the event page"
+    },
+    "capacity": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Maximum number of attendees"
+    },
+    "isOnline": {
+      "type": "boolean",
+      "description": "Whether this is an online event"
+    },
+    "streamingUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Live streaming URL for online events"
+    }
+  },
+  "required": ["id", "name", "dates", "location", "url"],
+  "additionalProperties": false
+}
+

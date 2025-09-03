@@ -1,0 +1,69 @@
+{
+  "@context": ["https://schema.org"],
+  "@type": "LocalBusiness",
+  "name": "LLM Profiles Tech Consulting",
+  "description": "Professional consulting services for implementing structured data and AI optimization strategies. We help businesses improve their content for AI processing and search engine visibility.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Main Street",
+    "addressLocality": "San Francisco",
+    "addressRegion": "CA",
+    "postalCode": "94105",
+    "addressCountry": "US"
+  },
+  "telephone": "+1-555-0123",
+  "email": "contact@llmprofiles.org",
+  "url": "https://llmprofiles.org",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 37.7749,
+    "longitude": -122.4194
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Monday",
+      "opens": "09:00",
+      "closes": "17:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Tuesday",
+      "opens": "09:00",
+      "closes": "17:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Wednesday",
+      "opens": "09:00",
+      "closes": "17:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Thursday",
+      "opens": "09:00",
+      "closes": "17:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Friday",
+      "opens": "09:00",
+      "closes": "17:00"
+    }
+  ],
+  "priceRange": "$$",
+  "paymentAccepted": "Cash, Credit Card, Bank Transfer",
+  "currenciesAccepted": "USD",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://llmprofiles.org/logo.png",
+    "width": 200,
+    "height": 60
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://llmprofiles.org/images/consulting-office.jpg",
+    "width": 1200,
+    "height": 630
+  }
+}

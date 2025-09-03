@@ -1,0 +1,125 @@
+{
+  "$id": "https://llmprofiles.org/profiles/interaction/event/v1/page.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Event On-Page JSON-LD",
+  "type": "object",
+  "properties": {
+    "@context": { "anyOf": [{ "type": "string" }, { "type": "array" }] },
+    "@type": { "const": "Event" },
+    "name": { "type": "string", "minLength": 3 },
+    "description": { "type": "string", "minLength": 1 },
+    "startDate": { "type": "string", "format": "date-time" },
+    "endDate": { "type": "string", "format": "date-time" },
+    "location": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Place" },
+            "name": { "type": "string" },
+            "address": {
+              "type": "object",
+              "properties": {
+                "@type": { "const": "PostalAddress" },
+                "streetAddress": { "type": "string" },
+                "addressLocality": { "type": "string" },
+                "addressRegion": { "type": "string" },
+                "postalCode": { "type": "string" },
+                "addressCountry": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "required": ["@type", "name"],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "organizer": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Organization" },
+            "name": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "required": ["@type", "name"],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Person" },
+            "name": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "required": ["@type", "name"],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "performer": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Person" },
+            "name": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "required": ["@type", "name"],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "Organization" },
+            "name": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "required": ["@type", "name"],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "offers": {
+      "type": "object",
+      "properties": {
+        "@type": { "const": "Offer" },
+        "price": { "type": "string" },
+        "priceCurrency": { "type": "string" },
+        "availability": { "type": "string" },
+        "url": { "type": "string" },
+        "validFrom": { "type": "string", "format": "date-time" }
+      },
+      "required": ["@type", "price", "priceCurrency"],
+      "additionalProperties": true
+    },
+    "eventStatus": { "type": "string" },
+    "eventAttendanceMode": { "type": "string" },
+    "maximumAttendeeCapacity": { "type": "integer", "minimum": 1 },
+    "url": { "type": "string" },
+    "image": {
+      "anyOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "@type": { "const": "ImageObject" },
+            "url": { "type": "string" },
+            "width": { "type": "integer" },
+            "height": { "type": "integer" }
+          },
+          "required": ["@type", "url"],
+          "additionalProperties": true
+        }
+      ]
+    }
+  },
+  "required": ["@type", "name", "startDate", "location"],
+  "additionalProperties": true
+}

@@ -1,0 +1,79 @@
+{
+  "@context": {
+    "@vocab": "https://llmprofiles.org/vocab#",
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "x": "https://llmprofiles.org/vocab#"
+  },
+  "@type": "skos:ConceptScheme",
+  "skos:prefLabel": "LLM Profiles Vocabulary",
+  "skos:definition": "Vocabulary for LLM Profiles structured data profiles",
+  "skos:hasTopConcept": [
+    {
+      "@id": "x:Profile",
+      "skos:prefLabel": "Profile",
+      "skos:definition": "A structured data profile for a specific content type",
+      "skos:scopeNote": "Profiles define constrained subsets of Schema.org for specific use cases"
+    },
+    {
+      "@id": "x:pageSchema",
+      "skos:prefLabel": "Page Schema",
+      "skos:definition": "JSON Schema for validating JSON-LD markup on web pages",
+      "skos:scopeNote": "Used in CI/CD to validate structured data before deployment"
+    },
+    {
+      "@id": "x:outputSchema",
+      "skos:prefLabel": "Output Schema",
+      "skos:definition": "JSON Schema for validating extracted content for RAG/AI applications",
+      "skos:scopeNote": "Normalizes data structure for machine learning pipelines"
+    },
+    {
+      "@id": "x:training",
+      "skos:prefLabel": "Training Data",
+      "skos:definition": "Training data export format for LLM fine-tuning and RAG",
+      "skos:scopeNote": "Publisher-owned exports that mirror on-page semantics"
+    },
+    {
+      "@id": "x:examples",
+      "skos:prefLabel": "Examples",
+      "skos:definition": "Example JSON-LD implementations for the profile",
+      "skos:scopeNote": "Copy-ready examples for developers"
+    },
+    {
+      "@id": "x:dos",
+      "skos:prefLabel": "Do's",
+      "skos:definition": "Recommended practices for implementing the profile",
+      "skos:scopeNote": "Best practices for optimal results"
+    },
+    {
+      "@id": "x:donts",
+      "skos:prefLabel": "Don'ts",
+      "skos:definition": "Anti-patterns to avoid when implementing the profile",
+      "skos:scopeNote": "Common mistakes that hurt performance"
+    },
+    {
+      "@id": "x:profileVersion",
+      "skos:prefLabel": "Profile Version",
+      "skos:definition": "Version number of the profile",
+      "skos:scopeNote": "Follows semantic versioning (MAJOR.MINOR.PATCH)"
+    },
+    {
+      "@id": "x:created",
+      "skos:prefLabel": "Created Date",
+      "skos:definition": "Date when the profile was created",
+      "skos:scopeNote": "ISO 8601 date format"
+    },
+    {
+      "@id": "x:shapesGraph",
+      "skos:prefLabel": "SHACL Shapes Graph",
+      "skos:definition": "SHACL constraints for the profile",
+      "skos:scopeNote": "Advanced validation constraints using SHACL"
+    }
+  ],
+  "skos:note": "This vocabulary defines terms used in LLM Profiles for structured data profiles that bridge SEO and AI applications.",
+  "skos:changeNote": "Initial vocabulary definition for LLM Profiles v1.0.0",
+  "skos:editorialNote": "Vocabulary maintained by the LLM Profiles community",
+  "skos:historyNote": "Created as part of the LLM Profiles specification"
+}

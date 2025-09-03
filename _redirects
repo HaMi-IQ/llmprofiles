@@ -1,0 +1,14 @@
+# Profile redirects - serve index.jsonld files for profile directories
+/faqpage/v1/ /profiles/interaction/faqpage/v1/index.jsonld
+/qapage/v1/ /profiles/interaction/qapage/v1/index.jsonld
+/article/v1/ /profiles/content/article/v1/index.jsonld
+/product-offer/v1/ /profiles/business/product-offer/v1/index.jsonld
+/event/v1/ /profiles/interaction/event/v1/index.jsonld
+/course/v1/ /profiles/content/course/v1/index.jsonld
+/jobposting/v1/ /profiles/business/jobposting/v1/index.jsonld
+/localbusiness/v1/ /profiles/business/localbusiness/v1/index.jsonld
+/softwareapplication/v1/ /profiles/technology/softwareapplication/v1/index.jsonld
+/review/v1/ /profiles/business/review/v1/index.jsonld
+
+# API redirects
+/api/ /api/discovery.json
