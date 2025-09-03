@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://llmprofiles.org/sitemap.xml
+
+# Allow access to all profile directories
+Allow: /profiles/
+Allow: /schemas/
+Allow: /examples/
+Allow: /training/
+Allow: /tools/
+
+# Well-known directory for discovery
+Allow: /.well-known/
+
+# API endpoints
+Allow: /api/

@@ -1,0 +1,16 @@
+# Profile redirects - serve index.jsonld files for profile directories
+/profiles/interaction/faqpage  /profiles/interaction/faqpage/v1/index.jsonld  200
+/profiles/interaction/qapage   /profiles/interaction/qapage/v1/index.jsonld   200
+/profiles/content/article      /profiles/content/article/v1/index.jsonld      200
+/profiles/business/product-offer /profiles/business/product-offer/v1/index.jsonld 200
+/profiles/interaction/event    /profiles/interaction/event/v1/index.jsonld    200
+/profiles/content/book         /profiles/content/book/v1/index.jsonld         200
+/profiles/content/course       /profiles/content/course/v1/index.jsonld       200
+/profiles/content/dataset      /profiles/content/dataset/v1/index.jsonld      200
+/profiles/business/jobposting  /profiles/business/jobposting/v1/index.jsonld  200
+/profiles/business/localbusiness /profiles/business/localbusiness/v1/index.jsonld 200
+/profiles/content/recipe       /profiles/content/recipe/v1/index.jsonld       200
+/profiles/content/videoobject  /profiles/content/videoobject/v1/index.jsonld  200
+/profiles/business/review      /profiles/business/review/v1/index.jsonld      200
+/profiles/technology/softwareapplication /profiles/technology/softwareapplication/v1/index.jsonld 200
+/profiles/content/howto        /profiles/content/howto/v1/index.jsonld        200
