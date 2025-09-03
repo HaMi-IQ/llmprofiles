@@ -60,6 +60,20 @@ on:
 env:
   NODE_VERSION: '20'
 
+# Global permissions
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+# Concurrency control
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   detect-changes:
     name: Detect Profile Changes
@@ -151,7 +165,7 @@ jobs:
           # Determine change type
           if [ ${#UNIQUE_SCHEMAS[@]} -gt 0 ]; then
             CHANGE_TYPE="schema"
-          elif [ ${#UNIQUE_SCHEMAS[@]} -gt 0 ]; then
+          elif [ ${#UNIQUE_PROFILES[@]} -gt 0 ]; then
             CHANGE_TYPE="profile"
           else
             CHANGE_TYPE="general"
@@ -240,7 +254,8 @@ jobs:
        github.event.inputs.skip-validation == 'true') &&
       (github.event_name != 'workflow_dispatch' || 
        github.event.inputs.mode == 'full' || 
-       github.event.inputs.mode == 'build')
+       github.event.inputs.mode == 'build' ||
+       github.event.inputs.mode == 'deploy')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -276,7 +291,15 @@ jobs:
           echo "📁 Web directory size:"
           du -sh web/
         
-
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v4
+        
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './web'
 
   deploy:
     name: Deploy to GitHub Pages
@@ -290,21 +313,10 @@ jobs:
       (github.event_name != 'workflow_dispatch' || 
        github.event.inputs.mode == 'full' || 
        github.event.inputs.mode == 'deploy')
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
     environment:
       name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: web/
-          
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
@@ -318,11 +330,6 @@ jobs:
        github.event.inputs.mode == 'release') ||
       (github.event_name == 'release' && 
        github.event.action == 'published')
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      actions: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -399,8 +406,6 @@ jobs:
       needs.validate.result == 'success' &&
       needs.build.result == 'success' &&
       github.event_name == 'push'
-    permissions:
-      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -450,12 +455,31 @@ jobs:
       needs.detect-changes.outputs.has-schema-changes == 'true' &&
       needs.detect-changes.outputs.change-type == 'schema'
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Create Issue for Schema Changes
         uses: actions/github-script@v7
         with:
           script: |
-            const { createSchemaIssue } = require('./.github/scripts/create-schema-issue.js');
-            await createSchemaIssue(context, github);
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Check if schema issue script exists
+            const scriptPath = './.github/scripts/create-schema-issue.js';
+            if (fs.existsSync(scriptPath)) {
+              const { createSchemaIssue } = require(scriptPath);
+              await createSchemaIssue(context, github);
+            } else {
+              // Fallback to creating a simple issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'Schema Changes Detected',
+                body: `Schema changes were detected in this push.\n\nProfiles affected: ${{ needs.detect-changes.outputs.profiles-changed }}\n\nPlease review the changes and update documentation as needed.`,
+                labels: ['schema-change', 'documentation']
+              });
+            }
 
   notify:
     name: Notify Results
