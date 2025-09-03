@@ -300,7 +300,7 @@ jobs:
       pages: write
       id-token: write
     environment:
-      name: github-pages
+      name: gh-pages
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
