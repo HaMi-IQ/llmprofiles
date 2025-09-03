@@ -1,0 +1,127 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  "@id": "https://example.com/recipes/healthy-chicken-stir-fry",
+  "name": "Healthy Chicken and Vegetable Stir Fry",
+  "description": "A nutritious and flavorful stir fry packed with lean protein and colorful vegetables, perfect for a quick weeknight dinner",
+  "author": {
+    "@type": "Person",
+    "name": "Chef Michael Chen"
+  },
+  "datePublished": "2025-01-15",
+  "dateModified": "2025-01-15",
+  "prepTime": "PT20M",
+  "cookTime": "PT15M",
+  "totalTime": "PT35M",
+  "recipeYield": "4 servings",
+  "recipeCategory": "Main Course",
+  "recipeCuisine": "Asian Fusion",
+  "keywords": "chicken, stir fry, healthy, vegetables, quick dinner, gluten-free",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://example.com/images/chicken-stir-fry.jpg"
+  },
+  "ingredients": [
+    {
+      "@type": "Ingredient",
+      "name": "boneless chicken breast",
+      "amount": "1 pound"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "broccoli florets",
+      "amount": "2 cups"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "bell peppers",
+      "amount": "2 medium, sliced"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "carrots",
+      "amount": "2 medium, julienned"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "soy sauce",
+      "amount": "1/4 cup"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "garlic",
+      "amount": "4 cloves, minced"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "ginger",
+      "amount": "1 tablespoon, grated"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "sesame oil",
+      "amount": "2 tablespoons"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "cornstarch",
+      "amount": "1 tablespoon"
+    },
+    {
+      "@type": "Ingredient",
+      "name": "chicken broth",
+      "amount": "1/2 cup"
+    }
+  ],
+  "recipeInstructions": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "text": "Cut chicken into 1-inch pieces and season with salt and pepper"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "text": "In a small bowl, whisk together soy sauce, garlic, ginger, cornstarch, and chicken broth"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "text": "Heat 1 tablespoon sesame oil in a large wok or skillet over high heat"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "text": "Add chicken and stir-fry until golden brown, about 5-7 minutes. Remove from pan"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 5,
+      "text": "Add remaining sesame oil and stir-fry vegetables for 3-4 minutes until crisp-tender"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 6,
+      "text": "Return chicken to pan, add sauce mixture, and cook until sauce thickens, about 2 minutes"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 7,
+      "text": "Serve hot over brown rice or quinoa"
+    }
+  ],
+  "nutrition": {
+    "@type": "NutritionInformation",
+    "calories": "320 calories",
+    "proteinContent": "35g protein",
+    "fatContent": "12g fat",
+    "carbohydrateContent": "18g carbohydrates",
+    "fiberContent": "6g fiber",
+    "sugarContent": "8g sugar"
+  },
+  "suitableForDiet": [
+    "GlutenFreeDiet",
+    "LowCalorieDiet"
+  ],
+  "conformsTo": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld"
+}

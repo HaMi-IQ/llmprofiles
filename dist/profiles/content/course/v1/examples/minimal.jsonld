@@ -1,0 +1,25 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Structured Data Fundamentals with LLM Profiles",
+  "description": "Learn the basics of structured data and how to implement LLM Profiles for better AI content processing.",
+  "provider": {
+    "@type": "Organization",
+    "name": "HAMI Academy",
+    "url": "https://llmprofiles.org"
+  },
+  "instructor": {
+    "@type": "Person",
+    "name": "HAMI Team"
+  },
+  "coursePrerequisites": "Basic HTML knowledge",
+  "educationalLevel": "Beginner",
+  "timeRequired": "PT4H",
+  "offers": {
+    "@type": "Offer",
+    "price": "99",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "url": "https://llmprofiles.org/courses/structured-data-101"
+  }
+}

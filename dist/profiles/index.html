@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LLM Profiles - All Available Profiles</title>
+    <meta name="description" content="Browse all available LLM Profiles for structured data, AI applications, and SEO optimization">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #e1e5e9; }
+        .header h1 { color: #2c3e50; margin-bottom: 10px; }
+        .header p { color: #7f8c8d; }
+        .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 30px 0; }
+        .category { background: #f8f9fa; padding: 25px; border-radius: 8px; border-left: 4px solid #3498db; }
+        .category h2 { color: #2c3e50; margin-top: 0; margin-bottom: 20px; }
+        .profile-list { list-style: none; padding: 0; }
+        .profile-list li { margin-bottom: 15px; }
+        .profile-list a { color: #3498db; text-decoration: none; font-weight: 500; display: block; padding: 10px; background: white; border-radius: 6px; border: 1px solid #e1e5e9; transition: all 0.3s ease; }
+        .profile-list a:hover { background: #f8f9fa; border-color: #3498db; transform: translateY(-2px); }
+        .profile-list .version { color: #6b7280; font-size: 0.9em; margin-left: 10px; }
+        .back-link { text-align: center; margin-top: 40px; }
+        .back-link a { color: #3498db; text-decoration: none; }
+        .back-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>LLM Profiles</h1>
+        <p>All Available Structured Data Profiles</p>
+    </div>
+    
+    <div class="categories">
+        <div class="category">
+            <h2>Business Profiles</h2>
+            <ul class="profile-list">
+                <li><a href="business/localbusiness/v1/">Local Business <span class="version">v1</span></a></li>
+                <li><a href="business/jobposting/v1/">Job Posting <span class="version">v1</span></a></li>
+                <li><a href="business/product-offer/v1/">Product Offer <span class="version">v1</span></a></li>
+                <li><a href="business/review/v1/">Review <span class="version">v1</span></a></li>
+            </ul>
+        </div>
+        
+        <div class="category">
+            <h2>Content Profiles</h2>
+            <ul class="profile-list">
+                <li><a href="content/article/v1/">Article <span class="version">v1</span></a></li>
+                <li><a href="content/book/v1/">Book <span class="version">v1</span></a></li>
+                <li><a href="content/course/v1/">Course <span class="version">v1</span></a></li>
+                <li><a href="content/dataset/v1/">Dataset <span class="version">v1</span></a></li>
+                <li><a href="content/howto/v1/">How-to <span class="version">v1</span></a></li>
+                <li><a href="content/recipe/v1/">Recipe <span class="version">v1</span></a></li>
+                <li><a href="content/videoobject/v1/">Video Object <span class="version">v1</span></a></li>
+            </ul>
+        </div>
+        
+        <div class="category">
+            <h2>Interaction Profiles</h2>
+            <ul class="profile-list">
+                <li><a href="interaction/faqpage/v1/">FAQ Page <span class="version">v1</span></a></li>
+                <li><a href="interaction/qapage/v1/">Q&A Page <span class="version">v1</span></a></li>
+                <li><a href="interaction/event/v1/">Event <span class="version">v1</span></a></li>
+            </ul>
+        </div>
+        
+        <div class="category">
+            <h2>Technology Profiles</h2>
+            <ul class="profile-list">
+                <li><a href="technology/softwareapplication/v1/">Software Application <span class="version">v1</span></a></li>
+                <li><a href="technology/software/v1/">Software <span class="version">v1</span></a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="back-link">
+        <a href="/profile-viewer.html">Interactive Profile Viewer</a> | 
+        <a href="/tools/validator.html">Validator</a> | 
+        <a href="/">Home</a>
+    </div>
+</body>
+</html>

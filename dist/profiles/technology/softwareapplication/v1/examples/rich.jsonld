@@ -1,0 +1,52 @@
+{
+  "@context": ["https://schema.org"],
+  "@type": "SoftwareApplication",
+  "name": "LLM Profiles Validator",
+  "description": "A comprehensive validation tool for testing structured data against LLM Profiles schemas. Validate your JSON-LD markup, test with Google Rich Results, and ensure compliance with Schema.org standards.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web Browser",
+  "softwareVersion": "1.0.0",
+  "softwareRequirements": "Modern web browser with JavaScript enabled",
+  "memoryRequirements": "Minimum 4GB RAM",
+  "storageRequirements": "100MB available space",
+  "featureList": "JSON-LD validation, Google Rich Results testing, Schema.org compliance checking, automated testing scripts, bulk validation",
+  "screenshot": {
+    "@type": "ImageObject",
+    "url": "https://llmprofiles.org/images/validator-screenshot.jpg",
+    "width": 1200,
+    "height": 800
+  },
+  "downloadUrl": "https://llmprofiles.org/software/validator",
+  "installUrl": "https://llmprofiles.org/software/validator/install",
+  "updateUrl": "https://llmprofiles.org/software/validator/updates",
+  "fileSize": "2.5MB",
+  "releaseNotes": "Initial release with comprehensive validation features",
+  "datePublished": "2025-08-28",
+  "dateModified": "2025-08-28",
+  "author": {
+    "@type": "Organization",
+    "name": "HAMI",
+    "url": "https://llmprofiles.org"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "url": "https://llmprofiles.org/software/validator"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": 4.8,
+    "ratingCount": 125,
+    "bestRating": 5,
+    "worstRating": 1
+  },
+  "url": "https://llmprofiles.org/software/validator",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://llmprofiles.org/images/validator-icon.png",
+    "width": 512,
+    "height": 512
+  }
+}

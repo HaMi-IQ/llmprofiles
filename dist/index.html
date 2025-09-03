@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LLM Profiles - Revolutionizing Structured Data for AI and SEO</title>
+    <meta name="description" content="LLM Profiles provides structured data schemas and tools for AI applications, SEO optimization, and semantic web development.">
+    <meta name="keywords" content="LLM profiles, structured data, AI, SEO, JSON-LD, schema.org, semantic web">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://llmprofiles.org/">
+    <meta property="og:title" content="LLM Profiles - Revolutionizing Structured Data for AI and SEO">
+    <meta property="og:description" content="LLM Profiles provides structured data schemas and tools for AI applications, SEO optimization, and semantic web development.">
+    <meta property="og:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://llmprofiles.org/">
+    <meta property="twitter:title" content="LLM Profiles - Revolutionizing Structured Data for AI and SEO">
+    <meta property="twitter:description" content="LLM Profiles provides structured data schemas and tools for AI applications, SEO optimization, and semantic web development.">
+    <meta property="twitter:image" content="https://llmprofiles.org/images/llmprofiles-overview.jpg">
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-color: #1f2937;
+            --light-text: #6b7280;
+            --background: #ffffff;
+            --light-bg: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            background: var(--light-bg);
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--light-text);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: var(--light-bg);
+            padding: 4rem 0;
+        }
+
+        .quick-actions h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-color);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .action-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .action-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-color);
+            color: white;
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1rem;
+            color: #9ca3af;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .features h2,
+            .quick-actions h2 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>LLM Profiles</h1>
+            <p>Revolutionizing Structured Data for AI and SEO</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="logo">
+                <img src="/logo.png" alt="LLM Profiles Logo" height="40">
+            </div>
+            <ul class="nav-links">
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/docs/">Documentation</a></li>
+                <li><a href="/profiles/">Profiles</a></li>
+                <li><a href="/tools/validator.html">Validator</a></li>
+                <li><a href="/examples/">Examples</a></li>
+                <li><a href="/blog/">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Build Better AI Applications</h2>
+            <p>LLM Profiles provides comprehensive structured data schemas and tools that enable AI systems to better understand and process your content, while simultaneously improving your SEO and search engine visibility.</p>
+            <div class="cta-buttons">
+                <a href="/docs/" class="btn btn-primary">Get Started</a>
+                <a href="/tools/validator.html" class="btn btn-secondary">Try Validator</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose LLM Profiles?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🤖 AI-Optimized</h3>
+                    <p>Structured data specifically designed for Large Language Models, ensuring your content is easily understood and processed by AI systems.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔍 SEO Enhanced</h3>
+                    <p>Built on Schema.org standards with extensions that improve search engine understanding and rich snippet generation.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🛠️ Developer Friendly</h3>
+                    <p>Comprehensive documentation, validation tools, and examples to help developers implement structured data quickly and correctly.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Comprehensive Coverage</h3>
+                    <p>Profiles for businesses, content, interactions, and technology - covering all major use cases and industries.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🚀 Performance Focused</h3>
+                    <p>Optimized schemas that provide maximum information density while maintaining fast loading times and compatibility.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌐 Open Standards</h3>
+                    <p>Built on open web standards with transparent development and community-driven improvements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+        <div class="container">
+            <h2>Quick Actions</h2>
+            <div class="actions-grid">
+                <div class="action-card">
+                    <h3>Validate Your Data</h3>
+                    <p><a href="/tools/validator.html">Use our validator to check your structured data</a></p>
+                </div>
+                <div class="action-card">
+                    <h3>Browse Profiles</h3>
+                    <p><a href="/profiles/">Explore all available profile schemas</a></p>
+                </div>
+                <div class="action-card">
+                    <h3>View Examples</h3>
+                    <p><a href="/examples/">See real-world implementation examples</a></p>
+                </div>
+                <div class="action-card">
+                    <h3>Read Documentation</h3>
+                    <p><a href="/docs/">Learn how to implement LLM Profiles</a></p>
+                </div>
+                <div class="action-card">
+                    <h3>API Access</h3>
+                    <p><a href="/api/">Access our structured data via API</a></p>
+                </div>
+                <div class="action-card">
+                    <h3>Training Materials</h3>
+                    <p><a href="/training/">Learn with our comprehensive training</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="/docs/">Documentation</a></li>
+                        <li><a href="/examples/">Examples</a></li>
+                        <li><a href="/training/">Training</a></li>
+                        <li><a href="/blog/">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <ul>
+                        <li><a href="/tools/validator.html">Validator</a></li>
+                        <li><a href="/api/">API</a></li>
+                        <li><a href="/schemas/">Schemas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <ul>
+                        <li><a href="/about.html">About</a></li>
+                        <li><a href="/CONTRIBUTING.md">Contributing</a></li>
+                        <li><a href="/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+                        <li><a href="/LICENSE-CODE">License</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Profiles</h3>
+                    <ul>
+                        <li><a href="/profiles/business/">Business</a></li>
+                        <li><a href="/profiles/content/">Content</a></li>
+                        <li><a href="/profiles/interaction/">Interaction</a></li>
+                        <li><a href="/profiles/technology/">Technology</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 LLM Profiles. Built with ❤️ for the AI and web development community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards and action cards
+        document.querySelectorAll('.feature-card, .action-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

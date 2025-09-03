@@ -1,0 +1,19 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "LLM Profiles: Standardizing Structured Data for AI",
+  "author": {
+    "@type": "Person",
+    "name": "HAMI Team"
+  },
+  "datePublished": "2025-08-28T10:00:00Z",
+  "publisher": {
+    "@type": "Organization",
+    "name": "HAMI",
+    "url": "https://llmprofiles.org"
+  },
+  "articleBody": "LLM Profiles provides standardized, validated schemas for common web content types that LLMs can reliably parse and understand. Each profile includes JSON-LD context definitions with SKOS and SHACL constraints, output schemas for structured data extraction, best practices and usage guidelines, and validation rules for quality assurance.",
+  "keywords": "llmprofiles,structured data,AI,JSON-LD,schema.org",
+  "articleSection": "Technology",
+  "wordCount": 45
+}

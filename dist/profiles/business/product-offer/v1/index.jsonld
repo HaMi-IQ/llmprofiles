@@ -1,0 +1,48 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "x": "https://llmprofiles.org/vocab#"
+  },
+  "@id": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld",
+  "rdfs:seeAlso": "https://schema.org/Product",
+  "skos:prefLabel": "Product Offer",
+  "skos:definition": "A product listing with pricing, availability, and purchase information for e-commerce applications.",
+  "skos:scopeNote": "Use for product pages, shopping listings, and e-commerce content. Not for product reviews or general product information.",
+  "skos:example": "Amazon product page, Shopify product listing, or online store product page.",
+  "x:dos": [
+    "Use schema:Product with schema:Offer for pricing and availability.",
+    "Include product images, descriptions, and specifications.",
+    "Add seller information and shipping details."
+  ],
+  "x:donts": [
+    "Do not use for product reviews or ratings.",
+    "Do not use for general product information without pricing.",
+    "Do not use for service offerings or digital downloads."
+  ],
+  "sh:shapesGraph": {
+    "@type": "sh:NodeShape",
+    "sh:targetClass": "schema:Product",
+    "sh:property": [
+      {
+        "sh:path": "schema:name",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:offers",
+        "sh:minCount": 1
+      },
+      {
+        "sh:path": "schema:offers",
+        "sh:node": "schema:Offer"
+      }
+    ]
+  },
+  "x:pageSchema": "https://llmprofiles.org/profiles/business/product-offer/v1/page.schema.json",
+  "x:outputSchema": "https://llmprofiles.org/profiles/business/product-offer/v1/output.schema.json",
+  "x:profileVersion": "1.0.0",
+  "x:created": "2025-08-28"
+}
+
