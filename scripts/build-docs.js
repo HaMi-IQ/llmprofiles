@@ -40,14 +40,14 @@ Examples:
   process.exit(0);
 }
 
-// Create dist directory at root level (not in web/)
-function ensureDistDir() {
-  const distDir = path.join(__dirname, '..', 'dist');
-  if (!fs.existsSync(distDir)) {
-    fs.mkdirSync(distDir, { recursive: true });
-    log(`Created dist directory: ${distDir}`, 'green');
+// Create web directory for deployment
+function ensureWebDir() {
+  const webDir = path.join(__dirname, '..', 'web');
+  if (!fs.existsSync(webDir)) {
+    fs.mkdirSync(webDir, { recursive: true });
+    log(`Created web directory: ${webDir}`, 'green');
   }
-  return distDir;
+  return webDir;
 }
 
 // Copy directory recursively (all files and subfolders)
@@ -99,23 +99,23 @@ function copyDirAll(src, dest, options = {}) {
 }
 
 // Clean dist directory
-function cleanDistDir(distDir, options = {}) {
-  if (options.clean && fs.existsSync(distDir)) {
+function cleanWebDir(webDir, options = {}) {
+  if (options.clean && fs.existsSync(webDir)) {
     try {
-      fs.rmSync(distDir, { recursive: true, force: true });
-      log(`Cleaned dist directory: ${distDir}`, 'yellow');
+      fs.rmSync(webDir, { recursive: true, force: true });
+      log(`Cleaned dist directory: ${webDir}`, 'yellow');
     } catch (error) {
       log(`Warning: Could not clean dist directory: ${error.message}`, 'yellow');
     }
   }
   
   // Always ensure dist directory is clean
-  if (fs.existsSync(distDir)) {
+  if (fs.existsSync(webDir)) {
     try {
       // Remove any existing content
-      const items = fs.readdirSync(distDir);
+      const items = fs.readdirSync(webDir);
       items.forEach(item => {
-        const itemPath = path.join(distDir, item);
+        const itemPath = path.join(webDir, item);
         if (fs.statSync(itemPath).isDirectory()) {
           fs.rmSync(itemPath, { recursive: true, force: true });
         } else {
@@ -408,7 +408,7 @@ function createCategoryIndexFiles(profilesDir, options = {}) {
 }
 
 // Create legacy redirects for backward compatibility
-function createLegacyRedirects(distDir, options = {}) {
+function createLegacyRedirects(webDir, options = {}) {
   const legacyProfileDirs = [
     'faqpage', 'qapage', 'article', 'product-offer', 'event', 
     'course', 'jobposting', 'localbusiness', 'softwareapplication', 'review',
@@ -416,7 +416,7 @@ function createLegacyRedirects(distDir, options = {}) {
   ];
 
   legacyProfileDirs.forEach(profile => {
-    const destPath = path.join(distDir, profile);
+    const destPath = path.join(webDir, profile);
     
     if (!options.dryRun && !fs.existsSync(destPath)) {
       fs.mkdirSync(destPath, { recursive: true });
@@ -491,19 +491,19 @@ function main() {
   log('');
   
   try {
-    const distDir = ensureDistDir();
-    cleanDistDir(distDir, options);
+    const webDir = ensureWebDir();
+    cleanWebDir(webDir, options);
     
     // Copy web assets (the actual website)
     const webSrc = path.join(__dirname, '..', 'web');
     if (fs.existsSync(webSrc)) {
       log('🌐 Copying website files...', 'blue');
-      copyDirAll(webSrc, distDir, options);
+      copyDirAll(webSrc, webDir, options);
     }
     
     // Copy profiles directory structure (for API access)
     const profilesSrc = path.join(__dirname, '..', 'profiles');
-    const profilesDest = path.join(distDir, 'profiles');
+    const profilesDest = path.join(webDir, 'profiles');
     if (fs.existsSync(profilesSrc)) {
       log('📁 Copying profiles...', 'blue');
       copyDirAll(profilesSrc, profilesDest, options);
@@ -523,7 +523,7 @@ function main() {
     
     // Copy schemas directory (for API access)
     const schemasSrc = path.join(__dirname, '..', 'schemas');
-    const schemasDest = path.join(distDir, 'schemas');
+    const schemasDest = path.join(webDir, 'schemas');
     if (fs.existsSync(schemasSrc)) {
       log('🔧 Copying schemas...', 'blue');
       copyDirAll(schemasSrc, schemasDest, options);
@@ -531,7 +531,7 @@ function main() {
     
     // Copy examples directory (for documentation)
     const examplesSrc = path.join(__dirname, '..', 'examples');
-    const examplesDest = path.join(distDir, 'examples');
+    const examplesDest = path.join(webDir, 'examples');
     if (fs.existsSync(examplesSrc)) {
       log('💡 Copying examples...', 'blue');
       copyDirAll(examplesSrc, examplesDest, options);
@@ -539,7 +539,7 @@ function main() {
     
     // Copy training directory (for documentation)
     const trainingSrc = path.join(__dirname, '..', 'training');
-    const trainingDest = path.join(distDir, 'training');
+    const trainingDest = path.join(webDir, 'training');
     if (fs.existsSync(trainingSrc)) {
       log('🎓 Copying training materials...', 'blue');
       copyDirAll(trainingSrc, trainingDest, options);
@@ -547,7 +547,7 @@ function main() {
     
     // Copy tools directory (for website functionality)
     const toolsSrc = path.join(__dirname, '..', 'tools');
-    const toolsDest = path.join(distDir, 'tools');
+    const toolsDest = path.join(webDir, 'tools');
     if (fs.existsSync(toolsSrc)) {
       log('🛠️  Copying tools...', 'blue');
       copyDirAll(toolsSrc, toolsDest, options);
@@ -558,7 +558,7 @@ function main() {
     log('📄 Copying main index files...', 'blue');
     mainFiles.forEach(file => {
       const srcPath = path.join(__dirname, '..', file);
-      const destPath = path.join(distDir, file);
+      const destPath = path.join(webDir, file);
       if (fs.existsSync(srcPath)) {
         if (options.dryRun) {
           log(`Would copy: ${srcPath} → ${destPath}`, 'blue');
@@ -573,7 +573,7 @@ function main() {
     
     // Copy images
     const imagesSrc = path.join(__dirname, '..', 'images');
-    const imagesDest = path.join(distDir, 'images');
+    const imagesDest = path.join(webDir, 'images');
     if (fs.existsSync(imagesSrc)) {
       log('🖼️  Copying images...', 'blue');
       copyDirAll(imagesSrc, imagesDest, options);
@@ -581,7 +581,7 @@ function main() {
     
     // Copy logo
     const logoSrc = path.join(__dirname, '..', 'logo.png');
-    const logoDest = path.join(distDir, 'logo.png');
+    const logoDest = path.join(webDir, 'logo.png');
     if (fs.existsSync(logoSrc)) {
       if (options.dryRun) {
         log(`Would copy: ${logoSrc} → ${logoDest}`, 'blue');
@@ -595,7 +595,7 @@ function main() {
     
     // Copy .well-known directory (important for domain verification)
     const wellKnownSrc = path.join(__dirname, '..', '.well-known');
-    const wellKnownDest = path.join(distDir, '.well-known');
+    const wellKnownDest = path.join(webDir, '.well-known');
     if (fs.existsSync(wellKnownSrc)) {
       log('🔐 Copying .well-known directory...', 'blue');
       copyDirAll(wellKnownSrc, wellKnownDest, options);
@@ -603,10 +603,10 @@ function main() {
     
     // Create legacy redirects for backward compatibility
     log('🔄 Creating legacy redirects...', 'blue');
-    createLegacyRedirects(distDir, options);
+    createLegacyRedirects(webDir, options);
     
     // Create .nojekyll file to disable Jekyll processing
-    const nojekyllPath = path.join(distDir, '.nojekyll');
+    const nojekyllPath = path.join(webDir, '.nojekyll');
     if (!options.dryRun) {
       fs.writeFileSync(nojekyllPath, '');
       log('📝 Created .nojekyll file', 'green');
@@ -617,7 +617,7 @@ function main() {
     if (!options.dryRun) {
       log('');
       log('✅ Website build completed successfully!', 'green');
-      log(`📁 Output directory: ${distDir}`, 'blue');
+      log(`📁 Output directory: ${webDir}`, 'blue');
       log('🚀 Ready for deployment to GitHub Pages', 'green');
     } else {
       log('');
@@ -642,7 +642,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  ensureDistDir,
+  ensureWebDir,
   copyDirAll,
   createLegacyRedirects
 };
