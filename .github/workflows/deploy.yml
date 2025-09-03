@@ -1,0 +1,74 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build website
+        run: |
+          npm run build:docs
+          npm run build:md
+          npm run generate-api
+          npm run create-readmes
+          npm run generate-images
+          
+      - name: List build output
+        run: |
+          echo "📁 Build output:"
+          ls -la dist/
+          echo "📊 Build size:"
+          du -sh dist/
+          
+      - name: Deploy to gh-pages branch
+        run: |
+          # Configure git
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Create or switch to gh-pages branch
+          if git show-ref --verify --quiet refs/heads/gh-pages; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+          fi
+          
+          # Remove all existing files
+          git rm -rf . || true
+          
+          # Copy built files from dist to root
+          cp -r dist/* .
+          
+          # Add all files
+          git add .
+          
+          # Commit
+          git commit -m "Deploy website - $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          
+          # Push to gh-pages branch
+          git push origin gh-pages --force
