@@ -90,8 +90,17 @@ function validateSchema(schemaPath, verbose = false) {
     const schemaContent = fs.readFileSync(schemaPath, 'utf8');
     const schema = JSON.parse(schemaContent);
     
+    // Create a new Ajv instance for each schema to avoid ID conflicts
+    const localAjv = new Ajv({
+      strict: false,
+      allErrors: true,
+      verbose: true,
+      validateSchema: false
+    });
+    addFormats(localAjv);
+    
     // Compile the schema to check for syntax errors
-    const validate = ajv.compile(schema);
+    const validate = localAjv.compile(schema);
     
     if (verbose) {
       log(`✓ ${schemaPath}`, 'green');
