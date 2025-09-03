@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository uses **GitHub Actions** for automated deployment to GitHub Pages. The manual deployment script has been disabled to prevent duplication issues.
+This repository uses **GitHub Actions** for automated deployment to the **gh-pages branch**. The manual deployment script has been disabled to prevent duplication issues.
 
 ## Deployment Workflow
 
@@ -10,7 +10,7 @@ This repository uses **GitHub Actions** for automated deployment to GitHub Pages
 
 1. **Push to main branch** - Triggers automatic CI/CD pipeline
 2. **GitHub Actions builds** the website in the `dist/` directory
-3. **GitHub Actions deploys** directly to GitHub Pages from the `dist/` directory
+3. **GitHub Actions deploys** to the gh-pages branch from the `dist/` directory
 4. **No manual intervention required**
 
 ### Manual Deployment (Emergency only)
@@ -38,16 +38,18 @@ If you need to manually deploy in an emergency:
 
 ### ✅ What happens automatically:
 - Website builds in `dist/` directory
-- GitHub Actions deploys from `dist/` to GitHub Pages
-- gh-pages branch stays clean with only a README
+- GitHub Actions deploys from `dist/` to gh-pages branch
+- gh-pages branch gets updated with website files
 
 ## GitHub Pages Configuration
 
 Ensure your repository settings are configured correctly:
 
 1. **Settings > Pages**
-2. **Source:** "GitHub Actions"
-3. **No branch selection needed** (Actions handles this)
+2. **Source:** "Deploy from a branch"
+3. **Branch:** "gh-pages"
+4. **Folder:** "/ (root)"
+5. **Save** the configuration
 
 ## Troubleshooting
 
@@ -65,7 +67,10 @@ Ensure your repository settings are configured correctly:
 
 ```
 gh-pages branch (managed by GitHub Actions):
-├── README.md (placeholder only)
+├── website files (deployed from dist/)
+├── .nojekyll
+├── CNAME
+└── other website assets
 
 main branch:
 ├── dist/ (built website - created by build process)
