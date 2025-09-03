@@ -231,61 +231,14 @@ jobs:
         run: |
           curl -fsSL https://llmprofiles.org/.well-known/llmprofiles.json | jq . || true
 
-  build:
-    name: Build and Generate
-    runs-on: ubuntu-latest
-    needs: [validate]
-    if: |
-      (needs.validate.result == 'success' || 
-       github.event.inputs.skip-validation == 'true') &&
-      (github.event_name != 'workflow_dispatch' || 
-       github.event.inputs.mode == 'full' || 
-       github.event.inputs.mode == 'build')
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Build documentation
-        run: npm run build:docs
-        
-      - name: Convert markdown to HTML
-        run: npm run build:md
-        
-      - name: Generate API documentation
-        run: npm run generate-api
-        
-      - name: Create profile READMEs
-        run: npm run create-readmes
-        
-      - name: Generate generic images
-        run: npm run generate-images
-        
-      - name: List dist contents
-        run: |
-          echo "📁 Dist directory contents:"
-          ls -la dist/
-          echo "📁 Dist directory size:"
-          du -sh dist/
-        
-
-
   deploy:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [validate]
     if: |
       github.ref == 'refs/heads/main' &&
       github.event.inputs.skip-deploy != 'true' &&
-      (needs.build.result == 'success' || 
+      (
        github.event.inputs.mode == 'deploy') &&
       (github.event_name != 'workflow_dispatch' || 
        github.event.inputs.mode == 'full' || 
@@ -300,6 +253,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build website
+        run: |
+          npm run build:docs
+          npm run build:md
+          npm run generate-api
+          npm run create-readmes
+          npm run generate-images
+          
+      - name: List build output
+        run: |
+          echo "📁 Build output:"
+          ls -la dist/
+          echo "📊 Build size:"
+          du -sh dist/
+          
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
@@ -312,7 +289,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: [detect-changes, validate, build]
+    needs: [detect-changes, validate]
     if: |
       (github.event_name == 'workflow_dispatch' && 
        github.event.inputs.mode == 'release') ||
@@ -393,7 +370,7 @@ jobs:
   update-documentation:
     name: Update Documentation
     runs-on: ubuntu-latest
-    needs: [detect-changes, validate, build]
+    needs: [detect-changes, validate]
     if: |
       needs.detect-changes.outputs.profiles-changed != '' &&
       needs.validate.result == 'success' &&
@@ -444,7 +421,7 @@ jobs:
   create-schema-issue:
     name: Create Schema Change Issue
     runs-on: ubuntu-latest
-    needs: [detect-changes, validate, build, update-documentation]
+    needs: [detect-changes, validate, update-documentation]
     if: |
       success() &&
       needs.detect-changes.outputs.has-schema-changes == 'true' &&
@@ -460,7 +437,7 @@ jobs:
   notify:
     name: Notify Results
     runs-on: ubuntu-latest
-    needs: [detect-changes, validate, build, deploy, release, update-documentation]
+    needs: [detect-changes, validate, deploy, release, update-documentation]
     if: always()
     steps:
       - name: Determine Pipeline Mode
