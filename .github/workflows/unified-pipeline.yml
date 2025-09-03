@@ -1,0 +1,428 @@
+name: Unified CI/CD Pipeline
+
+on:
+  # Automatic triggers
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'profiles/**'
+      - 'web/**'
+      - 'scripts/**'
+      - '**/*.json'
+      - '**/*.jsonld'
+      - '**/*.md'
+      - '**/*.js'
+      - '**/*.html'
+      - 'package.json'
+      - 'package-lock.json'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'profiles/**'
+      - 'web/**'
+      - 'scripts/**'
+      - '**/*.json'
+      - '**/*.jsonld'
+      - '**/*.md'
+      - '**/*.js'
+      - '**/*.html'
+      - 'package.json'
+      - 'package-lock.json'
+  # Manual triggers
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Pipeline mode'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full          # Full CI/CD pipeline
+          - validate      # Only validation
+          - build         # Only build (no deploy)
+          - deploy        # Only deploy (assumes build exists)
+          - release       # Create release
+      release_type:
+        description: 'Release type (for release mode)'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      version:
+        description: 'Specific version (for release mode)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (for release mode)'
+        required: false
+        default: false
+        type: boolean
+      skip-validation:
+        description: 'Skip validation steps'
+        required: false
+        default: false
+        type: boolean
+      skip-build:
+        description: 'Skip build steps'
+        required: false
+        default: false
+        type: boolean
+      skip-deploy:
+        description: 'Skip deployment'
+        required: false
+        default: false
+        type: boolean
+  # Release triggers
+  release:
+    types: [published]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  detect-changes:
+    name: Detect Profile Changes
+    runs-on: ubuntu-latest
+    outputs:
+      profiles-changed: ${{ steps.changes.outputs.profiles }}
+      change-summary: ${{ steps.changes.outputs.summary }}
+      has-schema-changes: ${{ steps.changes.outputs.has-schema }}
+      change-type: ${{ steps.changes.outputs.type }}
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_dispatch' && 
+       github.event.inputs.mode != 'deploy' && 
+       github.event.inputs.mode != 'release')
+    steps:
+      - uses: ./.github/actions/setup
+        with:
+          fetch-depth: 0
+          
+      - name: Detect Profile Changes
+        id: changes
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          # Get the base commit for comparison
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            BASE_COMMIT="$BASE_SHA"
+          else
+            BASE_COMMIT="$BEFORE_SHA"
+          fi
+          
+          if [ -z "$BASE_COMMIT" ] || [ "$BASE_COMMIT" = "0000000000000000000000000000000000000" ]; then
+            BASE_COMMIT="HEAD~1"
+          fi
+          
+          echo "Comparing changes from $BASE_COMMIT to $HEAD_SHA"
+          
+          # Get list of changed profile files
+          CHANGED_FILES=$(git diff --name-only "$BASE_COMMIT" "$HEAD_SHA" | grep -E '^profiles/[^/]+/[^/]+/v\d+/' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No profile changes detected"
+            echo "profiles=" >> "$GITHUB_OUTPUT"
+            echo "summary=No profile changes detected" >> "$GITHUB_OUTPUT"
+            echo "has-schema=false" >> "$GITHUB_OUTPUT"
+            echo "type=general" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          
+          # Extract profile types and categorize changes
+          PROFILES_CHANGED=()
+          SCHEMA_CHANGES=()
+          
+          while IFS= read -r file; do
+            if [[ $file =~ ^profiles/[^/]+/([^/]+)/v[0-9]+/ ]]; then
+              PROFILE_TYPE="${BASH_REMATCH[1]}"
+              PROFILES_CHANGED+=("$PROFILE_TYPE")
+              
+              if [[ $file =~ \.schema\.json$ ]]; then
+                SCHEMA_CHANGES+=("$PROFILE_TYPE")
+              fi
+            fi
+          done <<< "$CHANGED_FILES"
+          
+          # Remove duplicates
+          UNIQUE_PROFILES=($(printf "%s\n" "${PROFILES_CHANGED[@]}" | sort -u))
+          UNIQUE_SCHEMAS=($(printf "%s\n" "${SCHEMA_CHANGES[@]}" | sort -u))
+          
+          # Create change summary
+          SUMMARY="Profiles modified: ${#UNIQUE_PROFILES[@]}"
+          if [ ${#UNIQUE_SCHEMAS[@]} -gt 0 ]; then
+            SUMMARY="$SUMMARY, Schemas updated: ${#UNIQUE_SCHEMAS[@]}"
+          fi
+          
+          # Determine change type
+          if [ ${#UNIQUE_SCHEMAS[@]} -gt 0 ]; then
+            CHANGE_TYPE="schema"
+          elif [ ${#UNIQUE_PROFILES[@]} -gt 0 ]; then
+            CHANGE_TYPE="profile"
+          else
+            CHANGE_TYPE="general"
+          fi
+          
+          # Output results
+          echo "profiles=${UNIQUE_PROFILES[*]}" >> "$GITHUB_OUTPUT"
+          echo "summary=$SUMMARY" >> "$GITHUB_OUTPUT"
+          echo "has-schema=$([ ${#UNIQUE_SCHEMAS[@]} -gt 0 ] && echo 'true' || echo 'false')" >> "$GITHUB_OUTPUT"
+          echo "type=$CHANGE_TYPE" >> "$GITHUB_OUTPUT"
+          
+          # Log summary
+          echo "📊 Change Summary: $SUMMARY"
+          echo "📁 Profiles: ${UNIQUE_PROFILES[*]}"
+          echo "🔧 Change Type: $CHANGE_TYPE"
+          if [ ${#UNIQUE_SCHEMAS[@]} -gt 0 ]; then
+            echo "🔧 Schema updates: ${UNIQUE_SCHEMAS[*]}"
+          fi
+
+  validate:
+    name: Validate Changes
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      (needs.detect-changes.outputs.profiles-changed != '' || 
+       github.event.inputs.skip-validation != 'true') &&
+      (github.event_name != 'workflow_dispatch' || 
+       github.event.inputs.mode == 'full' || 
+       github.event.inputs.mode == 'validate')
+    steps:
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/validate
+        with:
+          validate-json: 'true'
+          validate-ajv: 'true'
+          test-well-known: 'true'
+          run-tests: 'true'
+
+  build:
+    name: Build and Generate
+    runs-on: ubuntu-latest
+    needs: [detect-changes, validate]
+    if: |
+      (needs.detect-changes.outputs.profiles-changed != '' || 
+       github.event.inputs.skip-build != 'true') &&
+      (needs.validate.result == 'success' || 
+       github.event.inputs.skip-validation == 'true') &&
+      (github.event_name != 'workflow_dispatch' || 
+       github.event.inputs.mode == 'full' || 
+       github.event.inputs.mode == 'build')
+    steps:
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/build
+        with:
+          build-docs: 'true'
+          build-md: 'true'
+          generate-api: 'true'
+          create-readmes: 'true'
+          generate-images: 'true'
+          upload-artifacts: 'true'
+          artifact-name: 'build-output'
+          artifact-path: 'web/dist/'
+
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [detect-changes, validate, build]
+    if: |
+      github.ref == 'refs/heads/main' &&
+      github.event.inputs.skip-deploy != 'true' &&
+      (needs.build.result == 'success' || 
+       github.event.inputs.mode == 'deploy') &&
+      (github.event_name != 'workflow_dispatch' || 
+       github.event.inputs.mode == 'full' || 
+       github.event.inputs.mode == 'deploy')
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - uses: ./.github/actions/deploy
+        with:
+          source-path: 'dist/'
+          download-artifacts: 'true'
+          artifact-name: 'build-output'
+          artifact-path: 'dist/'
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [detect-changes, validate, build]
+    if: |
+      (github.event_name == 'workflow_dispatch' && 
+       github.event.inputs.mode == 'release') ||
+      (github.event_name == 'release' && 
+       github.event.action == 'published')
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      actions: read
+    steps:
+      - uses: ./.github/actions/setup
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+      - name: Prepare Release
+        id: release
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual trigger
+            RELEASE_TYPE="${{ github.event.inputs.release_type }}"
+            VERSION="${{ github.event.inputs.version }}"
+            DRY_RUN="${{ github.event.inputs.dry_run }}"
+            
+            if [ "$DRY_RUN" = "true" ]; then
+              npm run release:prepare -- --type $RELEASE_TYPE --version "$VERSION" --dry-run
+            else
+              npm run release:prepare -- --type $RELEASE_TYPE --version "$VERSION"
+            fi
+          else
+            # Release trigger
+            TAG="${{ github.ref_name }}"
+            VERSION="${TAG#v}"
+            npm run changelog -- --version "$VERSION" --since "HEAD~20"
+          fi
+          
+      - name: Push changes
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true'
+        run: |
+          git push origin main
+          git push origin --tags
+          
+      - name: Create GitHub Release
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.release.outputs.tag || github.ref_name }}
+          release_name: Release ${{ steps.release.outputs.tag || github.ref_name }}
+          body: |
+            ## Changes in this release:
+            
+            ${{ steps.release.outputs.releaseNotes || 'See the changelog for details.' }}
+            
+            ## Build Information
+            - Build Number: ${{ github.run_number }}
+            - Commit: ${{ github.sha }}
+            - Triggered by: ${{ github.actor }}
+          draft: false
+          prerelease: false
+
+  update-documentation:
+    name: Update Documentation
+    runs-on: ubuntu-latest
+    needs: [detect-changes, validate, build]
+    if: |
+      needs.detect-changes.outputs.profiles-changed != '' &&
+      needs.validate.result == 'success' &&
+      needs.build.result == 'success' &&
+      github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - uses: ./.github/actions/setup
+        with:
+          fetch-depth: 0
+          
+      - name: Update Profile READMEs
+        run: |
+          echo "Updating READMEs for profiles: ${{ needs.detect-changes.outputs.profiles-changed }}"
+          npm run create-readmes
+          echo "✅ Profile READMEs updated"
+          
+      - name: Regenerate API Documentation
+        run: |
+          echo "Regenerating API documentation..."
+          npm run generate-api
+          echo "✅ API documentation regenerated"
+          
+      - name: Commit Documentation Updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if git diff --quiet; then
+            echo "No documentation changes to commit"
+          else
+            git add .
+            git commit -m "docs: update documentation for profile changes - ${{ needs.detect-changes.outputs.change-summary }}"
+            git push
+          fi
+
+  create-schema-issue:
+    name: Create Schema Change Issue
+    runs-on: ubuntu-latest
+    needs: [detect-changes, validate, build, update-documentation]
+    if: |
+      success() &&
+      needs.detect-changes.outputs.has-schema-changes == 'true' &&
+      needs.detect-changes.outputs.change-type == 'schema'
+    steps:
+      - name: Create Issue for Schema Changes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { createSchemaIssue } = require('./.github/scripts/create-schema-issue.js');
+            await createSchemaIssue(context, github);
+
+  notify:
+    name: Notify Results
+    runs-on: ubuntu-latest
+    needs: [detect-changes, validate, build, deploy, release, update-documentation]
+    if: always()
+    steps:
+      - name: Determine Pipeline Mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "mode=${{ github.event.inputs.mode }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=auto" >> "$GITHUB_OUTPUT"
+          fi
+          
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "✅ Unified pipeline completed successfully!"
+          echo "🔧 Mode: ${{ steps.mode.outputs.mode }}"
+          
+          if [ "${{ needs.detect-changes.outputs.profiles-changed }}" != "" ]; then
+            echo "📊 ${{ needs.detect-changes.outputs.change-summary }}"
+            echo "📁 Profiles: ${{ needs.detect-changes.outputs.profiles-changed }}"
+            echo "🔧 Change Type: ${{ needs.detect-changes.outputs.change-type }}"
+          fi
+          
+          if [ "${{ steps.mode.outputs.mode }}" = "deploy" ]; then
+            echo "🚀 Deployment completed"
+          elif [ "${{ steps.mode.outputs.mode }}" = "release" ]; then
+            echo "🎉 Release created successfully"
+          elif [ "${{ steps.mode.outputs.mode }}" = "validate" ]; then
+            echo "✅ Validation completed"
+          elif [ "${{ steps.mode.outputs.mode }}" = "build" ]; then
+            echo "🔨 Build completed"
+          else
+            echo "🚀 Full pipeline completed"
+          fi
+          
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Unified pipeline failed!"
+          echo "🔧 Mode: ${{ steps.mode.outputs.mode }}"
+          echo "Please check the logs for details"

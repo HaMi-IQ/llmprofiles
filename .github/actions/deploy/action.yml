@@ -1,0 +1,47 @@
+name: 'Deploy to GitHub Pages'
+description: 'Deploy built artifacts to GitHub Pages'
+inputs:
+  source-path:
+    description: 'Path to the source files to deploy'
+    required: false
+    default: 'web/dist/'
+  download-artifacts:
+    description: 'Whether to download artifacts first'
+    required: false
+    default: 'false'
+  artifact-name:
+    description: 'Name of the artifact to download'
+    required: false
+    default: 'build-output'
+  artifact-path:
+    description: 'Path where artifacts should be downloaded'
+    required: false
+    default: 'dist/'
+  environment-name:
+    description: 'GitHub Pages environment name'
+    required: false
+    default: 'github-pages'
+
+runs:
+  using: composite
+  steps:
+    - name: Download build artifacts
+      if: inputs.download-artifacts == 'true'
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.artifact-path }}
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload to Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ${{ inputs.source-path }}
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      env:
+        GITHUB_TOKEN: ${{ github.token }}

@@ -19,24 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pages: write
-      id-token: read
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
+      - uses: ./.github/actions/setup
         
       - name: Debug environment
         run: |
@@ -50,18 +37,10 @@ jobs:
       - name: Build website
         run: npm run build:docs
         
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        
-      - name: Upload to Pages
-        uses: actions/upload-pages-artifact@v3
+      - uses: ./.github/actions/deploy
         with:
-          path: web/dist/
+          source-path: 'web/dist/'
           
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-        
       - name: Notify deployment
         run: |
           echo "🎉 Website deployed successfully!"
