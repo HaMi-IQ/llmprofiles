@@ -147,13 +147,13 @@ function createLegacyRedirects(distDir, options = {}) {
     // Create {profile}/index.html that redirects to profiles/ structure
     let redirectPath = '';
     if (['article', 'book', 'course', 'dataset', 'howto', 'recipe', 'videoobject'].includes(profile)) {
-      redirectPath = `/profiles/content/${profile}/`;
+      redirectPath = `/profiles/content/${profile}/v1/`;
     } else if (['localbusiness', 'jobposting', 'product-offer', 'event'].includes(profile)) {
-      redirectPath = `/profiles/business/${profile}/`;
+      redirectPath = `/profiles/business/${profile}/v1/`;
     } else if (['review', 'faqpage', 'qapage'].includes(profile)) {
-      redirectPath = `/profiles/interaction/${profile}/`;
+      redirectPath = `/profiles/interaction/${profile}/v1/`;
     } else if (['softwareapplication', 'software'].includes(profile)) {
-      redirectPath = `/profiles/technology/${profile}/`;
+      redirectPath = `/profiles/technology/${profile}/v1/`;
     }
     
     const profileIndexHtml = `<!doctype html><meta http-equiv="refresh" content="0; url=${redirectPath}">`;
