@@ -45,30 +45,18 @@ jobs:
           echo "📊 Build size:"
           du -sh dist/
           
-      - name: Deploy to gh-pages branch
-        run: |
-          # Configure git
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          
-          # Create or switch to gh-pages branch
-          if git show-ref --verify --quiet refs/heads/gh-pages; then
-            git checkout gh-pages
-          else
-            git checkout --orphan gh-pages
-          fi
-          
-          # Remove all existing files
-          git rm -rf . || true
-          
-          # Copy built files from dist to root
-          cp -r dist/* .
-          
-          # Add all files
-          git add .
-          
-          # Commit
-          git commit -m "Deploy website - $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          
-          # Push to gh-pages branch
-          git push origin gh-pages --force
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
