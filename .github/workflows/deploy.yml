@@ -17,6 +17,12 @@ jobs:
   deploy:
     name: Deploy Website
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,73 +50,21 @@ jobs:
       - name: Build website
         run: npm run build:docs
         
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist/
+          
       - name: Deploy to GitHub Pages
-        run: |
-          # Configure git
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          
-          # Create or switch to gh-pages branch
-          if git show-ref --verify --quiet refs/heads/gh-pages; then
-            git checkout gh-pages
-          else
-            git checkout --orphan gh-pages
-          fi
-          
-          # Remove all existing files
-          git rm -rf .
-          
-          # Verify dist directory exists and is clean
-          if [ ! -d "web/dist" ]; then
-            echo "❌ web/dist directory not found!"
-            exit 1
-          fi
-          
-          # Check for recursive directory structure
-          if [ -d "web/dist/web" ]; then
-            echo "⚠️  Detected recursive directory structure, cleaning..."
-            rm -rf web/dist/web
-          fi
-          
-          # Copy built files from web/dist to root (with safety checks)
-          echo "📁 Copying files from web/dist to root..."
-          if [ "$(ls -A web/dist)" ]; then
-            cp -r web/dist/* .
-            echo "✅ Files copied successfully"
-          else
-            echo "❌ web/dist directory is empty!"
-            exit 1
-          fi
-          
-          # Copy .well-known directory (important for domain verification)
-          if [ -d "../.well-known" ]; then
-            cp -r ../.well-known .
-          fi
-          
-          # Copy important web files
-          cp web/CNAME . 2>/dev/null || true
-          cp web/_redirects . 2>/dev/null || true
-          cp web/robots.txt . 2>/dev/null || true
-          cp web/sitemap.xml . 2>/dev/null || true
-          
-          # Verify no recursive directories were created
-          if [ -d "web" ]; then
-            echo "⚠️  Detected web directory in root, removing..."
-            rm -rf web
-          fi
-          
-          # Add all files
-          git add .
-          
-          # Commit
-          git commit -m "Deploy website - ${{ github.sha }}"
-          
-          # Push to gh-pages branch
-          git push origin gh-pages --force
-          
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
       - name: Notify deployment
         run: |
           echo "🎉 Website deployed successfully!"
-          echo "🌐 Available at: https://llmprofiles.org"
+          echo "🌐 Available at: ${{ steps.deployment.outputs.page_url }}"
           echo "📁 Deployed from: web/dist/"
           echo "🔗 GitHub Pages branch: gh-pages"
