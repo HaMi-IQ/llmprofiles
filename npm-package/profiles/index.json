@@ -1,0 +1,1898 @@
+{
+  "Jobposting": {
+    "type": "Jobposting",
+    "category": "business",
+    "schemaType": "https://schema.org/JobPosting",
+    "profileUrl": "https://llmprofiles.org/profiles/business/jobposting/v1/index.jsonld",
+    "description": "A job advertisement with position details, requirements, and application information for recruitment.",
+    "required": {
+      "@type": {
+        "const": "JobPosting"
+      },
+      "title": {
+        "type": "string",
+        "minLength": 3
+      },
+      "hiringOrganization": {
+        "type": "object"
+      },
+      "jobLocation": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/business/jobposting/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/business/jobposting/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/business/jobposting/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/business/jobposting/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "employmentType": {
+        "type": "string"
+      },
+      "datePosted": {
+        "type": "string",
+        "format": "date"
+      },
+      "validThrough": {
+        "type": "string",
+        "format": "date"
+      },
+      "salaryCurrency": {
+        "type": "string"
+      },
+      "salaryMinValue": {
+        "type": "number"
+      },
+      "salaryMaxValue": {
+        "type": "number"
+      },
+      "salaryUnit": {
+        "type": "string"
+      },
+      "qualifications": {
+        "type": "string"
+      },
+      "responsibilities": {
+        "type": "string"
+      },
+      "experienceRequirements": {
+        "type": "string"
+      },
+      "educationRequirements": {
+        "type": "string"
+      },
+      "applicationContact": {
+        "type": "object"
+      },
+      "url": {
+        "type": "string"
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "title",
+      "hiringOrganization",
+      "jobLocation",
+      "datePosted",
+      "description"
+    ],
+    "llmOptimized": [
+      "title",
+      "description",
+      "hiringOrganization",
+      "jobLocation",
+      "requirements",
+      "skills"
+    ]
+  },
+  "Localbusiness": {
+    "type": "Localbusiness",
+    "category": "business",
+    "schemaType": "https://schema.org/LocalBusiness",
+    "profileUrl": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld",
+    "description": "A local business with address, contact information, and services for local search and discovery.",
+    "required": {
+      "@type": {
+        "const": "LocalBusiness"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 3
+      },
+      "address": {
+        "type": "object"
+      },
+      "telephone": {
+        "type": "string"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "email": {
+        "type": "string"
+      },
+      "url": {
+        "type": "string"
+      },
+      "geo": {
+        "type": "object"
+      },
+      "openingHours": {
+        "type": "string"
+      },
+      "openingHoursSpecification": {
+        "type": "array"
+      },
+      "priceRange": {
+        "type": "string"
+      },
+      "paymentAccepted": {
+        "type": "string"
+      },
+      "currenciesAccepted": {
+        "type": "string"
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "logo": {
+        "type": "object"
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "address",
+      "telephone",
+      "openingHours",
+      "image"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "address",
+      "telephone",
+      "openingHours",
+      "geo"
+    ]
+  },
+  "ProductOffer": {
+    "type": "ProductOffer",
+    "category": "business",
+    "schemaType": "https://schema.org/Product",
+    "profileUrl": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld",
+    "description": "A product listing with pricing, availability, and purchase information for e-commerce applications.",
+    "required": {
+      "@type": {
+        "const": "Product"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 3
+      },
+      "offers": {
+        "type": "object"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/business/product-offer/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "brand": {
+        "type": "object"
+      },
+      "category": {
+        "type": "string"
+      },
+      "sku": {
+        "type": "string"
+      },
+      "mpn": {
+        "type": "string"
+      },
+      "gtin": {
+        "type": "string"
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "aggregateRating": {
+        "type": "object"
+      },
+      "review": {
+        "type": "array"
+      },
+      "url": {
+        "type": "string"
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "image",
+      "offers",
+      "aggregateRating",
+      "brand"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "brand",
+      "offers",
+      "sku",
+      "aggregateRating"
+    ]
+  },
+  "Review": {
+    "type": "Review",
+    "category": "business",
+    "schemaType": "https://schema.org/Review",
+    "profileUrl": "https://llmprofiles.org/profiles/business/review/v1/index.jsonld",
+    "description": "A product or service review with rating, feedback, and author information for consumer guidance.",
+    "required": {
+      "@type": {
+        "const": "Review"
+      },
+      "reviewRating": {
+        "type": "object"
+      },
+      "author": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "itemReviewed": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/business/review/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/business/review/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/business/review/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/business/review/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "reviewBody": {
+        "type": "string",
+        "minLength": 1
+      },
+      "reviewAspect": {
+        "type": "string"
+      },
+      "datePublished": {
+        "type": "string",
+        "format": "date"
+      },
+      "dateModified": {
+        "type": "string",
+        "format": "date"
+      },
+      "publisher": {
+        "type": "object"
+      },
+      "url": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "headline": {
+        "type": "string"
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "itemReviewed",
+      "author",
+      "reviewRating",
+      "reviewBody"
+    ],
+    "llmOptimized": [
+      "itemReviewed",
+      "author",
+      "reviewRating",
+      "reviewBody",
+      "datePublished"
+    ]
+  },
+  "Article": {
+    "type": "Article",
+    "category": "content",
+    "schemaType": "https://schema.org/Article",
+    "profileUrl": "https://llmprofiles.org/profiles/content/article/v1/index.jsonld",
+    "description": "A written article, blog post, news story, or other published content with structured metadata.",
+    "required": {
+      "@type": {
+        "const": "Article"
+      },
+      "headline": {
+        "type": "string",
+        "minLength": 3
+      },
+      "author": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "datePublished": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/content/article/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/content/article/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/content/article/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/content/article/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "dateModified": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "publisher": {
+        "type": "object"
+      },
+      "articleBody": {
+        "type": "string",
+        "minLength": 1
+      },
+      "articleSection": {
+        "type": "string"
+      },
+      "keywords": {
+        "type": "string"
+      },
+      "wordCount": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "url": {
+        "type": "string"
+      },
+      "inLanguage": {
+        "type": "string"
+      },
+      "mainEntityOfPage": {
+        "type": "string"
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "headline",
+      "image",
+      "author",
+      "datePublished",
+      "publisher"
+    ],
+    "llmOptimized": [
+      "headline",
+      "description",
+      "author",
+      "articleBody",
+      "keywords",
+      "datePublished"
+    ]
+  },
+  "Book": {
+    "type": "Book",
+    "category": "content",
+    "schemaType": "https://schema.org/Book",
+    "profileUrl": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld",
+    "description": "A structured book with metadata, content information, and knowledge organization optimized for AI processing and rich search results.",
+    "required": {
+      "@type": {
+        "const": "Book"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The title of the book"
+      },
+      "author": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "const": "https://schema.org"
+      },
+      "@id": {
+        "type": "string",
+        "format": "uri-reference"
+      },
+      "description": {
+        "type": "string",
+        "description": "A description of the book content"
+      },
+      "bookFormat": {
+        "type": "string",
+        "description": "The format of the book"
+      },
+      "isbn": {
+        "type": "string",
+        "description": "The ISBN of the book"
+      },
+      "numberOfPages": {
+        "type": "integer",
+        "description": "Number of pages in the book"
+      },
+      "inLanguage": {
+        "type": "string",
+        "description": "Language of the book content (BCP-47 format)"
+      },
+      "datePublished": {
+        "type": "string",
+        "format": "date",
+        "description": "Date when the book was published"
+      },
+      "dateModified": {
+        "type": "string",
+        "format": "date",
+        "description": "Date when the book was last modified"
+      },
+      "publisher": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "genre": {
+        "type": "string",
+        "description": "Genre of the book"
+      },
+      "keywords": {
+        "type": "string",
+        "description": "Comma-separated keywords for the book"
+      },
+      "about": {
+        "type": "array"
+      },
+      "audience": {
+        "type": "object"
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uri"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "aggregateRating": {
+        "type": "object"
+      },
+      "review": {
+        "type": "array"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "author",
+      "isbn",
+      "publisher"
+    ],
+    "llmOptimized": [
+      "name",
+      "author",
+      "description",
+      "genre",
+      "numberOfPages"
+    ]
+  },
+  "Course": {
+    "type": "Course",
+    "category": "content",
+    "schemaType": "https://schema.org/Course",
+    "profileUrl": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld",
+    "description": "An educational course with curriculum, instructor, and enrollment information for learning platforms.",
+    "required": {
+      "@type": {
+        "const": "Course"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 3
+      },
+      "provider": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/content/course/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "instructor": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "coursePrerequisites": {
+        "type": "string"
+      },
+      "educationalLevel": {
+        "type": "string"
+      },
+      "courseMode": {
+        "type": "string"
+      },
+      "timeRequired": {
+        "type": "string"
+      },
+      "numberOfCredits": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "offers": {
+        "type": "object"
+      },
+      "url": {
+        "type": "string"
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "description",
+      "provider",
+      "offers"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "coursePrerequisites",
+      "educationalCredentialAwarded"
+    ]
+  },
+  "Dataset": {
+    "type": "Dataset",
+    "category": "content",
+    "schemaType": "https://schema.org/Dataset",
+    "profileUrl": "https://llmprofiles.org/profiles/content/dataset/v1/index.jsonld",
+    "description": "A structured dataset with metadata, format information, and content description optimized for AI discovery and processing.",
+    "required": {
+      "@type": {
+        "const": "Dataset"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The name of the dataset"
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A description of the dataset content and purpose"
+      }
+    },
+    "recommended": {
+      "@context": {
+        "const": "https://schema.org"
+      },
+      "@id": {
+        "type": "string",
+        "format": "uri-reference"
+      },
+      "creator": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "datePublished": {
+        "type": "string",
+        "format": "date",
+        "description": "Date when the dataset was published"
+      },
+      "dateModified": {
+        "type": "string",
+        "format": "date",
+        "description": "Date when the dataset was last modified"
+      },
+      "dateCreated": {
+        "type": "string",
+        "format": "date",
+        "description": "Date when the dataset was created"
+      },
+      "license": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uri"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "distribution": {
+        "type": "array"
+      },
+      "keywords": {
+        "type": "string",
+        "description": "Comma-separated keywords for the dataset"
+      },
+      "inLanguage": {
+        "type": "string",
+        "description": "Language of the dataset content (BCP-47 format)"
+      },
+      "about": {
+        "type": "array"
+      },
+      "spatialCoverage": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "temporalCoverage": {
+        "type": "string",
+        "description": "Time period covered by the dataset"
+      },
+      "variableMeasured": {
+        "type": "array"
+      },
+      "citation": {
+        "type": "array"
+      },
+      "isAccessibleForFree": {
+        "type": "boolean",
+        "description": "Whether the dataset is freely accessible"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/content/dataset/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/content/dataset/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/content/dataset/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/content/dataset/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "description",
+      "creator",
+      "distribution"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "variableMeasured",
+      "spatialCoverage"
+    ]
+  },
+  "Howto": {
+    "type": "Howto",
+    "category": "content",
+    "schemaType": "https://schema.org/HowTo",
+    "profileUrl": "https://llmprofiles.org/profiles/content/howto/v1/index.jsonld",
+    "description": "A structured guide for completing tasks or learning skills with step-by-step instructions optimized for AI processing and search.",
+    "required": {
+      "@type": {
+        "const": "HowTo"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The name of the how-to guide"
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A description of what the how-to guide teaches"
+      },
+      "step": {
+        "type": "array"
+      }
+    },
+    "recommended": {
+      "@context": {
+        "const": "https://schema.org"
+      },
+      "@id": {
+        "type": "string",
+        "format": "uri-reference"
+      },
+      "author": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "datePublished": {
+        "type": "string",
+        "format": "date"
+      },
+      "dateModified": {
+        "type": "string",
+        "format": "date"
+      },
+      "totalTime": {
+        "type": "string",
+        "description": "ISO 8601 duration for total time to complete"
+      },
+      "estimatedCost": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "difficulty": {
+        "type": "string",
+        "description": "Difficulty level of the task"
+      },
+      "prerequisites": {
+        "type": "array"
+      },
+      "tool": {
+        "type": "array"
+      },
+      "supply": {
+        "type": "array"
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uri"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "keywords": {
+        "type": "string",
+        "description": "Comma-separated keywords for the how-to guide"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/content/howto/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/content/howto/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/content/howto/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/content/howto/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "step",
+      "totalTime",
+      "tool"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "step",
+      "tool",
+      "supply"
+    ]
+  },
+  "Recipe": {
+    "type": "Recipe",
+    "category": "content",
+    "schemaType": "https://schema.org/Recipe",
+    "profileUrl": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld",
+    "description": "A structured recipe with ingredients, instructions, and nutritional information optimized for AI processing and rich search results.",
+    "required": {
+      "@type": {
+        "const": "Recipe"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The name of the recipe"
+      },
+      "ingredients": {
+        "type": "array"
+      },
+      "recipeInstructions": {
+        "type": "array"
+      }
+    },
+    "recommended": {
+      "@context": {
+        "const": "https://schema.org"
+      },
+      "@id": {
+        "type": "string",
+        "format": "uri-reference"
+      },
+      "description": {
+        "type": "string",
+        "description": "A description of the recipe"
+      },
+      "author": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "datePublished": {
+        "type": "string",
+        "format": "date"
+      },
+      "dateModified": {
+        "type": "string",
+        "format": "date"
+      },
+      "prepTime": {
+        "type": "string",
+        "description": "ISO 8601 duration for preparation time"
+      },
+      "cookTime": {
+        "type": "string",
+        "description": "ISO 8601 duration for cooking time"
+      },
+      "totalTime": {
+        "type": "string",
+        "description": "ISO 8601 duration for total time"
+      },
+      "recipeYield": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "recipeCategory": {
+        "type": "string",
+        "description": "Category of the recipe (e.g., 'Dessert', 'Main Course')"
+      },
+      "recipeCuisine": {
+        "type": "string",
+        "description": "Cuisine type (e.g., 'Italian', 'Mexican')"
+      },
+      "nutrition": {
+        "type": "object"
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uri"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "keywords": {
+        "type": "string",
+        "description": "Comma-separated keywords for the recipe"
+      },
+      "suitableForDiet": {
+        "type": "array"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "image",
+      "author",
+      "datePublished",
+      "description"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "recipeIngredient",
+      "recipeInstructions",
+      "cookTime"
+    ]
+  },
+  "Videoobject": {
+    "type": "Videoobject",
+    "category": "content",
+    "schemaType": "https://schema.org/VideoObject",
+    "profileUrl": "https://llmprofiles.org/profiles/content/videoobject/v1/index.jsonld",
+    "description": "A structured video with metadata, transcripts, and content information optimized for AI processing and rich search results.",
+    "required": {
+      "@type": {
+        "const": "VideoObject"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The title of the video"
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A description of the video content"
+      },
+      "uploadDate": {
+        "type": "string",
+        "format": "date",
+        "description": "Date when the video was uploaded"
+      }
+    },
+    "recommended": {
+      "@context": {
+        "const": "https://schema.org"
+      },
+      "@id": {
+        "type": "string",
+        "format": "uri-reference"
+      },
+      "datePublished": {
+        "type": "string",
+        "format": "date",
+        "description": "Date when the video was published"
+      },
+      "dateModified": {
+        "type": "string",
+        "format": "date",
+        "description": "Date when the video was last modified"
+      },
+      "duration": {
+        "type": "string",
+        "description": "ISO 8601 duration of the video"
+      },
+      "thumbnailUrl": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL to the video thumbnail image"
+      },
+      "contentUrl": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL to the video file"
+      },
+      "embedUrl": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL for embedding the video"
+      },
+      "author": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "creator": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "publisher": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "genre": {
+        "type": "string",
+        "description": "Genre of the video content"
+      },
+      "keywords": {
+        "type": "string",
+        "description": "Comma-separated keywords for the video"
+      },
+      "inLanguage": {
+        "type": "string",
+        "description": "Language of the video content (BCP-47 format)"
+      },
+      "caption": {
+        "type": "string",
+        "description": "Caption or subtitle text for the video"
+      },
+      "transcript": {
+        "type": "string",
+        "description": "Full transcript of the video content"
+      },
+      "video": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "uri"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "width": {
+        "type": "integer",
+        "description": "Width of the video in pixels"
+      },
+      "height": {
+        "type": "integer",
+        "description": "Height of the video in pixels"
+      },
+      "bitrate": {
+        "type": "string",
+        "description": "Bitrate of the video"
+      },
+      "encodingFormat": {
+        "type": "string",
+        "description": "Video encoding format (e.g., MP4, WebM)"
+      },
+      "interactionStatistic": {
+        "type": "array"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/content/videoobject/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/content/videoobject/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/content/videoobject/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/content/videoobject/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "description",
+      "thumbnailUrl",
+      "uploadDate"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "duration",
+      "transcript"
+    ]
+  },
+  "Event": {
+    "type": "Event",
+    "category": "interaction",
+    "schemaType": "https://schema.org/Event",
+    "profileUrl": "https://llmprofiles.org/profiles/interaction/event/v1/index.jsonld",
+    "description": "An event with date, time, location, and attendance information for scheduling and discovery.",
+    "required": {
+      "@type": {
+        "const": "Event"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 3
+      },
+      "startDate": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "location": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/interaction/event/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/interaction/event/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/interaction/event/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/interaction/event/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "endDate": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "organizer": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "performer": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "offers": {
+        "type": "object"
+      },
+      "eventStatus": {
+        "type": "string"
+      },
+      "eventAttendanceMode": {
+        "type": "string"
+      },
+      "maximumAttendeeCapacity": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "url": {
+        "type": "string"
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "startDate",
+      "location",
+      "image",
+      "description"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "startDate",
+      "endDate",
+      "location",
+      "organizer"
+    ]
+  },
+  "Faqpage": {
+    "type": "Faqpage",
+    "category": "interaction",
+    "schemaType": "https://schema.org/FAQPage",
+    "profileUrl": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld",
+    "description": "A page listing multiple user-relevant questions with their accepted answers.",
+    "required": {
+      "@type": {
+        "const": "FAQPage"
+      },
+      "mainEntity": {
+        "type": "array"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/interaction/faqpage/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "inLanguage": {
+        "type": "string"
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "mainEntity"
+    ],
+    "llmOptimized": [
+      "mainEntity",
+      "name",
+      "description"
+    ]
+  },
+  "Qapage": {
+    "type": "Qapage",
+    "category": "interaction",
+    "schemaType": "https://schema.org/QAPage",
+    "profileUrl": "https://llmprofiles.org/profiles/interaction/qapage/v1/index.jsonld",
+    "description": "A page focused on a single question with multiple answers, comments, or discussions.",
+    "required": {
+      "@type": {
+        "const": "QAPage"
+      },
+      "mainEntity": {
+        "type": "object"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/interaction/qapage/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/interaction/qapage/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/interaction/qapage/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/interaction/qapage/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "url": {
+        "type": "string"
+      },
+      "inLanguage": {
+        "type": "string"
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "mainEntity"
+    ],
+    "llmOptimized": [
+      "mainEntity",
+      "name",
+      "description"
+    ]
+  },
+  "Softwareapplication": {
+    "type": "Softwareapplication",
+    "category": "technology",
+    "schemaType": "https://schema.org/SoftwareApplication",
+    "profileUrl": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/index.jsonld",
+    "description": "A software application with features, requirements, and download information for software discovery.",
+    "required": {
+      "@type": {
+        "const": "SoftwareApplication"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 3
+      },
+      "applicationCategory": {
+        "type": "string"
+      },
+      "operatingSystem": {
+        "type": "string"
+      },
+      "additionalType": {
+        "const": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/index.jsonld"
+      },
+      "schemaVersion": {
+        "const": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/index.jsonld"
+      },
+      "identifier": {
+        "const": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/index.jsonld"
+      },
+      "additionalProperty": {
+        "type": "object",
+        "properties": {
+          "@type": {
+            "const": "PropertyValue"
+          },
+          "name": {
+            "const": "profile"
+          },
+          "value": {
+            "const": "https://llmprofiles.org/profiles/technology/softwareapplication/v1/index.jsonld"
+          }
+        },
+        "required": ["@type", "name", "value"]
+      }
+    },
+    "recommended": {
+      "@context": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "softwareVersion": {
+        "type": "string"
+      },
+      "softwareRequirements": {
+        "type": "string"
+      },
+      "memoryRequirements": {
+        "type": "string"
+      },
+      "storageRequirements": {
+        "type": "string"
+      },
+      "processorRequirements": {
+        "type": "string"
+      },
+      "featureList": {
+        "type": "string"
+      },
+      "screenshot": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "downloadUrl": {
+        "type": "string"
+      },
+      "installUrl": {
+        "type": "string"
+      },
+      "updateUrl": {
+        "type": "string"
+      },
+      "fileSize": {
+        "type": "string"
+      },
+      "releaseNotes": {
+        "type": "string"
+      },
+      "datePublished": {
+        "type": "string",
+        "format": "date"
+      },
+      "dateModified": {
+        "type": "string",
+        "format": "date"
+      },
+      "author": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "offers": {
+        "type": "object"
+      },
+      "aggregateRating": {
+        "type": "object"
+      },
+      "url": {
+        "type": "string"
+      },
+      "image": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "optional": {},
+    "googleRichResults": [
+      "name",
+      "operatingSystem",
+      "applicationCategory",
+      "aggregateRating",
+      "offers"
+    ],
+    "llmOptimized": [
+      "name",
+      "description",
+      "applicationCategory",
+      "operatingSystem",
+      "offers"
+    ]
+  }
+}

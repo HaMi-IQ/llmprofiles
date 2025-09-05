@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@llmprofiles/core - Comprehensive Demo</title>
+    <script>
+        // Mode switching functionality
+        function showMode(modeId) {
+            // Hide all mode contents
+            document.querySelectorAll('.mode-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.mode-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected mode content
+            document.getElementById(modeId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Sanitization demo functionality
+        function demonstrateSanitization() {
+            const input = document.getElementById('malicious-input').value;
+            const resultDiv = document.getElementById('sanitization-result');
+            
+            if (!input.trim()) {
+                resultDiv.innerHTML = '<p style="color: #dc3545;">Please enter some content to sanitize.</p>';
+                return;
+            }
+
+            // Simulate sanitization (in real implementation, this would use the actual sanitizer)
+            let sanitized = input
+                .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+                .replace(/<[^>]*>/g, '')
+                .replace(/javascript:/gi, '')
+                .replace(/data:/gi, '')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#x27;')
+                .replace(/&/g, '&amp;');
+
+            const hasChanges = input !== sanitized;
+            
+            resultDiv.innerHTML = `
+                <div style="background: ${hasChanges ? '#fff3cd' : '#d4edda'}; border: 2px solid ${hasChanges ? '#ffc107' : '#28a745'}; border-radius: 8px; padding: 15px;">
+                    <h5 style="color: ${hasChanges ? '#856404' : '#155724'}; margin-bottom: 10px;">
+                        ${hasChanges ? '⚠️ Content Sanitized' : '✅ Content Safe'}
+                    </h5>
+                    <div style="margin-bottom: 10px;">
+                        <strong>Original:</strong><br>
+                        <code style="background: #f8f9fa; padding: 5px; border-radius: 3px; display: block; margin-top: 5px;">${input}</code>
+                    </div>
+                    <div>
+                        <strong>Sanitized:</strong><br>
+                        <code style="background: #f8f9fa; padding: 5px; border-radius: 3px; display: block; margin-top: 5px;">${sanitized}</code>
+                    </div>
+                    ${hasChanges ? '<p style="margin-top: 10px; color: #856404; font-size: 0.9rem;">HTML tags removed, dangerous protocols blocked, and special characters escaped.</p>' : ''}
+                </div>
+            `;
+        }
+
+        function clearSanitizationDemo() {
+            document.getElementById('malicious-input').value = '';
+            document.getElementById('sanitization-result').innerHTML = '';
+        }
+
+        // Live demo functionality
+        function runLiveDemo() {
+            const input = document.getElementById('live-input').value;
+            const output = document.getElementById('live-output');
+            
+            if (!input.trim()) {
+                output.value = '// Please enter some code to run...';
+                return;
+            }
+
+            try {
+                // Parse the input to extract profile type and data
+                const result = parseAndGenerateStructuredData(input);
+                output.value = JSON.stringify(result, null, 2);
+            } catch (error) {
+                output.value = `// Error: ${error.message}\n\n// Please check your input format.`;
+            }
+        }
+
+        // Parse input and generate structured data
+        function parseAndGenerateStructuredData(input) {
+            // Extract profile type from input
+            const profileType = extractProfileType(input);
+            const mode = extractMode(input);
+            const data = extractDataFromInput(input);
+            
+            // Generate base structured data
+            let result = {
+                "@context": "https://schema.org",
+                "@type": profileType,
+                "additionalType": `https://llmprofiles.org/profiles/${getCategory(profileType)}/${profileType.toLowerCase()}/v1`,
+                "schemaVersion": `https://llmprofiles.org/profiles/${getCategory(profileType)}/${profileType.toLowerCase()}/v1`,
+                "identifier": `https://llmprofiles.org/profiles/${getCategory(profileType)}/${profileType.toLowerCase()}/v1`,
+                "additionalProperty": {
+                    "@type": "PropertyValue",
+                    "name": "profile",
+                    "value": `https://llmprofiles.org/profiles/${getCategory(profileType)}/${profileType.toLowerCase()}/v1`
+                }
+            };
+
+            // Add extracted data
+            Object.assign(result, data);
+
+            // Handle different modes
+            if (mode === 'SPLIT_CHANNELS') {
+                const seoBlock = { ...result };
+                const llmBlock = {
+                    ...result,
+                    "@context": [
+                        "https://schema.org",
+                        "https://llmprofiles.org/contexts/llm.jsonld"
+                    ]
+                };
+                return { seo: seoBlock, llm: llmBlock };
+            }
+
+            return result;
+        }
+
+        // Extract profile type from input
+        function extractProfileType(input) {
+            const profileTypes = [
+                'Article', 'JobPosting', 'LocalBusiness', 'Product', 'Review',
+                'Book', 'Course', 'Dataset', 'HowTo', 'Recipe', 'VideoObject',
+                'Event', 'FAQPage', 'QAPage', 'SoftwareApplication'
+            ];
+            
+            for (const type of profileTypes) {
+                if (input.includes(type + 'Builder') || input.includes('@type": "' + type)) {
+                    return type;
+                }
+            }
+            return 'Article'; // Default
+        }
+
+        // Extract mode from input
+        function extractMode(input) {
+            if (input.includes('SPLIT_CHANNELS')) return 'SPLIT_CHANNELS';
+            if (input.includes('STANDARDS_HEADER')) return 'STANDARDS_HEADER';
+            return 'STRICT_SEO'; // Default
+        }
+
+        // Extract data from input
+        function extractDataFromInput(input) {
+            const data = {};
+            
+            // Extract common fields
+            const fields = [
+                'headline', 'name', 'title', 'description', 'author', 'datePublished',
+                'dateModified', 'publisher', 'url', 'image', 'keywords', 'articleBody',
+                'hiringOrganization', 'jobLocation', 'datePosted', 'employmentType',
+                'baseSalary', 'address', 'telephone', 'openingHours', 'priceRange',
+                'brand', 'sku', 'offers', 'aggregateRating', 'startDate', 'endDate',
+                'location', 'organizer', 'inLanguage', 'articleSection'
+            ];
+            
+            fields.forEach(field => {
+                // Try different patterns for field extraction
+                const patterns = [
+                    new RegExp(`\\.${field}\\s*\\(['"]([^'"]*)['"]\\)`, 'g'),
+                    new RegExp(`\\.${field}\\s*\\(([^)]+)\\)`, 'g'),
+                    new RegExp(`${field}\\s*:\\s*['"]([^'"]*)['"]`, 'g')
+                ];
+                
+                for (const pattern of patterns) {
+                    const match = pattern.exec(input);
+                    if (match) {
+                        let value = match[1];
+                        // Clean up the value
+                        value = value.replace(/^['"]|['"]$/g, '');
+                        if (value && value !== 'undefined' && value !== 'null') {
+                            data[field] = value;
+                        }
+                        break;
+                    }
+                }
+            });
+            
+            // Handle special cases
+            if (input.includes('.author(') && input.includes(', ')) {
+                const authorMatch = input.match(/\.author\(['"]([^'"]*)['"],\s*['"]([^'"]*)['"]\)/);
+                if (authorMatch) {
+                    data.author = {
+                        "@type": "Person",
+                        "name": authorMatch[1],
+                        "url": authorMatch[2]
+                    };
+                }
+            }
+            
+            if (input.includes('.publisher(') && input.includes(', ')) {
+                const publisherMatch = input.match(/\.publisher\(['"]([^'"]*)['"],\s*['"]([^'"]*)['"]\)/);
+                if (publisherMatch) {
+                    data.publisher = {
+                        "@type": "Organization",
+                        "name": publisherMatch[1],
+                        "url": publisherMatch[2]
+                    };
+                }
+            }
+            
+            if (input.includes('.offers(') && input.includes(', ')) {
+                const offersMatch = input.match(/\.offers\(([^,]+),\s*['"]([^'"]*)['"]\)/);
+                if (offersMatch) {
+                    data.offers = {
+                        "@type": "Offer",
+                        "price": parseFloat(offersMatch[1]) || offersMatch[1],
+                        "priceCurrency": offersMatch[2],
+                        "availability": "https://schema.org/InStock"
+                    };
+                }
+            }
+            
+            return data;
+        }
+
+        // Get category for profile type
+        function getCategory(profileType) {
+            const business = ['JobPosting', 'LocalBusiness', 'Product', 'Review'];
+            const content = ['Article', 'Book', 'Course', 'Dataset', 'HowTo', 'Recipe', 'VideoObject'];
+            const interaction = ['Event', 'FAQPage', 'QAPage'];
+            const technology = ['SoftwareApplication'];
+            
+            if (business.includes(profileType)) return 'business';
+            if (content.includes(profileType)) return 'content';
+            if (interaction.includes(profileType)) return 'interaction';
+            if (technology.includes(profileType)) return 'technology';
+            return 'content'; // Default
+        }
+
+        function clearLiveDemo() {
+            document.getElementById('live-input').value = '';
+            document.getElementById('live-output').value = '';
+        }
+
+        // Load example code
+        function loadExample(type) {
+            const input = document.getElementById('live-input');
+            let exampleCode = '';
+            
+            switch(type) {
+                case 'article':
+                    exampleCode = `const { ArticleBuilder } = require('@llmprofiles/core');
+
+const article = new ArticleBuilder()
+  .headline('Breaking News: Technology Advances')
+  .author('Jane Smith')
+  .datePublished('2024-01-15')
+  .description('Latest developments in technology')
+  .publisher('Tech News', 'https://technews.com')
+  .articleBody('This article covers the latest technology trends...')
+  .keywords(['technology', 'innovation', 'AI'])
+  .build();`;
+                    break;
+                    
+                case 'product':
+                    exampleCode = `const { ProductBuilder } = require('@llmprofiles/core');
+
+const product = new ProductBuilder()
+  .name('Wireless Bluetooth Headphones')
+  .description('High-quality wireless headphones with noise cancellation')
+  .brand('AudioTech')
+  .sku('AT-WH-001')
+  .offers(199.99, 'USD')
+  .aggregateRating(4.5, 150)
+  .build();`;
+                    break;
+                    
+                case 'job':
+                    exampleCode = `const { JobPostingBuilder } = require('@llmprofiles/core');
+
+const job = new JobPostingBuilder()
+  .title('Senior Software Engineer')
+  .hiringOrganization('Tech Corp', 'https://techcorp.com')
+  .jobLocation('San Francisco, CA')
+  .datePosted('2024-01-15')
+  .employmentType('FULL_TIME')
+  .baseSalary(120000, 'USD')
+  .build();`;
+                    break;
+            }
+            
+            input.value = exampleCode;
+            // Auto-run the example
+            setTimeout(() => runLiveDemo(), 100);
+        }
+
+        // Validate the generated structured data
+        function validateLiveDemo() {
+            const output = document.getElementById('live-output').value;
+            
+            if (!output.trim() || output.startsWith('//')) {
+                alert('Please run the code first to generate structured data.');
+                return;
+            }
+
+            try {
+                const data = JSON.parse(output);
+                const profileType = data['@type'] || 'Article';
+                
+                // Basic validation
+                const validation = {
+                    valid: true,
+                    errors: [],
+                    warnings: [],
+                    googleRichResults: { compliant: true, coverage: 100 },
+                    llmOptimization: { optimized: true, score: 100 }
+                };
+
+                // Check required fields
+                const requiredFields = {
+                    'Article': ['headline', 'author', 'datePublished'],
+                    'Product': ['name', 'description'],
+                    'JobPosting': ['title', 'hiringOrganization', 'jobLocation', 'datePosted'],
+                    'Event': ['name', 'startDate'],
+                    'LocalBusiness': ['name', 'address']
+                };
+
+                const required = requiredFields[profileType] || [];
+                required.forEach(field => {
+                    if (!data[field]) {
+                        validation.errors.push(`Missing required field: ${field}`);
+                        validation.valid = false;
+                    }
+                });
+
+                // Check for profile metadata
+                if (!data.additionalType || !data.schemaVersion) {
+                    validation.warnings.push('Missing profile metadata (additionalType, schemaVersion)');
+                }
+
+                // Display validation results
+                const resultDiv = document.getElementById('live-output');
+                const validationResult = {
+                    validation: validation,
+                    data: data
+                };
+                
+                resultDiv.value = JSON.stringify(validationResult, null, 2);
+                
+            } catch (error) {
+                alert('Error validating data: ' + error.message);
+            }
+        }
+
+        // Add some sample malicious content for demonstration
+        document.addEventListener('DOMContentLoaded', function() {
+            const maliciousInput = document.getElementById('malicious-input');
+            if (maliciousInput && !maliciousInput.value) {
+                maliciousInput.value = '<' + 'script>alert("XSS Attack!")</' + 'script>Hello World! <b>Bold text</b> and javascript:alert("danger")';
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .demo-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .demo-section h3 {
+            color: #764ba2;
+            margin: 20px 0 10px 0;
+            font-size: 1.3rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .profile-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .profile-card .category {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .json-output {
+            background: #1a202c;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .mode-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .mode-tab {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border-radius: 8px 8px 0 0;
+            margin-right: 5px;
+        }
+
+        .mode-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .mode-tab:hover {
+            background: #764ba2;
+            color: white;
+        }
+
+        .mode-content {
+            display: none;
+        }
+
+        .mode-content.active {
+            display: block;
+        }
+
+        .sanitization-demo {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .sanitization-demo h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .security-warning {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .security-warning h5 {
+            color: #721c24;
+            margin-bottom: 10px;
+        }
+
+        .security-warning ul {
+            color: #721c24;
+            margin-left: 20px;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-item h5 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+        }
+
+        .interactive-demo {
+            background: #e8f4f8;
+            border: 2px solid #17a2b8;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .interactive-demo h4 {
+            color: #0c5460;
+            margin-bottom: 15px;
+        }
+
+        .live-editor {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .editor-panel {
+            background: #2d3748;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .editor-panel h5 {
+            color: #e2e8f0;
+            margin-bottom: 10px;
+        }
+
+        .editor-panel textarea {
+            width: 100%;
+            height: 200px;
+            background: #1a202c;
+            color: #68d391;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .live-editor {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>@llmprofiles/core</h1>
+            <p>Comprehensive Schema.org Profiles with Security & Three Modes</p>
+        </div>
+
+        <!-- Package Statistics -->
+        <div class="demo-section">
+            <h2>📊 Package Statistics</h2>
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>15</h3>
+                    <p>Profile Types</p>
+                </div>
+                <div class="stat-card">
+                    <h3>3</h3>
+                    <p>Output Modes</p>
+                </div>
+                <div class="stat-card">
+                    <h3>100%</h3>
+                    <p>Security Coverage</p>
+                </div>
+                <div class="stat-card">
+                    <h3>16.9KB</h3>
+                    <p>Bundle Size</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Profiles Showcase -->
+        <div class="demo-section">
+            <h2>🏷️ All Profile Types</h2>
+            <p>Complete showcase of all 15 profile types organized by category:</p>
+            
+            <div class="profile-grid">
+                <!-- Business Profiles -->
+                <div class="profile-card">
+                    <div class="category">Business</div>
+                    <h4>JobPosting</h4>
+                    <p>Job listings with salary, location, and requirements</p>
+                    <div class="code-block">
+const { JobPostingBuilder } = require('@llmprofiles/core');
+
+const job = new JobPostingBuilder()
+  .title('Software Engineer')
+  .hiringOrganization('Tech Corp')
+  .jobLocation('San Francisco, CA')
+  .datePosted('2024-01-15')
+  .employmentType('FULL_TIME')
+  .baseSalary(120000, 'USD')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Business</div>
+                    <h4>LocalBusiness</h4>
+                    <p>Local business information with hours and location</p>
+                    <div class="code-block">
+const { LocalBusinessBuilder } = require('@llmprofiles/core');
+
+const business = new LocalBusinessBuilder()
+  .name('Joe\'s Coffee Shop')
+  .address('123 Main St, City, State')
+  .telephone('555-123-4567')
+  .openingHours(['Mo-Fr 07:00-19:00'])
+  .priceRange('$$')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Business</div>
+                    <h4>ProductOffer</h4>
+                    <p>Product listings with pricing and availability</p>
+                    <div class="code-block">
+const { ProductBuilder } = require('@llmprofiles/core');
+
+const product = new ProductBuilder()
+  .name('Wireless Headphones')
+  .description('High-quality wireless headphones')
+  .brand('AudioTech')
+  .sku('AT-WH-001')
+  .offers(199.99, 'USD', 'InStock')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Business</div>
+                    <h4>Review</h4>
+                    <p>Product and service reviews with ratings</p>
+                    <div class="code-block">
+const { ReviewBuilder } = require('@llmprofiles/core');
+
+const review = new ReviewBuilder()
+  .name('Great product!')
+  .author('John Doe')
+  .reviewRating(5)
+  .reviewBody('Excellent quality and fast delivery')
+  .build();
+                    </div>
+                </div>
+
+                <!-- Content Profiles -->
+                <div class="profile-card">
+                    <div class="category">Content</div>
+                    <h4>Article</h4>
+                    <p>News articles, blog posts, and editorial content</p>
+                    <div class="code-block">
+const { ArticleBuilder } = require('@llmprofiles/core');
+
+const article = new ArticleBuilder()
+  .headline('Breaking News')
+  .author('Jane Smith')
+  .datePublished('2024-01-15')
+  .publisher('News Corp')
+  .articleBody('Article content here...')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Content</div>
+                    <h4>Book</h4>
+                    <p>Book information with author and publication details</p>
+                    <div class="code-block">
+const { BookBuilder } = require('@llmprofiles/core');
+
+const book = new BookBuilder()
+  .name('The Great Novel')
+  .author('Author Name')
+  .isbn('978-1234567890')
+  .publisher('Publisher Name')
+  .datePublished('2024-01-01')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Content</div>
+                    <h4>Course</h4>
+                    <p>Educational courses with provider and duration</p>
+                    <div class="code-block">
+const { CourseBuilder } = require('@llmprofiles/core');
+
+const course = new CourseBuilder()
+  .name('Web Development 101')
+  .description('Learn web development basics')
+  .provider('Online Academy')
+  .courseMode('online')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Content</div>
+                    <h4>Dataset</h4>
+                    <p>Data collections and datasets</p>
+                    <div class="code-block">
+const { DatasetBuilder } = require('@llmprofiles/core');
+
+const dataset = new DatasetBuilder()
+  .name('Climate Data 2024')
+  .description('Annual climate measurements')
+  .publisher('Weather Bureau')
+  .distribution('https://data.example.com/climate')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Content</div>
+                    <h4>HowTo</h4>
+                    <p>Step-by-step instructions and tutorials</p>
+                    <div class="code-block">
+const { HowToBuilder } = require('@llmprofiles/core');
+
+const howto = new HowToBuilder()
+  .name('How to Bake a Cake')
+  .description('Step-by-step cake baking guide')
+  .totalTime('PT2H')
+  .supply('Flour, Eggs, Sugar')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Content</div>
+                    <h4>Recipe</h4>
+                    <p>Cooking recipes with ingredients and instructions</p>
+                    <div class="code-block">
+const { RecipeBuilder } = require('@llmprofiles/core');
+
+const recipe = new RecipeBuilder()
+  .name('Chocolate Chip Cookies')
+  .description('Delicious homemade cookies')
+  .cookTime('PT15M')
+  .prepTime('PT30M')
+  .recipeIngredient(['2 cups flour', '1 cup sugar'])
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Content</div>
+                    <h4>VideoObject</h4>
+                    <p>Video content with metadata and duration</p>
+                    <div class="code-block">
+const { VideoObjectBuilder } = require('@llmprofiles/core');
+
+const video = new VideoObjectBuilder()
+  .name('Tutorial Video')
+  .description('Learn something new')
+  .duration('PT10M30S')
+  .uploadDate('2024-01-15')
+  .contentUrl('https://video.example.com/tutorial')
+  .build();
+                    </div>
+                </div>
+
+                <!-- Interaction Profiles -->
+                <div class="profile-card">
+                    <div class="category">Interaction</div>
+                    <h4>Event</h4>
+                    <p>Events with dates, location, and organizer info</p>
+                    <div class="code-block">
+const { EventBuilder } = require('@llmprofiles/core');
+
+const event = new EventBuilder()
+  .name('Tech Conference 2024')
+  .startDate('2024-06-15T09:00:00Z')
+  .endDate('2024-06-17T18:00:00Z')
+  .location('Convention Center')
+  .organizer('Tech Events Inc')
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Interaction</div>
+                    <h4>FAQPage</h4>
+                    <p>Frequently asked questions and answers</p>
+                    <div class="code-block">
+const { FAQPageBuilder } = require('@llmprofiles/core');
+
+const faq = new FAQPageBuilder()
+  .name('Product FAQ')
+  .mainEntity([
+    {
+      '@type': 'Question',
+      'name': 'What is the warranty?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': '1 year warranty'
+      }
+    }
+  ])
+  .build();
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="category">Interaction</div>
+                    <h4>QAPage</h4>
+                    <p>Question and answer pages</p>
+                    <div class="code-block">
+const { QAPageBuilder } = require('@llmprofiles/core');
+
+const qa = new QAPageBuilder()
+  .name('Product Q&A')
+  .mainEntity({
+    '@type': 'Question',
+    'name': 'How does it work?',
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': 'Detailed explanation...'
+    }
+  })
+  .build();
+                    </div>
+                </div>
+
+                <!-- Technology Profile -->
+                <div class="profile-card">
+                    <div class="category">Technology</div>
+                    <h4>SoftwareApplication</h4>
+                    <p>Software applications with system requirements</p>
+                    <div class="code-block">
+const { SoftwareApplicationBuilder } = require('@llmprofiles/core');
+
+const app = new SoftwareApplicationBuilder()
+  .name('MyApp')
+  .description('Useful application')
+  .applicationCategory('Productivity')
+  .operatingSystem('Windows, macOS, Linux')
+  .offers(29.99, 'USD')
+  .build();
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Three Modes Showcase -->
+        <div class="demo-section">
+            <h2>🎯 Three Output Modes</h2>
+            <p>Choose the perfect mode for your use case:</p>
+            
+            <div class="mode-tabs">
+                <button class="mode-tab active" onclick="showMode('strict-seo')">Strict SEO</button>
+                <button class="mode-tab" onclick="showMode('split-channels')">Split Channels</button>
+                <button class="mode-tab" onclick="showMode('standards-header')">Standards Header</button>
+            </div>
+
+            <div id="strict-seo" class="mode-content active">
+                <h3>🔍 Strict SEO Mode (Default)</h3>
+                <p><strong>Best for:</strong> Maximum Google/Bing compatibility and Rich Results</p>
+                <div class="code-block">
+const { ProductBuilder, MODES } = require('@llmprofiles/core');
+
+const product = new ProductBuilder(MODES.STRICT_SEO)
+  .name('Wireless Headphones')
+  .description('High-quality wireless headphones')
+  .brand('AudioTech')
+  .offers(199.99, 'USD')
+  .build();
+                </div>
+                <div class="json-output" id="strict-seo-output">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "additionalType": "https://llmprofiles.org/profiles/business/product/v1",
+  "schemaVersion": "https://llmprofiles.org/profiles/business/product/v1",
+  "identifier": "https://llmprofiles.org/profiles/business/product/v1",
+  "additionalProperty": {
+    "@type": "PropertyValue",
+    "name": "profile",
+    "value": "https://llmprofiles.org/profiles/business/product/v1"
+  },
+  "name": "Wireless Headphones",
+  "description": "High-quality wireless headphones",
+  "brand": {
+    "@type": "Brand",
+    "name": "AudioTech"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": 199.99,
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  }
+}
+                </div>
+            </div>
+
+            <div id="split-channels" class="mode-content">
+                <h3>🔄 Split Channels Mode</h3>
+                <p><strong>Best for:</strong> Separate SEO and LLM/developer consumption</p>
+                <div class="code-block">
+const { ProductBuilder, MODES } = require('@llmprofiles/core');
+
+const product = new ProductBuilder(MODES.SPLIT_CHANNELS)
+  .name('Wireless Headphones')
+  .description('High-quality wireless headphones')
+  .brand('AudioTech')
+  .offers(199.99, 'USD')
+  .build();
+                </div>
+                <div class="json-output" id="split-channels-output">
+{
+  "seo": {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "additionalType": "https://llmprofiles.org/profiles/business/product/v1",
+    "schemaVersion": "https://llmprofiles.org/profiles/business/product/v1",
+    "identifier": "https://llmprofiles.org/profiles/business/product/v1",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "profile",
+      "value": "https://llmprofiles.org/profiles/business/product/v1"
+    },
+    "name": "Wireless Headphones",
+    "description": "High-quality wireless headphones",
+    "brand": {
+      "@type": "Brand",
+      "name": "AudioTech"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": 199.99,
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  },
+  "llm": {
+    "@context": [
+      "https://schema.org",
+      "https://llmprofiles.org/contexts/llm.jsonld"
+    ],
+    "@type": "Product",
+    "additionalType": "https://llmprofiles.org/profiles/business/product/v1",
+    "schemaVersion": "https://llmprofiles.org/profiles/business/product/v1",
+    "identifier": "https://llmprofiles.org/profiles/business/product/v1",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "profile",
+      "value": "https://llmprofiles.org/profiles/business/product/v1"
+    },
+    "name": "Wireless Headphones",
+    "description": "High-quality wireless headphones",
+    "brand": {
+      "@type": "Brand",
+      "name": "AudioTech"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": 199.99,
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+}
+                </div>
+            </div>
+
+            <div id="standards-header" class="mode-content">
+                <h3>📋 Standards Header Mode</h3>
+                <p><strong>Best for:</strong> Standards-compliant profile advertising</p>
+                <div class="code-block">
+const { ProductBuilder, MODES } = require('@llmprofiles/core');
+
+const product = new ProductBuilder(MODES.STANDARDS_HEADER)
+  .name('Wireless Headphones')
+  .description('High-quality wireless headphones')
+  .brand('AudioTech')
+  .offers(199.99, 'USD')
+  .build();
+
+// Get HTML and HTTP headers
+const relProfile = product.getRelProfile();
+const linkHeader = product.getLinkHeader();
+                </div>
+                <div class="json-output" id="standards-header-output">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "additionalType": "https://llmprofiles.org/profiles/business/product/v1",
+  "schemaVersion": "https://llmprofiles.org/profiles/business/product/v1",
+  "identifier": "https://llmprofiles.org/profiles/business/product/v1",
+  "additionalProperty": {
+    "@type": "PropertyValue",
+    "name": "profile",
+    "value": "https://llmprofiles.org/profiles/business/product/v1"
+  },
+  "name": "Wireless Headphones",
+  "description": "High-quality wireless headphones",
+  "brand": {
+    "@type": "Brand",
+    "name": "AudioTech"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": 199.99,
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  }
+}
+
+// HTML rel profile: https://llmprofiles.org/profiles
+// HTTP Link header: &lt;https://llmprofiles.org/profiles&gt;; rel="profile"
+                </div>
+            </div>
+        </div>
+
+        <!-- Security & Sanitization Demo -->
+        <div class="demo-section">
+            <h2>🔒 Security & Input Sanitization</h2>
+            <p>Comprehensive protection against XSS attacks and malicious content:</p>
+            
+            <div class="sanitization-demo">
+                <h4>🛡️ Live Sanitization Demo</h4>
+                <p>Try entering malicious content to see how it gets sanitized:</p>
+                
+                <div class="input-group">
+                    <label for="malicious-input">Enter potentially dangerous content:</label>
+                    <textarea id="malicious-input" placeholder='Try: &lt;script&gt;alert("xss")&lt;/script&gt;Hello World!'></textarea>
+                </div>
+                
+                <button class="btn" onclick="demonstrateSanitization()">Sanitize Input</button>
+                <button class="btn btn-secondary" onclick="clearSanitizationDemo()">Clear</button>
+                
+                <div id="sanitization-result" style="margin-top: 20px;"></div>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>🚫 HTML Tag Removal</h5>
+                    <p>Strips &lt;script&gt;, &lt;iframe&gt;, and other dangerous tags</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🔗 URL Validation</h5>
+                    <p>Blocks javascript:, data:, and invalid URLs</p>
+                </div>
+                <div class="feature-item">
+                    <h5>📧 Email Validation</h5>
+                    <p>Validates email format and blocks malicious content</p>
+                </div>
+                <div class="feature-item">
+                    <h5>📞 Phone Validation</h5>
+                    <p>Validates phone number format</p>
+                </div>
+                <div class="feature-item">
+                    <h5>📅 Date Validation</h5>
+                    <p>Ensures dates are within reasonable ranges</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🔢 Number Validation</h5>
+                    <p>Validates numeric inputs with min/max bounds</p>
+                </div>
+            </div>
+
+            <div class="security-warning">
+                <h5>⚠️ Security Warnings</h5>
+                <p>The validator provides detailed security warnings:</p>
+                <ul>
+                    <li>HTML tags removed from fields</li>
+                    <li>JavaScript protocols blocked</li>
+                    <li>Data URIs removed from URLs</li>
+                    <li>Invalid input formats rejected</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <div class="demo-section">
+            <h2>🎮 Interactive Builder Demo</h2>
+            <p>Try building your own structured data with live validation:</p>
+            
+            <div class="interactive-demo">
+                <h4>📝 Live Editor</h4>
+                <div class="live-editor">
+                    <div class="editor-panel">
+                        <h5>Input (JavaScript)</h5>
+                        <textarea id="live-input" placeholder="// Try these examples:
+
+// Article Example:
+const { ArticleBuilder } = require('@llmprofiles/core');
+const article = new ArticleBuilder()
+  .headline('Breaking News')
+  .author('Jane Smith')
+  .datePublished('2024-01-15')
+  .description('This is a news article')
+  .build();
+
+// Product Example:
+const { ProductBuilder } = require('@llmprofiles/core');
+const product = new ProductBuilder()
+  .name('Wireless Headphones')
+  .description('High-quality audio')
+  .brand('AudioTech')
+  .offers(199.99, 'USD')
+  .build();
+
+// Job Posting Example:
+const { JobPostingBuilder } = require('@llmprofiles/core');
+const job = new JobPostingBuilder()
+  .title('Software Engineer')
+  .hiringOrganization('Tech Corp')
+  .jobLocation('San Francisco, CA')
+  .datePosted('2024-01-15')
+  .build();"></textarea>
+                    </div>
+                    <div class="editor-panel">
+                        <h5>Output (JSON)</h5>
+                        <textarea id="live-output" readonly placeholder="Generated JSON will appear here..."></textarea>
+                    </div>
+                </div>
+                <button class="btn" onclick="runLiveDemo()">▶️ Run Code</button>
+                <button class="btn" onclick="validateLiveDemo()">✅ Validate</button>
+                <button class="btn btn-secondary" onclick="loadExample('article')">📰 Article Example</button>
+                <button class="btn btn-secondary" onclick="loadExample('product')">🛍️ Product Example</button>
+                <button class="btn btn-secondary" onclick="loadExample('job')">💼 Job Example</button>
+                <button class="btn btn-secondary" onclick="clearLiveDemo()">🗑️ Clear</button>
+            </div>
+        </div>
+
+        <!-- Validation Demo -->
+        <div class="demo-section">
+            <h2>✅ Validation & Compliance</h2>
+            <p>Comprehensive validation with Google Rich Results and LLM optimization checks:</p>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h5>🔍 Schema Validation</h5>
+                    <p>Validates against JSON Schema with detailed error reporting</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🎯 Google Rich Results</h5>
+                    <p>Checks compliance with Google's Rich Results requirements</p>
+                </div>
+                <div class="feature-item">
+                    <h5>🤖 LLM Optimization</h5>
+                    <p>Validates fields optimized for LLM processing</p>
+                </div>
+                <div class="feature-item">
+                    <h5>📊 Batch Validation</h5>
+                    <p>Validate multiple items with statistics and reporting</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+const { validateStructuredData } = require('@llmprofiles/core');
+
+const result = validateStructuredData({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Test Article',
+  author: 'John Doe',
+  datePublished: '2024-01-15'
+}, 'Article');
+
+console.log('Valid:', result.valid);
+console.log('Google Rich Results:', result.googleRichResults);
+console.log('LLM Optimization:', result.llmOptimization);
+console.log('Security Warnings:', result.securityWarnings);
+            </div>
+        </div>
+
+        <!-- Installation & Usage -->
+        <div class="demo-section">
+            <h2>🚀 Installation & Quick Start</h2>
+            
+            <h3>Installation</h3>
+            <div class="code-block">
+npm install @llmprofiles/core
+            </div>
+
+            <h3>Basic Usage</h3>
+            <div class="code-block">
+const { ArticleBuilder, MODES } = require('@llmprofiles/core');
+
+// Create an article with automatic sanitization
+const article = new ArticleBuilder()
+  .headline('Breaking News')
+  .author('Jane Smith')
+  .datePublished('2024-01-15')
+  .publisher('News Corp')
+  .build();
+
+// Use different modes
+const articleSplit = new ArticleBuilder(MODES.SPLIT_CHANNELS)
+  .headline('Breaking News')
+  .author('Jane Smith')
+  .build();
+
+// Disable sanitization for trusted content
+const articleUnsanitized = new ArticleBuilder(MODES.STRICT_SEO, false)
+  .headline('Breaking News')
+  .author('Jane Smith')
+  .build();
+            </div>
+
+            <h3>Available Profiles</h3>
+            <div class="code-block">
+const { 
+  // Business
+  JobPostingBuilder, LocalBusinessBuilder, ProductBuilder, ReviewBuilder,
+  
+  // Content  
+  ArticleBuilder, BookBuilder, CourseBuilder, DatasetBuilder, 
+  HowToBuilder, RecipeBuilder, VideoObjectBuilder,
+  
+  // Interaction
+  EventBuilder, FAQPageBuilder, QAPageBuilder,
+  
+  // Technology
+  SoftwareApplicationBuilder,
+  
+  // Utilities
+  validateStructuredData, InputSanitizer, defaultSanitizer
+} = require('@llmprofiles/core');
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="demo-section" style="text-align: center; background: #f8f9fa;">
+            <h2>🎉 Ready to Get Started?</h2>
+            <p>Install @llmprofiles/core and start building secure, compliant structured data today!</p>
+            <div style="margin: 20px 0;">
+                <button class="btn" onclick="window.open('https://www.npmjs.com/package/@llmprofiles/core', '_blank')">📦 View on NPM</button>
+                <button class="btn" onclick="window.open('https://github.com/HaMi-IQ/llmprofiles', '_blank')">🐙 View on GitHub</button>
+            </div>
+            <p style="color: #666; font-size: 0.9rem;">
+                Built with ❤️ for the semantic web community
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -60,7 +60,10 @@
     "links:report": "node scripts/validate-links.js report",
     "build:profiles": "node scripts/build-profiles.js",
     "validate:structure": "node scripts/validate-structure.js",
-    "clean:gh-pages": "node scripts/clean-gh-pages.js"
+    "clean:gh-pages": "node scripts/clean-gh-pages.js",
+    "build:npm": "node scripts/build-npm-package.js",
+    "publish:npm": "npm run build:npm && cd npm-package && npm publish",
+    "publish:npm:dry": "npm run build:npm && cd npm-package && npm publish --dry-run"
   },
   "devDependencies": {
     "ajv": "^8.12.0",

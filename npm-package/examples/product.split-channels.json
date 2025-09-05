@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "additionalType": "https://llmprofiles.org/profiles/business/product-offer/v1",
+    "schemaVersion": "https://llmprofiles.org/profiles/business/product-offer/v1",
+    "identifier": "https://llmprofiles.org/profiles/business/product-offer/v1",
+    "additionalProperty": {
+      "@type": "PropertyValue",
+      "name": "profile",
+      "value": "https://llmprofiles.org/profiles/business/product-offer/v1"
+    },
+    "name": "Wireless Bluetooth Headphones",
+    "description": "High-quality wireless headphones with noise cancellation",
+    "image": "https://example.com/headphones.jpg",
+    "brand": {
+      "@type": "Brand",
+      "name": "AudioTech"
+    },
+    "sku": "AT-WH-001",
+    "offers": {
+      "@type": "Offer",
+      "price": "199.99",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://example.com/headphones/buy"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": 4.5,
+      "reviewCount": 127,
+      "bestRating": 5,
+      "worstRating": 1
+    }
+  },
+  "llm": {
+    "@context": [
+      "https://schema.org",
+      "https://llmprofiles.org/contexts/llm.jsonld"
+    ],
+    "@type": "Product",
+    "profileUrl": "https://llmprofiles.org/profiles/business/product-offer/v1",
+    "profileVersion": "1.0",
+    "profileCategory": "business",
+    "name": "Wireless Bluetooth Headphones",
+    "description": "High-quality wireless headphones with noise cancellation",
+    "image": "https://example.com/headphones.jpg",
+    "brand": {
+      "@type": "Brand",
+      "name": "AudioTech"
+    },
+    "sku": "AT-WH-001",
+    "offers": {
+      "@type": "Offer",
+      "price": "199.99",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "url": "https://example.com/headphones/buy"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": 4.5,
+      "reviewCount": 127,
+      "bestRating": 5,
+      "worstRating": 1
+    }
+  }
+}

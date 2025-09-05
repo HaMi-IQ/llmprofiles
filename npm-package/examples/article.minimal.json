@@ -1,0 +1,44 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://example.com/articles/llm-friendly-structured-data#article",
+  "url": "https://example.com/articles/llm-friendly-structured-data",
+  "mainEntityOfPage": "https://example.com/articles/llm-friendly-structured-data",
+  "inLanguage": "en",
+  "headline": "How to Build LLM-Friendly Structured Data",
+  "description": "Learn how to implement structured data that works well with both search engines and AI systems.",
+  "datePublished": "2024-01-15T10:00:00Z",
+  "dateModified": "2024-01-15T10:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "Jane Smith",
+    "url": "https://janesmith.com"
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://example.com/article-image.jpg",
+    "width": 1200,
+    "height": 630
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tech Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://example.com/logo.jpg",
+      "width": 120,
+      "height": 120
+    },
+    "url": "https://example.com"
+  },
+  "additionalType": "https://llmprofiles.org/profiles/content/article/v1",
+  "schemaVersion": "https://llmprofiles.org/profiles/content/article/v1",
+  "identifier": "https://llmprofiles.org/profiles/content/article/v1",
+  "additionalProperty": {
+    "@type": "PropertyValue",
+    "name": "profile",
+    "value": "https://llmprofiles.org/profiles/content/article/v1"
+  },
+  "articleSection": "SEO & AI",
+  "keywords": ["structured data", "JSON-LD", "schema.org", "LLM", "AEO"]
+}
