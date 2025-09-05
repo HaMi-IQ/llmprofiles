@@ -89,19 +89,17 @@ jobs:
           CHANGELOG_ENTRY="## [$NEW_VERSION] - $DATE"
           
           if [ -n "${{ github.event.inputs.release_notes }}" ]; then
-            CHANGELOG_ENTRY="$CHANGELOG_ENTRY
-
-${{ github.event.inputs.release_notes }}"
+            CHANGELOG_ENTRY="$CHANGELOG_ENTRY"$'\n\n'"${{ github.event.inputs.release_notes }}"
           else
-            CHANGELOG_ENTRY="$CHANGELOG_ENTRY
-
-### Changes
-- Version bump to $NEW_VERSION"
+            CHANGELOG_ENTRY="$CHANGELOG_ENTRY"$'\n\n'"### Changes"$'\n'"- Version bump to $NEW_VERSION"
           fi
           
           # Add to changelog
           if [ -f "CHANGELOG.md" ]; then
-            sed -i "1i\\$CHANGELOG_ENTRY\\n" CHANGELOG.md
+            echo "$CHANGELOG_ENTRY" > temp_changelog.md
+            echo "" >> temp_changelog.md
+            cat CHANGELOG.md >> temp_changelog.md
+            mv temp_changelog.md CHANGELOG.md
           else
             echo "$CHANGELOG_ENTRY" > CHANGELOG.md
           fi
