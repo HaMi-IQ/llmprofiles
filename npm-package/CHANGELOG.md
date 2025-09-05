@@ -1,3 +1,8 @@
+## [1.0.1-alpha.7] - 2025-09-05
+
+### Changes
+- Version bump to 1.0.1-alpha.7
+
 ## [1.0.1-alpha.6] - 2025-09-05
 
 ### Changes
