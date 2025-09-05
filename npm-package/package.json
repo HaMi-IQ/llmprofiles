@@ -88,6 +88,8 @@
     }
   },
   "files": [
+    "index.js",
+    "index.mjs",
     "lib/",
     "profiles/",
     "schemas/",
@@ -96,6 +98,7 @@
     "demo.html",
     "serve-demo.js",
     "DEMO.md",
+    "ES_MODULE_GUIDE.md",
     "README.md",
     "CHANGELOG.md"
   ],
