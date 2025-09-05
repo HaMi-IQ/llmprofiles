@@ -1,0 +1,158 @@
+{
+  "name": "@llmprofiles/core",
+  "version": {},
+  "description": "Schema.org profiles with three modes: Strict SEO (default), Split Channels, and Standards Header for optimal Google/Bing compatibility and LLM/developer support",
+  "main": "index.js",
+  "module": "index.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./profiles/article": {
+      "import": "./profiles/article.mjs",
+      "require": "./profiles/article.js",
+      "types": "./types/profiles/article.d.ts"
+    },
+    "./profiles/jobposting": {
+      "import": "./profiles/jobposting.mjs",
+      "require": "./profiles/jobposting.js",
+      "types": "./types/profiles/jobposting.d.ts"
+    },
+    "./profiles/localbusiness": {
+      "import": "./profiles/localbusiness.mjs",
+      "require": "./profiles/localbusiness.js",
+      "types": "./types/profiles/localbusiness.d.ts"
+    },
+    "./profiles/product": {
+      "import": "./profiles/product.mjs",
+      "require": "./profiles/product.js",
+      "types": "./types/profiles/product.d.ts"
+    },
+    "./profiles/review": {
+      "import": "./profiles/review.mjs",
+      "require": "./profiles/review.js",
+      "types": "./types/profiles/review.d.ts"
+    },
+    "./profiles/book": {
+      "import": "./profiles/book.mjs",
+      "require": "./profiles/book.js",
+      "types": "./types/profiles/book.d.ts"
+    },
+    "./profiles/course": {
+      "import": "./profiles/course.mjs",
+      "require": "./profiles/course.js",
+      "types": "./types/profiles/course.d.ts"
+    },
+    "./profiles/dataset": {
+      "import": "./profiles/dataset.mjs",
+      "require": "./profiles/dataset.js",
+      "types": "./types/profiles/dataset.d.ts"
+    },
+    "./profiles/howto": {
+      "import": "./profiles/howto.mjs",
+      "require": "./profiles/howto.js",
+      "types": "./types/profiles/howto.d.ts"
+    },
+    "./profiles/recipe": {
+      "import": "./profiles/recipe.mjs",
+      "require": "./profiles/recipe.js",
+      "types": "./types/profiles/recipe.d.ts"
+    },
+    "./profiles/videoobject": {
+      "import": "./profiles/videoobject.mjs",
+      "require": "./profiles/videoobject.js",
+      "types": "./types/profiles/videoobject.d.ts"
+    },
+    "./profiles/event": {
+      "import": "./profiles/event.mjs",
+      "require": "./profiles/event.js",
+      "types": "./types/profiles/event.d.ts"
+    },
+    "./profiles/faqpage": {
+      "import": "./profiles/faqpage.mjs",
+      "require": "./profiles/faqpage.js",
+      "types": "./types/profiles/faqpage.d.ts"
+    },
+    "./profiles/qapage": {
+      "import": "./profiles/qapage.mjs",
+      "require": "./profiles/qapage.js",
+      "types": "./types/profiles/qapage.d.ts"
+    },
+    "./profiles/softwareapplication": {
+      "import": "./profiles/softwareapplication.mjs",
+      "require": "./profiles/softwareapplication.js",
+      "types": "./types/profiles/softwareapplication.d.ts"
+    }
+  },
+  "files": [
+    "lib/",
+    "profiles/",
+    "schemas/",
+    "examples/",
+    "types/",
+    "demo.html",
+    "serve-demo.js",
+    "DEMO.md",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "schema.org",
+    "structured-data",
+    "json-ld",
+    "llm",
+    "ai",
+    "seo",
+    "rich-results",
+    "google",
+    "bing",
+    "semantic-web",
+    "microdata",
+    "shacl",
+    "json-schema",
+    "dcterms",
+    "profile-semantics"
+  ],
+  "author": "HAMI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HaMi-IQ/llmprofiles.git",
+    "directory": "npm-package"
+  },
+  "homepage": "https://llmprofiles.org",
+  "bugs": {
+    "url": "https://github.com/HaMi-IQ/llmprofiles/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "peerDependencies": {},
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "test": "node test/test-modes.js",
+    "test:modes": "node test/test-modes.js",
+    "test:builders": "node test/test-all-builders.js",
+    "test:sanitization": "node test/test-sanitization.js",
+    "test:all": "npm run test:modes && npm run test:builders && npm run test:sanitization",
+    "demo": "node serve-demo.js",
+    "demo:serve": "node serve-demo.js 3000",
+    "build": "npm run build:types",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir types",
+    "prepublishOnly": "npm run build",
+    "version:bump": "node scripts/version-manager.js bump",
+    "version:info": "node scripts/version-manager.js info",
+    "publish:package": "node scripts/publish.js",
+    "publish:dry-run": "npm publish --dry-run",
+    "prepublish": "npm run build && npm run test:all"
+  }
+}
