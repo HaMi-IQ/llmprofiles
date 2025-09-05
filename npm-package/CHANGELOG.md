@@ -1,3 +1,8 @@
+## [1.0.1-alpha.0] - 2025-09-05
+
+### Changes
+- Version bump to 1.0.1-alpha.0
+
 # Changelog
 
 All notable changes to the `@llmprofiles/core` NPM package will be documented in this file.
