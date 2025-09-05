@@ -303,7 +303,7 @@ const { ProductBuilder, MODES } = require('@llmprofiles/core');
 **Individual Profile Imports**
 
 ```ts
-import { productofferProfile } from '@llmprofiles/core/profiles/product';
+import { productofferProfile } from '@llmprofiles/core/profiles/productoffer';
 import { articleProfile } from '@llmprofiles/core/profiles/article';
 
 console.log(productofferProfile.type);

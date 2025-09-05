@@ -164,7 +164,7 @@ jobs:
               '.',
               './profiles/article',
               './profiles/jobposting',
-              './profiles/product'
+              './profiles/productoffer'
             ];
             
             const missingExports = requiredExports.filter(exp => !pkg.exports[exp]);

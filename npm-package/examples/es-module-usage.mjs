@@ -5,7 +5,7 @@
 // Import individual profiles
 import { articleProfile } from '@llmprofiles/core/profiles/article';
 import { jobpostingProfile } from '@llmprofiles/core/profiles/jobposting';
-import { productofferProfile } from '@llmprofiles/core/profiles/product';
+import { productofferProfile } from '@llmprofiles/core/profiles/productoffer';
 
 // Import builders and utilities
 import { ArticleBuilder, JobPostingBuilder, ProductBuilder, MODES } from '@llmprofiles/core';
