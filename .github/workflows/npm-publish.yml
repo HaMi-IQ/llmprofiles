@@ -245,7 +245,7 @@ jobs:
           node --input-type=module -e "
             import { articleProfile } from '@llmprofiles/core/profiles/article';
             import { jobpostingProfile } from '@llmprofiles/core/profiles/jobposting';
-            import { productofferProfile } from '@llmprofiles/core/profiles/product';
+            import { productofferProfile } from '@llmprofiles/core/profiles/productoffer';
             
             console.log('✅ Individual profile imports work');
             console.log('📄 Article profile:', articleProfile.type);
