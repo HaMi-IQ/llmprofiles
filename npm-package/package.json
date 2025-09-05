@@ -1,6 +1,6 @@
 {
   "name": "@llmprofiles/core",
-  "version": "1.0.1-alpha.0",
+  "version": "1.0.1-alpha.1",
   "description": "Schema.org profiles with three modes: Strict SEO (default), Split Channels, and Standards Header for optimal Google/Bing compatibility and LLM/developer support",
   "main": "index.js",
   "module": "index.mjs",
