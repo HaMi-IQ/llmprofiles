@@ -1,5 +1,6 @@
 /**
  * TypeScript definitions for Howto profile
+ * Auto-generated from actual JavaScript implementation
  */
 
 import { ProfileDefinition } from '../index.js';

@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./types",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "index.js",
+    "index.mjs",
+    "lib/**/*.js",
+    "lib/**/*.mjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "test",
+    "scripts",
+    "examples",
+    "types"
+  ]
+}

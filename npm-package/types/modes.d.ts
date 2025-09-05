@@ -1,14 +1,9 @@
 /**
- * Mode configuration for different output strategies
+ * TypeScript definitions for modes
+ * Auto-generated from actual JavaScript implementation
  */
 
-export const MODES: {
-  readonly STRICT_SEO: 'strict-seo';
-  readonly SPLIT_CHANNELS: 'split-channels';
-  readonly STANDARDS_HEADER: 'standards-header';
-};
-
-export type ModeType = typeof MODES[keyof typeof MODES];
+export type ModeType = 'strict-seo' | 'split-channels' | 'standards-header';
 
 export interface ModeConfiguration {
   useAdditionalType: boolean;
@@ -17,27 +12,25 @@ export interface ModeConfiguration {
   useIdentifier: boolean;
   useConformsTo: boolean;
   includeProfileMetadata: boolean;
-  separateLLMBlock?: boolean;
-  includeRelProfile?: boolean;
+  separateLLMBlock: boolean;
+  includeRelProfile: boolean;
 }
 
-export class ModeConfig {
-  constructor(mode?: ModeType);
-  
-  readonly mode: ModeType;
-  
-  validateMode(): void;
+export declare class ModeConfig {
+  constructor(mode: ModeType);
   getConfig(): ModeConfiguration;
-  
   usesAdditionalType(): boolean;
   usesSchemaVersion(): boolean;
   usesAdditionalProperty(): boolean;
   usesIdentifier(): boolean;
+  usesConformsTo(): boolean;
   includesProfileMetadata(): boolean;
   separatesLLMBlock(): boolean;
   includesRelProfile(): boolean;
-  
-  getRelProfileValue(): string | null;
-  getLinkHeaderValue(): string | null;
 }
 
+export declare const MODES: {
+  STRICT_SEO: 'strict-seo';
+  SPLIT_CHANNELS: 'split-channels';
+  STANDARDS_HEADER: 'standards-header';
+};

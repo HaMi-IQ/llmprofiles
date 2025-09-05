@@ -133,13 +133,12 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "peerDependencies": {},
   "dependencies": {
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1"
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.9.2"
   },
   "scripts": {
     "test": "node test/test-modes.js",
@@ -150,7 +149,9 @@
     "demo": "node serve-demo.js",
     "demo:serve": "node serve-demo.js 3000",
     "build": "npm run build:types",
-    "build:types": "tsc --declaration --emitDeclarationOnly --outDir types",
+    "build:types": "npm run clean:types && npm run generate:types",
+    "clean:types": "rm -rf types && mkdir -p types/profiles",
+    "generate:types": "node scripts/generate-types.js",
     "prepublishOnly": "npm run build",
     "version:bump": "node scripts/version-manager.js bump",
     "version:info": "node scripts/version-manager.js info",

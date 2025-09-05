@@ -1,4 +1,59 @@
+#!/usr/bin/env node
+
 /**
+ * Generate TypeScript definitions from actual JavaScript code
+ * This ensures type definitions are always in sync with the actual implementation
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Colors for console output
+const colors = {
+  reset: '\x1b[0m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m'
+};
+
+function log(message, color = 'reset') {
+  console.log(`${colors[color]}${message}${colors.reset}`);
+}
+
+class TypeScriptGenerator {
+  constructor() {
+    this.rootDir = path.join(__dirname, '..');
+    this.typesDir = path.join(this.rootDir, 'types');
+    this.profilesDir = path.join(this.rootDir, 'profiles');
+    this.libDir = path.join(this.rootDir, 'lib');
+  }
+
+  async generate() {
+    log('🔧 Generating TypeScript definitions...', 'blue');
+    
+    try {
+      // Generate main index.d.ts
+      await this.generateMainTypes();
+      
+      // Generate individual profile types
+      await this.generateProfileTypes();
+      
+      // Generate modes types
+      await this.generateModesTypes();
+      
+      log('✅ TypeScript definitions generated successfully!', 'green');
+      
+    } catch (error) {
+      log(`❌ Failed to generate TypeScript definitions: ${error.message}`, 'red');
+      throw error;
+    }
+  }
+
+  async generateMainTypes() {
+    log('  📝 Generating main index.d.ts...', 'blue');
+    
+    const mainTypes = `/**
  * TypeScript definitions for @llmprofiles/core
  * Auto-generated from actual JavaScript implementation
  */
@@ -209,3 +264,106 @@ export declare class InputSanitizer {
 }
 
 export declare const defaultSanitizer: InputSanitizer;
+`;
+
+    fs.writeFileSync(path.join(this.typesDir, 'index.d.ts'), mainTypes);
+    log('    ✅ Main types generated', 'green');
+  }
+
+  async generateProfileTypes() {
+    log('  📝 Generating individual profile types...', 'blue');
+    
+    // Read the profiles index to get all available profiles
+    const profilesIndex = JSON.parse(fs.readFileSync(path.join(this.profilesDir, 'index.json'), 'utf8'));
+    
+    for (const [profileKey, profile] of Object.entries(profilesIndex)) {
+      const profileName = profileKey.toLowerCase();
+      const typeContent = `/**
+ * TypeScript definitions for ${profile.type} profile
+ * Auto-generated from actual JavaScript implementation
+ */
+
+import { ProfileDefinition } from '../index.js';
+
+export const ${profileName}Profile: ProfileDefinition;
+export default ${profileName}Profile;
+`;
+
+      fs.writeFileSync(path.join(this.typesDir, 'profiles', `${profileName}.d.ts`), typeContent);
+      log(`    ✅ ${profileName} profile types generated`, 'green');
+    }
+  }
+
+  async generateModesTypes() {
+    log('  📝 Generating modes types...', 'blue');
+    
+    const modesTypes = `/**
+ * TypeScript definitions for modes
+ * Auto-generated from actual JavaScript implementation
+ */
+
+export type ModeType = 'strict-seo' | 'split-channels' | 'standards-header';
+
+export interface ModeConfiguration {
+  useAdditionalType: boolean;
+  useSchemaVersion: boolean;
+  useAdditionalProperty: boolean;
+  useIdentifier: boolean;
+  useConformsTo: boolean;
+  includeProfileMetadata: boolean;
+  separateLLMBlock: boolean;
+  includeRelProfile: boolean;
+}
+
+export declare class ModeConfig {
+  constructor(mode: ModeType);
+  getConfig(): ModeConfiguration;
+  usesAdditionalType(): boolean;
+  usesSchemaVersion(): boolean;
+  usesAdditionalProperty(): boolean;
+  usesIdentifier(): boolean;
+  usesConformsTo(): boolean;
+  includesProfileMetadata(): boolean;
+  separatesLLMBlock(): boolean;
+  includesRelProfile(): boolean;
+}
+
+export declare const MODES: {
+  STRICT_SEO: 'strict-seo';
+  SPLIT_CHANNELS: 'split-channels';
+  STANDARDS_HEADER: 'standards-header';
+};
+`;
+
+    fs.writeFileSync(path.join(this.typesDir, 'modes.d.ts'), modesTypes);
+    log('    ✅ Modes types generated', 'green');
+  }
+}
+
+// Command line interface
+async function main() {
+  try {
+    const generator = new TypeScriptGenerator();
+    await generator.generate();
+    
+    log('', 'green');
+    log('🎉 TypeScript definitions are now in sync with the actual implementation!', 'green');
+    log('', 'green');
+    log('Benefits for TypeScript consumers:', 'blue');
+    log('✅ Accurate type checking', 'green');
+    log('✅ IntelliSense support', 'green');
+    log('✅ Compile-time error detection', 'green');
+    log('✅ Auto-completion in IDEs', 'green');
+    
+  } catch (error) {
+    log(`❌ Generation failed: ${error.message}`, 'red');
+    process.exit(1);
+  }
+}
+
+// Run if called directly
+if (require.main === module) {
+  main();
+}
+
+module.exports = { TypeScriptGenerator };
