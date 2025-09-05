@@ -26,10 +26,10 @@
       "require": "./profiles/localbusiness.js",
       "types": "./types/profiles/localbusiness.d.ts"
     },
-    "./profiles/product": {
-      "import": "./profiles/product.mjs",
-      "require": "./profiles/product.js",
-      "types": "./types/profiles/product.d.ts"
+    "./profiles/productoffer": {
+      "import": "./profiles/productoffer.mjs",
+      "require": "./profiles/productoffer.js",
+      "types": "./types/profiles/productoffer.d.ts"
     },
     "./profiles/review": {
       "import": "./profiles/review.mjs",
