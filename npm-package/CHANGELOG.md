@@ -1,3 +1,8 @@
+## [2.0.3-alpha.0] - 2025-09-06
+
+### Changes
+- Version bump to 2.0.3-alpha.0
+
 ## [2.0.2] - 2025-09-06
 
 Fix corrupted 1.0.0 version with circular dependency
