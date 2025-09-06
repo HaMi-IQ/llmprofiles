@@ -1,3 +1,8 @@
+## [2.0.3] - 2025-09-06
+
+### Changes
+- Version bump to 2.0.3
+
 ## [2.0.3-alpha.0] - 2025-09-06
 
 ### Changes
