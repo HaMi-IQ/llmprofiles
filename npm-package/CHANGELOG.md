@@ -1,3 +1,7 @@
+## [2.0.2] - 2025-09-06
+
+Fix corrupted 1.0.0 version with circular dependency
+
 ## [2.0.1] - 2025-09-06
 
 ### Changes
