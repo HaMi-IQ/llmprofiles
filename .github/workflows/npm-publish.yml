@@ -199,9 +199,13 @@ jobs:
         run: |
           cd npm-package
           npm pack
-          npm install *.tgz
+          
+          # Create a clean test directory to avoid circular dependencies
+          mkdir -p ../test-install && cd ../test-install
           
           echo "🧪 Testing CommonJS compatibility..."
+          echo '{"name": "test-install", "version": "1.0.0", "type": "commonjs"}' > package.json
+          npm install ../npm-package/*.tgz
           node -e "
             const pkg = require('@llmprofiles/core');
             console.log('✅ CommonJS package loads successfully');
@@ -222,6 +226,8 @@ jobs:
           
           echo ""
           echo "🧪 Testing ES Module compatibility..."
+          echo '{"name": "test-install", "version": "1.0.0", "type": "module"}' > package.json
+          npm install ../npm-package/*.tgz
           node --input-type=module -e "
             import { ArticleBuilder, MODES, getProfile, listProfiles } from '@llmprofiles/core';
             import { articleProfile } from '@llmprofiles/core/profiles/article';
@@ -260,7 +266,7 @@ jobs:
           # Test CommonJS in a separate directory
           mkdir -p test-commonjs && cd test-commonjs
           echo '{"type": "commonjs"}' > package.json
-          npm install ../*.tgz
+          npm install ../../npm-package/*.tgz
           node -e "
             const { ArticleBuilder, MODES } = require('@llmprofiles/core');
             const article = new ArticleBuilder(MODES.STRICT_SEO)
@@ -274,7 +280,7 @@ jobs:
           # Test ES modules in a separate directory
           mkdir -p test-esm && cd test-esm
           echo '{"type": "module"}' > package.json
-          npm install ../*.tgz
+          npm install ../../npm-package/*.tgz
           node --input-type=module -e "
             import { ArticleBuilder, MODES } from '@llmprofiles/core';
             import { articleProfile } from '@llmprofiles/core/profiles/article';
@@ -287,6 +293,9 @@ jobs:
             console.log('✅ Individual profile import in real project works');
           "
           cd ..
+          
+          # Clean up test directory
+          cd .. && rm -rf test-install
           
       - name: Check if should publish
         id: check-publish

@@ -22,7 +22,9 @@ class VersionManager {
    * Parse version string into components
    */
   parseVersion(version) {
-    const [major, minor, patch] = version.split('.').map(Number);
+    // Handle prerelease versions like "1.0.1-alpha.7"
+    const baseVersion = version.split('-')[0]; // Remove prerelease part
+    const [major, minor, patch] = baseVersion.split('.').map(Number);
     return { major, minor, patch };
   }
 
@@ -57,7 +59,27 @@ class VersionManager {
    * Get next version for display purposes
    */
   getNextVersion(type) {
-    return this.bumpVersion(type);
+    const { major, minor, patch } = this.parseVersion(this.currentVersion);
+    let newVersion;
+
+    switch (type) {
+      case 'major':
+        newVersion = `${major + 1}.0.0`;
+        break;
+      case 'minor':
+        newVersion = `${major}.${minor + 1}.0`;
+        break;
+      case 'patch':
+        newVersion = `${major}.${minor}.${patch + 1}`;
+        break;
+      case 'prerelease':
+        newVersion = `${major}.${minor}.${patch}-alpha.1`;
+        break;
+      default:
+        throw new Error(`Invalid version type: ${type}`);
+    }
+
+    return newVersion;
   }
 
   /**
@@ -225,7 +247,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   async bumpVersion(type, options = {}) {
     console.log(`🚀 Bumping version from ${this.currentVersion}...\n`);
 
-    const newVersion = this.bumpVersion(type);
+    const newVersion = this.getNextVersion(type);
     console.log(`📋 New version: ${newVersion}`);
 
     // Update package.json
