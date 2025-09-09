@@ -53,6 +53,13 @@ class TypeScriptGenerator {
   async generateMainTypes() {
     log('  📝 Generating main index.d.ts...', 'blue');
     
+    // Build ProfileType union dynamically from enhanced profiles
+    const profilesIndex = JSON.parse(fs.readFileSync(path.join(this.profilesDir, 'index.json'), 'utf8'));
+    const profileTypeUnion = Object.values(profilesIndex)
+      .map(p => `'${p.type}'`)
+      .sort()
+      .join(' | ');
+
     const mainTypes = `/**
  * TypeScript definitions for @llmprofiles/core
  * Auto-generated from actual JavaScript implementation
@@ -106,6 +113,8 @@ export interface ValidationResult {
   warnings: ValidationWarning[];
   googleRichResults: GoogleRichResultsCheck;
   llmOptimization: LLMOptimizationCheck;
+  sanitized?: any;
+  securityWarnings?: Array<{ field: string; message: string; severity: 'low' | 'medium' | 'high' }>;
 }
 
 export interface BatchValidationSummary {
@@ -191,6 +200,45 @@ export declare class EventBuilder extends BaseProfileBuilder {
   offers(price: number | object, currency?: string, url?: string): this;
 }
 
+export declare class BookBuilder extends BaseProfileBuilder {
+  constructor(mode?: ModeType, sanitizeInputs?: boolean);
+  author(author: string | object, url?: string): this;
+  bookFormat(format: string): this;
+  isbn(isbn: string): this;
+  numberOfPages(pages: number): this;
+  inLanguage(language: string): this;
+  datePublished(date: string | Date): this;
+  dateModified(date: string | Date): this;
+  publisher(publisher: string | object, url?: string): this;
+  genre(genre: string): this;
+  keywords(keywords: string | string[]): this;
+  about(topics: string[]): this;
+  audience(audience: object): this;
+  aggregateRating(ratingValue: number, reviewCount: number, bestRating?: number, worstRating?: number): this;
+  review(reviews: object[]): this;
+  id(id: string): this;
+  url(url: string): this;
+  sameAs(url: string): this;
+  bookEdition(edition: string): this;
+  addWorkExample(edition: object): this;
+  illustrator(illustrator: string | object, url?: string): this;
+  translator(translator: string | object, url?: string): this;
+  copyrightYear(year: number): this;
+  copyrightHolder(holder: string | object, url?: string, type?: 'Person' | 'Organization'): this;
+  awards(awards: string): this;
+  citation(citation: string): this;
+}
+
+export declare class CourseBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+export declare class DatasetBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+export declare class HowToBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+export declare class RecipeBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+export declare class VideoObjectBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+export declare class FAQPageBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+export declare class QAPageBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+export declare class SoftwareApplicationBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+export declare class ReviewBuilder extends BaseProfileBuilder { constructor(mode?: ModeType, sanitizeInputs?: boolean); }
+
 export declare class ProfileValidator {
   constructor(sanitizeInputs?: boolean);
   validate(data: any, profileType: string): ValidationResult;
@@ -213,6 +261,7 @@ export declare function getProfile(type: string): ProfileDefinition | null;
 export declare function listProfiles(): string[];
 export declare function getProfilesByCategory(category: string): string[];
 export declare function validateStructuredData(data: any, profileType: string): ValidationResult;
+export declare function validate(data: any, profileType: string): ValidationResult;
 export declare function createMinimalExample(profileType: string, mode?: ModeType): any;
 export declare function createMinimalExampleWithMode(profileType: string, mode: ModeType): any;
 export declare function getGoogleRichResultsFields(profileType: string): string[] | null;
@@ -220,7 +269,7 @@ export declare function getLLMOptimizedFields(profileType: string): string[] | n
 export declare function getSchemaOrgUrl(profileType: string): string | null;
 
 // Type exports for consumers
-export type ProfileType = 'Article' | 'JobPosting' | 'LocalBusiness' | 'Product' | 'Event' | 'FAQPage' | 'SoftwareApplication' | 'Review' | 'Book' | 'Course' | 'Dataset' | 'HowTo' | 'Recipe' | 'VideoObject' | 'QAPage';
+export type ProfileType = ${profileTypeUnion};
 export type Category = 'business' | 'content' | 'interaction' | 'technology';
 
 // Mode exports
@@ -230,6 +279,9 @@ export { MODES, ModeConfig, ModeType, ModeConfiguration } from './modes';
 export declare function getModeConfiguration(mode: ModeType): ModeConfig;
 export declare function getHTMLRelProfile(mode: ModeType): string | null;
 export declare function getHTTPLinkHeader(mode: ModeType): string | null;
+
+// Simplified factory
+export declare function createBuilder(profileType: ProfileType | string, options?: { mode?: ModeType; sanitize?: boolean }): BaseProfileBuilder;
 
 // Individual profile exports
 export { articleProfile } from './profiles/article';

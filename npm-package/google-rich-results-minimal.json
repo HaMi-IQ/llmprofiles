@@ -1,0 +1,76 @@
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Mario's Italian Restaurant",
+  "description": "Authentic Italian cuisine with fresh ingredients and traditional recipes",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "789 Little Italy Blvd",
+    "addressLocality": "New York",
+    "addressRegion": "NY",
+    "postalCode": "10013",
+    "addressCountry": "US"
+  },
+  "telephone": "+1-212-555-0789",
+  "url": "https://mariositalian.com",
+  "email": "reservations@mariositalian.com",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 40.7209,
+    "longitude": -74.0007
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+      "opens": "17:00",
+      "closes": "22:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Friday", "Saturday"],
+      "opens": "17:00",
+      "closes": "23:00"
+    }
+  ],
+  "priceRange": "$$$",
+  "paymentAccepted": ["Cash", "Credit Card"],
+  "currenciesAccepted": "USD",
+  "areaServed": "Lower Manhattan",
+  "sameAs": [
+    "https://facebook.com/mariositalian",
+    "https://instagram.com/mariositalian"
+  ],
+  "image": "https://mariositalian.com/restaurant.jpg",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://mariositalian.com/logo.png"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": 4.6,
+    "reviewCount": 234
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": 5
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Jennifer Martinez"
+      },
+      "reviewBody": "Best Italian food in the city! The pasta is incredible."
+    }
+  ],
+  "additionalType": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld",
+  "schemaVersion": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld",
+  "identifier": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld",
+  "additionalProperty": {
+    "@type": "PropertyValue",
+    "name": "profile",
+    "value": "https://llmprofiles.org/profiles/business/localbusiness/v1/index.jsonld"
+  }
+}

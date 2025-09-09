@@ -50,6 +50,41 @@ function validateStructuredData(data, profileType) {
 }
 
 /**
+ * Simplified builder factory
+ * @param {string} profileType - e.g., 'Product', 'Article', 'JobPosting'
+ * @param {{ mode?: string, sanitize?: boolean }} [options]
+ */
+function createBuilder(profileType, options = {}) {
+  const { mode = MODES.STRICT_SEO, sanitize = true } = options;
+  const normalize = (s) => String(s || '').replace(/[-_\s]/g, '').toLowerCase();
+  const key = normalize(profileType);
+
+  const map = {
+    article: builders.ArticleBuilder,
+    jobposting: builders.JobPostingBuilder,
+    localbusiness: builders.LocalBusinessBuilder,
+    product: builders.ProductBuilder,
+    event: builders.EventBuilder,
+    book: builders.BookBuilder,
+    course: builders.CourseBuilder,
+    dataset: builders.DatasetBuilder,
+    howto: builders.HowToBuilder,
+    recipe: builders.RecipeBuilder,
+    videoobject: builders.VideoObjectBuilder,
+    faqpage: builders.FAQPageBuilder,
+    qapage: builders.QAPageBuilder,
+    softwareapplication: builders.SoftwareApplicationBuilder,
+    review: builders.ReviewBuilder
+  };
+
+  const Ctor = map[key];
+  if (!Ctor) {
+    throw new Error(`Unknown builder for type: ${profileType}`);
+  }
+  return new Ctor(mode, sanitize);
+}
+
+/**
  * Create a minimal example for a profile type
  * @param {string} profileType - Profile type
  * @returns {Object|null} Minimal example or null if profile not found
@@ -169,6 +204,9 @@ module.exports = {
   getGoogleRichResultsFields,
   getLLMOptimizedFields,
   getSchemaOrgUrl,
+  // Simplified API
+  createBuilder,
+  validate: validateStructuredData,
   
   // Mode-specific functions
   createMinimalExampleWithMode: createMinimalExample,

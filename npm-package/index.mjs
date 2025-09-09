@@ -57,6 +57,41 @@ export function validateStructuredData(data, profileType) {
 }
 
 /**
+ * Simplified builder factory
+ * @param {string} profileType - e.g., 'Product', 'Article', 'JobPosting'
+ * @param {{ mode?: string, sanitize?: boolean }} [options]
+ */
+export function createBuilder(profileType, options = {}) {
+  const { mode = MODES.STRICT_SEO, sanitize = true } = options;
+  const normalize = (s) => String(s || '').replace(/[-_\s]/g, '').toLowerCase();
+  const key = normalize(profileType);
+
+  const map = {
+    article: builders.ArticleBuilder,
+    jobposting: builders.JobPostingBuilder,
+    localbusiness: builders.LocalBusinessBuilder,
+    product: builders.ProductBuilder,
+    event: builders.EventBuilder,
+    book: builders.BookBuilder,
+    course: builders.CourseBuilder,
+    dataset: builders.DatasetBuilder,
+    howto: builders.HowToBuilder,
+    recipe: builders.RecipeBuilder,
+    videoobject: builders.VideoObjectBuilder,
+    faqpage: builders.FAQPageBuilder,
+    qapage: builders.QAPageBuilder,
+    softwareapplication: builders.SoftwareApplicationBuilder,
+    review: builders.ReviewBuilder
+  };
+
+  const Ctor = map[key];
+  if (!Ctor) {
+    throw new Error(`Unknown builder for type: ${profileType}`);
+  }
+  return new Ctor(mode, sanitize);
+}
+
+/**
  * Create a minimal example for a profile type
  * @param {string} profileType - Profile type
  * @returns {Object|null} Minimal example or null if profile not found
@@ -162,7 +197,17 @@ export const {
   JobPostingBuilder,
   LocalBusinessBuilder,
   ProductBuilder,
-  EventBuilder
+  EventBuilder,
+  BookBuilder,
+  CourseBuilder,
+  DatasetBuilder,
+  HowToBuilder,
+  RecipeBuilder,
+  VideoObjectBuilder,
+  FAQPageBuilder,
+  QAPageBuilder,
+  SoftwareApplicationBuilder,
+  ReviewBuilder
 } = builders;
 
 // Re-export utility classes
@@ -204,3 +249,6 @@ export { softwareapplicationProfile } from './profiles/softwareapplication.mjs';
 
 // Default export for profile data
 export default profiles;
+
+// Simplified API alias
+export const validate = validateStructuredData;
