@@ -1,3 +1,13 @@
+## [2.0.5-alpha.0] - 2025-09-06
+
+### Changes
+- Version bump to 2.0.5-alpha.0
+
+## [2.0.4] - 2025-09-06
+
+### Changes
+- Version bump to 2.0.4
+
 ## [2.0.3] - 2025-09-06
 
 ### Changes
