@@ -2,9 +2,9 @@
  * RecipeBuilder class for creating Recipe structured data objects
  */
 
-import { BaseProfileBuilder, MODES } from('./base-builder');
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
-class RecipeBuilder extends BaseProfileBuilder {
+export class RecipeBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Recipe', 'content', mode, sanitizeInputs);
   }
@@ -22,7 +22,7 @@ class RecipeBuilder extends BaseProfileBuilder {
       this.data.author = {
         "@type": "Person",
         "name": sanitizedName
-      
+      };
       if (sanitizedUrl) this.data.author.url = sanitizedUrl;
     } else if (author && typeof author === 'object') {
       if (this.sanitizeInputs) {
@@ -226,7 +226,7 @@ class RecipeBuilder extends BaseProfileBuilder {
             return {
               "@type": "HowToStep",
               "text": this.sanitizer.sanitizeString(instruction)
-            
+            };
           } else {
             return this.sanitizer.sanitizeStructuredData(instruction, 'HowToStep');
           }
@@ -268,6 +268,7 @@ class RecipeBuilder extends BaseProfileBuilder {
       const stepObj = {
         "@type": "HowToStep",
         "text": instruction
+      };
       
       if (name) stepObj.name = name;
       
@@ -288,4 +289,4 @@ class RecipeBuilder extends BaseProfileBuilder {
   }
 }
 
-export { RecipeBuilder 
+export default RecipeBuilder; 

@@ -8,14 +8,34 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { ProfileValidator } from './lib/validator.mjs';
+import builders from './lib/builder.mjs';
+import { MODES, ModeConfig } from './lib/modes.mjs';
+import { InputSanitizer, defaultSanitizer } from './lib/sanitizer.mjs';
+
+// Import additional builders
+import { BookBuilder } from './lib/builders/book-builder.mjs';
+import { CourseBuilder } from './lib/builders/course-builder.mjs';
+import { DatasetBuilder } from './lib/builders/dataset-builder.mjs';
+import { HowToBuilder } from './lib/builders/howto-builder.mjs';
+import { RecipeBuilder } from './lib/builders/recipe-builder.mjs';
+import { VideoObjectBuilder } from './lib/builders/videoobject-builder.mjs';
+import { FAQPageBuilder } from './lib/builders/faqpage-builder.mjs';
+import { QAPageBuilder } from './lib/builders/qapage-builder.mjs';
+import { SoftwareApplicationBuilder } from './lib/builders/softwareapplication-builder.mjs';
+import { ReviewBuilder } from './lib/builders/review-builder.mjs';
+import { 
+  FIELD_IMPORTANCE, 
+  FIELD_CATEGORY, 
+  getFieldMetadata, 
+  getAllFieldsMetadata, 
+  getFieldSuggestions, 
+  getCompletionHints 
+} from './lib/field-metadata.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const profiles = JSON.parse(readFileSync(join(__dirname, 'profiles/index.json'), 'utf8'));
-import { ProfileValidator } from './lib/validator.js';
-import builders from './lib/builder.js';
-import { MODES, ModeConfig } from './lib/modes.js';
-import { InputSanitizer, defaultSanitizer } from './lib/sanitizer.js';
 
 /**
  * Get a specific profile definition
@@ -197,21 +217,24 @@ export const {
   JobPostingBuilder,
   LocalBusinessBuilder,
   ProductBuilder,
-  EventBuilder,
-  BookBuilder,
-  CourseBuilder,
-  DatasetBuilder,
-  HowToBuilder,
-  RecipeBuilder,
-  VideoObjectBuilder,
-  FAQPageBuilder,
-  QAPageBuilder,
-  SoftwareApplicationBuilder,
-  ReviewBuilder
+  EventBuilder
 } = builders;
+
+// Export additional builders
+export { BookBuilder, CourseBuilder, DatasetBuilder, HowToBuilder, RecipeBuilder, VideoObjectBuilder, FAQPageBuilder, QAPageBuilder, SoftwareApplicationBuilder, ReviewBuilder };
 
 // Re-export utility classes
 export { ProfileValidator, InputSanitizer, defaultSanitizer };
+
+// Re-export field metadata utilities
+export { 
+  FIELD_IMPORTANCE, 
+  FIELD_CATEGORY, 
+  getFieldMetadata, 
+  getAllFieldsMetadata, 
+  getFieldSuggestions, 
+  getCompletionHints 
+};
 
 // Re-export mode-related exports
 export { MODES, ModeConfig };

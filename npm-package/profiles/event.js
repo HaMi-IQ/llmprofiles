@@ -101,7 +101,17 @@ const eventProfile = {
           "type": "object"
         },
         {
-          "type": "object"
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
         }
       ]
     },

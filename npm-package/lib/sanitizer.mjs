@@ -329,6 +329,60 @@ export class InputSanitizer {
   }
 
   /**
+   * Sanitize structured data object
+   * @param {Object} data - Structured data object to sanitize
+   * @param {string} type - Expected type of the object
+   * @returns {Object} Sanitized structured data object
+   */
+  sanitizeStructuredData(data, type = 'Thing') {
+    if (!data || typeof data !== 'object') {
+      return null;
+    }
+
+    const sanitized = { ...data };
+
+    // Sanitize common string properties
+    const stringProperties = ['name', 'description', 'url', 'email', 'telephone'];
+    stringProperties.forEach(prop => {
+      if (sanitized[prop] && typeof sanitized[prop] === 'string') {
+        if (prop === 'url') {
+          sanitized[prop] = this.sanitizeUrl(sanitized[prop]);
+        } else if (prop === 'email') {
+          sanitized[prop] = this.sanitizeEmail(sanitized[prop]);
+        } else if (prop === 'telephone') {
+          sanitized[prop] = this.sanitizePhone(sanitized[prop]);
+        } else {
+          sanitized[prop] = this.sanitizeString(sanitized[prop]);
+        }
+      }
+    });
+
+    // Sanitize nested objects
+    if (sanitized.address && typeof sanitized.address === 'object') {
+      sanitized.address = this.sanitizeStructuredData(sanitized.address, 'PostalAddress');
+    }
+
+    if (sanitized.geo && typeof sanitized.geo === 'object') {
+      sanitized.geo = this.sanitizeStructuredData(sanitized.geo, 'GeoCoordinates');
+    }
+
+    if (sanitized.logo && typeof sanitized.logo === 'object') {
+      sanitized.logo = this.sanitizeStructuredData(sanitized.logo, 'ImageObject');
+    }
+
+    if (sanitized.image && typeof sanitized.image === 'object') {
+      sanitized.image = this.sanitizeStructuredData(sanitized.image, 'ImageObject');
+    }
+
+    // Ensure @type is set
+    if (!sanitized['@type']) {
+      sanitized['@type'] = type;
+    }
+
+    return sanitized;
+  }
+
+  /**
    * Escape HTML characters
    * @private
    */

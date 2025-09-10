@@ -3,10 +3,10 @@
  * ES Module version
  */
 
-import { BaseProfileBuilder } from './base-builder.mjs';
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
 export class ProductBuilder extends BaseProfileBuilder {
-  constructor(mode = 'strict-seo', sanitizeInputs = true) {
+  constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Product', 'business', mode, sanitizeInputs);
   }
 

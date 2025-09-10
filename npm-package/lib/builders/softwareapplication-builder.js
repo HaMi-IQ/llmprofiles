@@ -6,7 +6,7 @@ const { BaseProfileBuilder, MODES } = require('./base-builder');
 
 class SoftwareApplicationBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
-    super('SoftwareApplication', 'technology', mode, sanitizeInputs);
+    super('Softwareapplication', 'technology', mode, sanitizeInputs);
   }
 
   /**

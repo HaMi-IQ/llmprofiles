@@ -2,9 +2,9 @@
  * DatasetBuilder class for creating Dataset structured data objects
  */
 
-import { BaseProfileBuilder, MODES } from('./base-builder');
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
-class DatasetBuilder extends BaseProfileBuilder {
+export class DatasetBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Dataset', 'content', mode, sanitizeInputs);
   }
@@ -22,7 +22,7 @@ class DatasetBuilder extends BaseProfileBuilder {
       this.data.creator = {
         "@type": "Person",
         "name": sanitizedName
-      
+      };
       if (sanitizedUrl) this.data.creator.url = sanitizedUrl;
     } else if (Array.isArray(creator)) {
       if (this.sanitizeInputs) {
@@ -247,4 +247,4 @@ class DatasetBuilder extends BaseProfileBuilder {
   }
 }
 
-export { DatasetBuilder 
+export default DatasetBuilder; 

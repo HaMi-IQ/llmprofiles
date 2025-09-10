@@ -3,7 +3,7 @@
  * ES Module version
  */
 
-import { BaseProfileBuilder, MODES } from './base-builder.js';
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
 export class BookBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {

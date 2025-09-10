@@ -2,7 +2,7 @@
  * CourseBuilder class for creating Course structured data objects
  */
 
-import { BaseProfileBuilder, MODES } from('./base-builder');
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
 class CourseBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
@@ -22,6 +22,7 @@ class CourseBuilder extends BaseProfileBuilder {
       this.data.provider = {
         "@type": "Organization",
         "name": sanitizedName
+      };
       
       if (sanitizedUrl) this.data.provider.url = sanitizedUrl;
     } else if (provider && typeof provider === 'object') {
@@ -47,6 +48,7 @@ class CourseBuilder extends BaseProfileBuilder {
       this.data.instructor = {
         "@type": "Person",
         "name": sanitizedName
+      };
       
       if (sanitizedUrl) this.data.instructor.url = sanitizedUrl;
     } else if (instructor && typeof instructor === 'object') {
@@ -157,7 +159,7 @@ class CourseBuilder extends BaseProfileBuilder {
         "price": price,
         "priceCurrency": currency,
         "availability": `https://schema.org/${availability}`
-      
+      };
     } else {
       this.data.offers = price;
     }
@@ -165,4 +167,4 @@ class CourseBuilder extends BaseProfileBuilder {
   }
 }
 
-export { CourseBuilder 
+export { CourseBuilder };

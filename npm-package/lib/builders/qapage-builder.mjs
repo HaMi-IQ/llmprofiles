@@ -2,9 +2,9 @@
  * QAPageBuilder class for creating QAPage structured data objects
  */
 
-import { BaseProfileBuilder, MODES } from('./base-builder');
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
-class QAPageBuilder extends BaseProfileBuilder {
+export class QAPageBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('QAPage', 'interaction', mode, sanitizeInputs);
   }
@@ -52,14 +52,14 @@ class QAPageBuilder extends BaseProfileBuilder {
     const questionObj = {
       "@type": "Question",
       "name": name || question
-    
+    };
 
     if (url) questionObj.url = url;
     if (author) {
       questionObj.author = {
         "@type": "Person",
         "name": author
-      
+      };
     }
     if (dateCreated) questionObj.dateCreated = dateCreated;
 
@@ -92,7 +92,7 @@ class QAPageBuilder extends BaseProfileBuilder {
       this.data.mainEntity = {
         "@type": "Question",
         "name": "Question"
-      
+      };
     }
 
     if (!this.data.mainEntity.suggestedAnswer) {
@@ -102,13 +102,13 @@ class QAPageBuilder extends BaseProfileBuilder {
     const answerObj = {
       "@type": "Answer",
       "text": answer
-    
+    };
 
     if (author) {
       answerObj.author = {
         "@type": "Person",
         "name": author
-      
+      };
     }
     if (dateCreated) answerObj.dateCreated = dateCreated;
     if (upvoteCount !== null) answerObj.upvoteCount = upvoteCount;
@@ -204,4 +204,4 @@ class QAPageBuilder extends BaseProfileBuilder {
   }
 }
 
-export { QAPageBuilder 
+export default QAPageBuilder; 

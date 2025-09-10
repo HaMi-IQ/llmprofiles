@@ -6,7 +6,7 @@ const { BaseProfileBuilder, MODES } = require('./base-builder');
 
 class LocalBusinessBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
-    super('LocalBusiness', 'business', mode, sanitizeInputs);
+    super('Localbusiness', 'business', mode, sanitizeInputs);
   }
 
   /**

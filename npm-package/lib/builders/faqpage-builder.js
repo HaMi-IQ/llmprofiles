@@ -6,7 +6,7 @@ const { BaseProfileBuilder, MODES } = require('./base-builder');
 
 class FAQPageBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
-    super('FAQPage', 'interaction', mode, sanitizeInputs);
+    super('Faqpage', 'interaction', mode, sanitizeInputs);
   }
 
   /**

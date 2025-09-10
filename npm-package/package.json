@@ -92,15 +92,12 @@
     "index.mjs",
     "lib/",
     "profiles/",
-    "schemas/",
-    "examples/",
     "types/",
-    "demo.html",
-    "serve-demo.js",
-    "DEMO.md",
-    "ES_MODULE_GUIDE.md",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "ES_MODULE_GUIDE.md",
+    "ESM_USAGE_GUIDE.md",
+    "SCHEMA_ENHANCEMENT_IMPLEMENTATION_GUIDE.md"
   ],
   "keywords": [
     "schema.org",

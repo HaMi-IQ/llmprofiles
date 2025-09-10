@@ -6,7 +6,7 @@ const { BaseProfileBuilder, MODES } = require('./base-builder');
 
 class VideoObjectBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
-    super('VideoObject', 'content', mode, sanitizeInputs);
+    super('Videoobject', 'content', mode, sanitizeInputs);
   }
 
   /**

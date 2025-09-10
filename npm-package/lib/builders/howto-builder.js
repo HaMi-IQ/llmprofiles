@@ -6,7 +6,7 @@ const { BaseProfileBuilder, MODES } = require('./base-builder');
 
 class HowToBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
-    super('HowTo', 'content', mode, sanitizeInputs);
+    super('Howto', 'content', mode, sanitizeInputs);
   }
 
   /**

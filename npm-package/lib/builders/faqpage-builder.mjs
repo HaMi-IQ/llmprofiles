@@ -2,9 +2,9 @@
  * FAQPageBuilder class for creating FAQPage structured data objects
  */
 
-import { BaseProfileBuilder, MODES } from('./base-builder');
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
-class FAQPageBuilder extends BaseProfileBuilder {
+export class FAQPageBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('FAQPage', 'interaction', mode, sanitizeInputs);
   }
@@ -59,7 +59,7 @@ class FAQPageBuilder extends BaseProfileBuilder {
         "@type": "Answer",
         "text": answer
       }
-    
+    };
 
     if (url) questionObj.url = url;
 
@@ -104,7 +104,7 @@ class FAQPageBuilder extends BaseProfileBuilder {
             "@type": "Answer",
             "text": q.answer
           }
-        
+        };
 
         if (q.url) questionObj.url = q.url;
 
@@ -144,7 +144,7 @@ class FAQPageBuilder extends BaseProfileBuilder {
         "@type": "Answer",
         "text": answer
       }))
-    
+    };
 
     if (url) questionObj.url = url;
 
@@ -181,7 +181,7 @@ class FAQPageBuilder extends BaseProfileBuilder {
         "@type": "Answer",
         "text": answer
       }
-    
+    };
 
     if (url) questionObj.url = url;
 
@@ -196,4 +196,4 @@ class FAQPageBuilder extends BaseProfileBuilder {
   }
 }
 
-export { FAQPageBuilder 
+export default FAQPageBuilder; 

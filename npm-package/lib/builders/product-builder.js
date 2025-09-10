@@ -7,7 +7,7 @@ const { BaseProfileBuilder } = require('./base-builder');
 
 class ProductBuilder extends BaseProfileBuilder {
   constructor(mode = 'strict-seo', sanitizeInputs = true) {
-    super('Product', 'business', mode, sanitizeInputs);
+    super('ProductOffer', 'business', mode, sanitizeInputs);
   }
 
   /**

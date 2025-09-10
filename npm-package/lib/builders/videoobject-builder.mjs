@@ -2,9 +2,9 @@
  * VideoObjectBuilder class for creating VideoObject structured data objects
  */
 
-import { BaseProfileBuilder, MODES } from('./base-builder');
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
-class VideoObjectBuilder extends BaseProfileBuilder {
+export class VideoObjectBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('VideoObject', 'content', mode, sanitizeInputs);
   }
@@ -122,6 +122,7 @@ class VideoObjectBuilder extends BaseProfileBuilder {
       this.data.author = {
         "@type": "Person",
         "name": sanitizedName
+      };
       
       if (sanitizedUrl) this.data.author.url = sanitizedUrl;
     } else if (author && typeof author === 'object') {
@@ -147,6 +148,7 @@ class VideoObjectBuilder extends BaseProfileBuilder {
       this.data.creator = {
         "@type": "Person",
         "name": sanitizedName
+      };
       
       if (sanitizedUrl) this.data.creator.url = sanitizedUrl;
     } else if (creator && typeof creator === 'object') {
@@ -172,7 +174,7 @@ class VideoObjectBuilder extends BaseProfileBuilder {
       this.data.publisher = {
         "@type": "Organization",
         "name": sanitizedName
-      
+      };
       if (sanitizedUrl) this.data.publisher.url = sanitizedUrl;
     } else if (publisher && typeof publisher === 'object') {
       if (this.sanitizeInputs) {
@@ -334,4 +336,4 @@ class VideoObjectBuilder extends BaseProfileBuilder {
   }
 }
 
-export { VideoObjectBuilder 
+export default VideoObjectBuilder; 

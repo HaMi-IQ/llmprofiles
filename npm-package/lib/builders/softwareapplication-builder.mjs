@@ -2,9 +2,9 @@
  * SoftwareApplicationBuilder class for creating SoftwareApplication structured data objects
  */
 
-import { BaseProfileBuilder, MODES } from('./base-builder');
+import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
-class SoftwareApplicationBuilder extends BaseProfileBuilder {
+export class SoftwareApplicationBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('SoftwareApplication', 'technology', mode, sanitizeInputs);
   }
@@ -133,7 +133,7 @@ class SoftwareApplicationBuilder extends BaseProfileBuilder {
         this.data.screenshot = {
           "@type": "ImageObject",
           "url": sanitizedUrl
-        
+        };
       }
     } else if (screenshot && typeof screenshot === 'object') {
       if (this.sanitizeInputs) {
@@ -256,6 +256,7 @@ class SoftwareApplicationBuilder extends BaseProfileBuilder {
       this.data.author = {
         "@type": "Person",
         "name": sanitizedName
+      };
       
       if (sanitizedUrl) this.data.author.url = sanitizedUrl;
     } else if (author && typeof author === 'object') {
@@ -282,7 +283,7 @@ class SoftwareApplicationBuilder extends BaseProfileBuilder {
         "price": price,
         "priceCurrency": currency,
         "availability": `https://schema.org/${availability}`
-      
+      };
     } else {
       this.data.offers = price;
     }
@@ -308,9 +309,9 @@ class SoftwareApplicationBuilder extends BaseProfileBuilder {
       "reviewCount": reviewCount,
       "bestRating": bestRating,
       "worstRating": worstRating
-    
+    };
     return this;
   }
 }
 
-export { SoftwareApplicationBuilder 
+export default SoftwareApplicationBuilder; 

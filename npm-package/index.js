@@ -10,6 +10,26 @@ const builders = require('./lib/builder');
 const { MODES, ModeConfig } = require('./lib/modes');
 const { InputSanitizer, defaultSanitizer } = require('./lib/sanitizer');
 
+// Import additional builders
+const { BookBuilder } = require('./lib/builders/book-builder');
+const { CourseBuilder } = require('./lib/builders/course-builder');
+const { DatasetBuilder } = require('./lib/builders/dataset-builder');
+const { HowToBuilder } = require('./lib/builders/howto-builder');
+const { RecipeBuilder } = require('./lib/builders/recipe-builder');
+const { VideoObjectBuilder } = require('./lib/builders/videoobject-builder');
+const { FAQPageBuilder } = require('./lib/builders/faqpage-builder');
+const { QAPageBuilder } = require('./lib/builders/qapage-builder');
+const { SoftwareApplicationBuilder } = require('./lib/builders/softwareapplication-builder');
+const { ReviewBuilder } = require('./lib/builders/review-builder');
+const { 
+  FIELD_IMPORTANCE, 
+  FIELD_CATEGORY, 
+  getFieldMetadata, 
+  getAllFieldsMetadata, 
+  getFieldSuggestions, 
+  getCompletionHints 
+} = require('./lib/field-metadata');
+
 /**
  * Get a specific profile definition
  * @param {string} type - Profile type (e.g., 'Article', 'JobPosting')
@@ -189,11 +209,29 @@ module.exports = {
   
   // Builder classes
   ...builders,
+  BookBuilder,
+  CourseBuilder,
+  DatasetBuilder,
+  HowToBuilder,
+  RecipeBuilder,
+  VideoObjectBuilder,
+  FAQPageBuilder,
+  QAPageBuilder,
+  SoftwareApplicationBuilder,
+  ReviewBuilder,
   
   // Utility classes
   ProfileValidator,
   InputSanitizer,
   defaultSanitizer,
+  
+  // Field metadata utilities
+  FIELD_IMPORTANCE,
+  FIELD_CATEGORY,
+  getFieldMetadata,
+  getAllFieldsMetadata,
+  getFieldSuggestions,
+  getCompletionHints,
   
   // Helper functions
   getProfile,

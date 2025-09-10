@@ -16,10 +16,143 @@ export interface ProfileDefinition {
   llmOptimized: string[];
 }
 
+// Field metadata types
+export interface FieldMetadata {
+  name: string;
+  type: string;
+  importance: 'required' | 'recommended' | 'optional';
+  category: 'basic' | 'content' | 'metadata' | 'seo' | 'llm' | 'google';
+  description: string;
+  examples: string[];
+  googleRichResults: boolean;
+  llmOptimized: boolean;
+  validation: any;
+  guidance: FieldGuidance;
+}
+
+export interface FieldGuidance {
+  message: string;
+  action: string;
+  severity: 'error' | 'warning' | 'info';
+}
+
+export interface FieldSuggestion {
+  name: string;
+  type: string;
+  importance: 'required' | 'recommended' | 'optional';
+  category: 'basic' | 'content' | 'metadata' | 'seo' | 'llm' | 'google';
+  description: string;
+  examples: string[];
+  googleRichResults: boolean;
+  llmOptimized: boolean;
+  reason: string;
+  priority: number;
+}
+
+export interface FieldSuggestions {
+  critical: FieldSuggestion[];
+  important: FieldSuggestion[];
+  helpful: FieldSuggestion[];
+  optional: FieldSuggestion[];
+}
+
+export interface CompletionHint {
+  label: string;
+  kind: 'property';
+  detail: string;
+  documentation: string;
+  insertText: string;
+  sortText: string;
+}
+
+export interface CompletionStatus {
+  overall: {
+    score: number;
+    status: 'complete' | 'good' | 'fair' | 'incomplete';
+  };
+  required: {
+    score: number;
+    completed: number;
+    total: number;
+    missing: FieldSuggestion[];
+  };
+  recommended: {
+    score: number;
+    completed: number;
+    total: number;
+    missing: FieldSuggestion[];
+  };
+  optional: {
+    available: number;
+    suggested: FieldSuggestion[];
+  };
+}
+
+export interface InlineValidationResult {
+  valid: boolean;
+  score: number;
+  status: 'complete' | 'good' | 'fair' | 'incomplete';
+  errors: EnhancedValidationError[];
+  warnings: EnhancedValidationWarning[];
+  suggestions: FieldSuggestion[];
+  summary: CompletionStatus;
+}
+
+export interface EnhancedValidationError {
+  field: string;
+  message: string;
+  value: any;
+  path?: string;
+  guidance?: FieldMetadata['guidance'];
+  enhancedMessage?: string;
+  suggestions?: FieldSuggestion[];
+  severity: 'error';
+}
+
+export interface EnhancedValidationWarning {
+  field: string;
+  message: string;
+  description: string;
+  importance: 'recommended';
+  guidance?: FieldMetadata['guidance'];
+  enhancedMessage?: string;
+  suggestions?: FieldSuggestion[];
+  priority?: 'high' | 'medium' | 'low';
+  reason?: string;
+  googleRichResults?: boolean;
+}
+
+export interface NextStep {
+  priority: number;
+  type: 'required' | 'google-rich-results' | 'recommended' | 'optional';
+  message: string;
+  fields: string[];
+  action: string;
+}
+
+export interface BuilderStateSummary {
+  profileType: string;
+  category: string;
+  mode: string;
+  completion: CompletionStatus;
+  fieldCounts: {
+    required: number;
+    recommended: number;
+    optional: number;
+    total: number;
+  };
+  currentFields: string[];
+  nextSteps: NextStep[];
+}
+
 export interface ValidationError {
   field: string;
   message: string;
   value: any;
+  path?: string;
+  guidance?: FieldMetadata['guidance'];
+  enhancedMessage?: string;
+  suggestions?: FieldSuggestion[];
 }
 
 export interface ValidationWarning {
@@ -27,6 +160,12 @@ export interface ValidationWarning {
   message: string;
   description: string;
   importance: 'recommended';
+  guidance?: FieldMetadata['guidance'];
+  enhancedMessage?: string;
+  suggestions?: FieldSuggestion[];
+  priority?: 'high' | 'medium' | 'low';
+  reason?: string;
+  googleRichResults?: boolean;
 }
 
 export interface GoogleRichResultsCheck {
@@ -79,7 +218,7 @@ export interface ValidationStats extends BatchValidationSummary {
 
 // Builder classes
 export declare class BaseProfileBuilder {
-  constructor(profileType: string, category: string, mode?: ModeType);
+  constructor(profileType: string, category: string, mode?: ModeType, sanitizeInputs?: boolean);
   build(mode?: ModeType): any;
   addProperty(property: string, value: any): this;
   url(url: string): this;
@@ -88,6 +227,21 @@ export declare class BaseProfileBuilder {
   image(image: string | object): this;
   getRelProfile(): string | null;
   getLinkHeader(): string | null;
+
+  // Enhanced field discovery and autocomplete methods
+  getFieldMetadata(fieldName: string): FieldMetadata | null;
+  getAllFieldsMetadata(): { required: FieldMetadata[]; recommended: FieldMetadata[]; optional: FieldMetadata[] };
+  getSuggestions(): FieldSuggestions;
+  getCompletionHints(partialField?: string): CompletionHint[];
+  getMissingRequired(): FieldSuggestion[];
+  getMissingRecommended(): FieldSuggestion[];
+  getAvailableOptional(): FieldSuggestion[];
+  getGoogleRichResultsFields(): FieldMetadata[];
+  getLLMOptimizedFields(): FieldMetadata[];
+  getCompletionStatus(): CompletionStatus;
+  validateInline(): InlineValidationResult;
+  getStateSummary(): BuilderStateSummary;
+  getNextSteps(): NextStep[];
 }
 
 export declare class ArticleBuilder extends BaseProfileBuilder {
@@ -182,6 +336,11 @@ export declare class ProfileValidator {
   validate(data: any, profileType: string): ValidationResult;
   validateBatch(dataArray: any[], profileType: string): BatchValidationResult;
   getValidationStats(dataArray: any[], profileType: string): ValidationStats;
+  
+  // Enhanced field metadata methods
+  getFieldSuggestions(profileType: string, currentData?: any): FieldSuggestions;
+  getAllFieldMetadata(profileType: string): { required: FieldMetadata[]; recommended: FieldMetadata[]; optional: FieldMetadata[] };
+  getFieldMetadata(profileType: string, fieldName: string): FieldMetadata | null;
 }
 
 // Main exports
@@ -212,6 +371,16 @@ export type Category = 'business' | 'content' | 'interaction' | 'technology';
 
 // Mode exports
 export { MODES, ModeConfig, ModeType, ModeConfiguration } from './modes';
+
+// Field metadata exports
+export { 
+  FIELD_IMPORTANCE, 
+  FIELD_CATEGORY, 
+  getFieldMetadata, 
+  getAllFieldsMetadata, 
+  getFieldSuggestions, 
+  getCompletionHints 
+} from './field-metadata';
 
 // Mode-specific functions
 export declare function getModeConfiguration(mode: ModeType): ModeConfig;

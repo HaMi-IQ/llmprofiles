@@ -6,7 +6,7 @@ const { BaseProfileBuilder, MODES } = require('./base-builder');
 
 class JobPostingBuilder extends BaseProfileBuilder {
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
-    super('JobPosting', 'business', mode, sanitizeInputs);
+    super('Jobposting', 'business', mode, sanitizeInputs);
   }
 
   /**

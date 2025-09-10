@@ -5,7 +5,13 @@
 
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import { defaultSanitizer } from './sanitizer.js';
+import { defaultSanitizer } from './sanitizer.mjs';
+import { 
+  getFieldMetadata, 
+  getAllFieldsMetadata, 
+  getFieldSuggestions,
+  FIELD_IMPORTANCE 
+} from './field-metadata.mjs';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -56,7 +62,7 @@ export class ProfileValidator {
 
     const result = {
       valid,
-      errors: this.formatErrors(validate.errors || []),
+      errors: this.formatErrors(validate.errors || [], profileType),
       warnings: this.checkRecommended(sanitizedData, profile),
       sanitized: this.sanitizeInputs ? sanitizedData : null
     };
@@ -95,37 +101,243 @@ export class ProfileValidator {
   }
 
   /**
-   * Format AJV errors for better readability
+   * Format AJV errors for better readability with field-specific guidance
    * @private
    */
-  formatErrors(errors) {
-    return errors.map(error => ({
-      field: error.instancePath || error.schemaPath,
+  formatErrors(errors, profileType) {
+    return errors.map(error => {
+      const fieldName = this.extractFieldName(error.instancePath || error.schemaPath);
+      const fieldMetadata = getFieldMetadata(profileType, fieldName);
+      
+      const baseError = {
+        field: fieldName,
       message: error.message,
-      value: error.data
-    }));
+        value: error.data,
+        path: error.instancePath || error.schemaPath
+      };
+
+      // Add field-specific guidance if available
+      if (fieldMetadata) {
+        baseError.guidance = {
+          description: fieldMetadata.description,
+          examples: fieldMetadata.examples,
+          importance: fieldMetadata.importance,
+          category: fieldMetadata.category,
+          googleRichResults: fieldMetadata.googleRichResults,
+          llmOptimized: fieldMetadata.llmOptimized
+        };
+
+        // Enhance error message with specific guidance
+        baseError.enhancedMessage = this.enhanceErrorMessage(error, fieldMetadata);
+        baseError.suggestions = this.getFieldSuggestions(fieldName, fieldMetadata, error);
+      }
+
+      return baseError;
+    });
   }
 
   /**
-   * Check recommended fields and generate warnings
+   * Extract field name from error path
+   * @private
+   */
+  extractFieldName(path) {
+    if (!path) return '';
+    // Remove leading slash and array indices
+    return path.replace(/^\//, '').replace(/\[\d+\]/g, '');
+  }
+
+  /**
+   * Enhance error message with field-specific guidance
+   * @private
+   */
+  enhanceErrorMessage(error, fieldMetadata) {
+    let enhancedMessage = error.message;
+
+    // Add specific guidance based on error type
+    if (error.keyword === 'required') {
+      enhancedMessage = `Required field '${fieldMetadata.name}' is missing. ${fieldMetadata.guidance.message}`;
+    } else if (error.keyword === 'type') {
+      enhancedMessage = `Field '${fieldMetadata.name}' must be of type ${error.schema}. ${fieldMetadata.guidance.message}`;
+    } else if (error.keyword === 'format') {
+      enhancedMessage = `Field '${fieldMetadata.name}' has invalid format. Expected ${error.schema} format. ${fieldMetadata.guidance.message}`;
+    } else if (error.keyword === 'minLength') {
+      enhancedMessage = `Field '${fieldMetadata.name}' is too short. Minimum length is ${error.schema} characters. ${fieldMetadata.guidance.message}`;
+    } else if (error.keyword === 'maxLength') {
+      enhancedMessage = `Field '${fieldMetadata.name}' is too long. Maximum length is ${error.schema} characters. ${fieldMetadata.guidance.message}`;
+    } else if (error.keyword === 'minimum') {
+      enhancedMessage = `Field '${fieldMetadata.name}' value is too small. Minimum value is ${error.schema}. ${fieldMetadata.guidance.message}`;
+    } else if (error.keyword === 'maximum') {
+      enhancedMessage = `Field '${fieldMetadata.name}' value is too large. Maximum value is ${error.schema}. ${fieldMetadata.guidance.message}`;
+    }
+
+    return enhancedMessage;
+  }
+
+  /**
+   * Get field-specific suggestions for fixing errors
+   * @private
+   */
+  getFieldSuggestions(fieldName, fieldMetadata, error) {
+    const suggestions = [];
+
+    // Add examples
+    if (fieldMetadata.examples && fieldMetadata.examples.length > 0) {
+      suggestions.push({
+        type: 'examples',
+        title: 'Example values:',
+        items: fieldMetadata.examples
+      });
+    }
+
+    // Add type-specific suggestions
+    if (error.keyword === 'type') {
+      suggestions.push({
+        type: 'type-help',
+        title: `Expected type: ${error.schema}`,
+        items: this.getTypeExamples(error.schema)
+      });
+    } else if (error.keyword === 'format') {
+      suggestions.push({
+        type: 'format-help',
+        title: `Expected format: ${error.schema}`,
+        items: this.getFormatExamples(error.schema)
+      });
+    }
+
+    // Add field-specific suggestions
+    if (fieldName === 'url' || fieldName === 'image') {
+      suggestions.push({
+        type: 'url-help',
+        title: 'URL format:',
+        items: ['https://example.com/path', 'Must be a valid HTTP/HTTPS URL']
+      });
+    } else if (fieldName === 'datePublished' || fieldName === 'dateModified') {
+      suggestions.push({
+        type: 'date-help',
+        title: 'Date format:',
+        items: ['2024-01-01T00:00:00Z', '2024-01-01', 'ISO 8601 format preferred']
+      });
+    } else if (fieldName === 'email') {
+      suggestions.push({
+        type: 'email-help',
+        title: 'Email format:',
+        items: ['user@example.com', 'Must be a valid email address']
+      });
+    }
+
+    return suggestions;
+  }
+
+  /**
+   * Get type examples for common types
+   * @private
+   */
+  getTypeExamples(type) {
+    const examples = {
+      'string': ['"text value"', '"example"'],
+      'number': ['123', '45.67'],
+      'integer': ['123', '456'],
+      'boolean': ['true', 'false'],
+      'array': ['["item1", "item2"]', '[]'],
+      'object': ['{}', '{ "property": "value" }']
+    };
+    return examples[type] || ['Valid value'];
+  }
+
+  /**
+   * Get format examples for common formats
+   * @private
+   */
+  getFormatExamples(format) {
+    const examples = {
+      'date': ['2024-01-01', 'YYYY-MM-DD format'],
+      'date-time': ['2024-01-01T00:00:00Z', 'ISO 8601 format'],
+      'uri': ['https://example.com', 'Valid URL'],
+      'email': ['user@example.com', 'Valid email address'],
+      'uri-reference': ['/path', 'Relative or absolute URI']
+    };
+    return examples[format] || ['Valid format'];
+  }
+
+  /**
+   * Check for missing recommended fields with enhanced guidance
    * @private
    */
   checkRecommended(data, profile) {
     const warnings = [];
-    const recommendedFields = Object.keys(profile.recommended || {});
-
-    recommendedFields.forEach(field => {
-      if (!(field in data)) {
-        warnings.push({
+    Object.keys(profile.recommended || {}).forEach(field => {
+      if (data[field] === undefined || data[field] === null || data[field] === '') {
+        const fieldDef = profile.recommended[field];
+        const fieldMetadata = getFieldMetadata(profile.type, field);
+        
+        const warning = {
           field,
           message: `Recommended field '${field}' is missing`,
-          description: `This field is recommended for better SEO and LLM optimization`,
+          description: fieldDef.description || '',
           importance: 'recommended'
-        });
+        };
+
+        // Add enhanced guidance if field metadata is available
+        if (fieldMetadata) {
+          warning.guidance = {
+            description: fieldMetadata.description,
+            examples: fieldMetadata.examples,
+            importance: fieldMetadata.importance,
+            category: fieldMetadata.category,
+            googleRichResults: fieldMetadata.googleRichResults,
+            llmOptimized: fieldMetadata.llmOptimized
+          };
+
+          // Enhance message with specific guidance
+          warning.enhancedMessage = `Recommended field '${field}' is missing. ${fieldMetadata.guidance.message}`;
+          warning.suggestions = this.getFieldSuggestions(field, fieldMetadata, { keyword: 'recommended' });
+          
+          // Add priority based on Google Rich Results and LLM optimization
+          if (fieldMetadata.googleRichResults) {
+            warning.priority = 'high';
+            warning.reason = 'Important for Google Rich Results';
+          } else if (fieldMetadata.llmOptimized) {
+            warning.priority = 'medium';
+            warning.reason = 'Optimized for LLM processing';
+          } else {
+            warning.priority = 'low';
+            warning.reason = 'Recommended for better SEO';
+          }
+        }
+
+        warnings.push(warning);
       }
     });
-
     return warnings;
+  }
+
+  /**
+   * Get field suggestions for a profile type
+   * @param {string} profileType - Profile type
+   * @param {Object} currentData - Current data object
+   * @returns {Object} Field suggestions organized by priority
+   */
+  getFieldSuggestions(profileType, currentData = {}) {
+    return getFieldSuggestions(profileType, currentData);
+  }
+
+  /**
+   * Get all field metadata for a profile type
+   * @param {string} profileType - Profile type
+   * @returns {Object} All field metadata organized by importance
+   */
+  getAllFieldMetadata(profileType) {
+    return getAllFieldsMetadata(profileType);
+  }
+
+  /**
+   * Get field metadata for a specific field
+   * @param {string} profileType - Profile type
+   * @param {string} fieldName - Field name
+   * @returns {Object|null} Field metadata or null if not found
+   */
+  getFieldMetadata(profileType, fieldName) {
+    return getFieldMetadata(profileType, fieldName);
   }
 
   /**
