@@ -1,11 +1,100 @@
 /**
- * BookBuilder class for creating Book structured data objects
- * ES Module version
+ * @fileoverview BookBuilder class for creating Book structured data objects
+ * 
+ * This module provides a specialized builder for creating Book structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * book-specific properties like author, ISBN, publisher, genre, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic book creation
+ * import { BookBuilder, MODES } from './book-builder.mjs';
+ * const book = new BookBuilder(MODES.STRICT_SEO)
+ *   .name('The Great Gatsby')
+ *   .author('F. Scott Fitzgerald')
+ *   .isbn('978-0-7432-7356-5')
+ *   .publisher('Scribner')
+ *   .datePublished('1925-04-10')
+ *   .build();
+ * 
+ * @example
+ * // Book with detailed metadata
+ * const book = new BookBuilder()
+ *   .name('JavaScript: The Good Parts')
+ *   .author('Douglas Crockford', 'https://example.com/author')
+ *   .isbn('978-0-596-51774-8')
+ *   .bookFormat('Paperback')
+ *   .numberOfPages(176)
+ *   .inLanguage('en')
+ *   .publisher('O\'Reilly Media', 'https://oreilly.com')
+ *   .genre('Programming')
+ *   .keywords(['JavaScript', 'Programming', 'Web Development'])
+ *   .aggregateRating(4.5, 120)
+ *   .build();
+ * 
+ * @example
+ * // Book with multiple editions
+ * const book = new BookBuilder()
+ *   .name('Clean Code')
+ *   .author('Robert C. Martin')
+ *   .addWorkExample({
+ *     bookFormat: 'Hardcover',
+ *     isbn: '978-0-13-235088-4',
+ *     datePublished: '2008-08-01'
+ *   })
+ *   .addWorkExample({
+ *     bookFormat: 'EBook',
+ *     isbn: '978-0-13-235088-4',
+ *     datePublished: '2008-08-01'
+ *   })
+ *   .build();
  */
 
 import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
+/**
+ * BookBuilder class for creating Book structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * Book structured data according to Schema.org specifications. Includes
+ * support for authors, ISBN, publisher, genre, ratings, and more.
+ * 
+ * @class BookBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a book builder
+ * const bookBuilder = new BookBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const bookBuilder = new BookBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete book
+ * const book = new BookBuilder()
+ *   .name('The Great Gatsby')
+ *   .author('F. Scott Fitzgerald')
+ *   .isbn('978-0-7432-7356-5')
+ *   .build();
+ */
 export class BookBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new BookBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const bookBuilder = new BookBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const bookBuilder = new BookBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Book', 'content', mode, sanitizeInputs);
   }

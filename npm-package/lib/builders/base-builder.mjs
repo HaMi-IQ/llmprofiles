@@ -10,8 +10,9 @@ import {
   getAllFieldsMetadata, 
   getFieldSuggestions, 
   getCompletionHints,
+  getEnhancedFieldSuggestions,
   FIELD_IMPORTANCE 
-} from '../field-metadata.js';
+} from '../field-metadata.mjs';
 
 // Re-export MODES for use in other builder files
 export { MODES };
@@ -65,9 +66,30 @@ export class BaseProfileBuilder {
   /**
    * Build the final structured data object
    * @param {string} [mode] - Override the mode for this build
+   * @param {Object} [options] - Build options
+   * @param {boolean} [options.validate=true] - Whether to validate required fields before building
+   * @param {boolean} [options.throwOnError=true] - Whether to throw errors for missing required fields
    * @returns {Object} The structured data object
+   * @throws {Error} When required fields are missing and throwOnError is true
    */
-  build(mode) {
+  build(mode, options = {}) {
+    const { validate = true, throwOnError = true } = options;
+    
+    // Validate required fields if requested
+    if (validate) {
+      const validation = this.validateInline();
+      if (!validation.valid) {
+        const missingFields = validation.errors.map(e => e.field).join(', ');
+        const errorMessage = `Missing required fields: ${missingFields}. Use validateInline() for detailed validation results.`;
+        
+        if (throwOnError) {
+          throw new Error(errorMessage);
+        } else {
+          console.warn(`Warning: ${errorMessage}`);
+        }
+      }
+    }
+    
     if (mode && mode !== this.modeConfig.mode) {
       // Rebuild with new mode
       const newBuilder = new this.constructor(this.profileType, this.category, mode, this.sanitizeInputs);
@@ -77,7 +99,7 @@ export class BaseProfileBuilder {
           newBuilder.data[key] = this.data[key];
         }
       });
-      return newBuilder.build();
+      return newBuilder.build(null, options);
     }
 
     if (this.modeConfig.separatesLLMBlock()) {
@@ -494,5 +516,52 @@ export class BaseProfileBuilder {
     }
 
     return nextSteps;
+  }
+
+  /**
+   * Check if the builder is in a valid state (all required fields present)
+   * @returns {boolean} True if valid, false otherwise
+   */
+  isValid() {
+    const validation = this.validateInline();
+    return validation.valid;
+  }
+
+  /**
+   * Get missing required fields
+   * @returns {Array} Array of missing required field names
+   */
+  getMissingRequiredFields() {
+    const validation = this.validateInline();
+    return validation.errors.map(e => e.field);
+  }
+
+  /**
+   * Build without validation (for cases where you want to build incomplete schemas)
+   * @param {string} [mode] - Override the mode for this build
+   * @returns {Object|Object[]} The structured data object(s) based on mode
+   */
+  buildUnsafe(mode = null) {
+    return this.build(mode, { validate: false });
+  }
+
+  /**
+   * Build with warnings instead of errors for missing required fields
+   * @param {string} [mode] - Override the mode for this build
+   * @returns {Object|Object[]} The structured data object(s) based on mode
+   */
+  buildWithWarnings(mode = null) {
+    return this.build(mode, { validate: true, throwOnError: false });
+  }
+
+  /**
+   * Get enhanced field suggestions with detailed metadata
+   * @param {Object} [options] - Options for suggestions
+   * @param {boolean} [options.includeOptional=true] - Whether to include optional fields
+   * @param {boolean} [options.prioritizeGoogleRichResults=true] - Whether to prioritize Google Rich Results fields
+   * @returns {Object} Enhanced suggestions with metadata
+   */
+  getEnhancedSuggestions(options = {}) {
+    return getEnhancedFieldSuggestions(this.profileType, this.data, options);
   }
 }

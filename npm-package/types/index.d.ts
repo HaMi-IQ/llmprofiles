@@ -219,7 +219,9 @@ export interface ValidationStats extends BatchValidationSummary {
 // Builder classes
 export declare class BaseProfileBuilder {
   constructor(profileType: string, category: string, mode?: ModeType, sanitizeInputs?: boolean);
-  build(mode?: ModeType): any;
+  build(mode?: ModeType, options?: { validate?: boolean; throwOnError?: boolean }): any;
+  buildUnsafe(mode?: ModeType): any;
+  buildWithWarnings(mode?: ModeType): any;
   addProperty(property: string, value: any): this;
   url(url: string): this;
   name(name: string): this;
@@ -242,6 +244,11 @@ export declare class BaseProfileBuilder {
   validateInline(): InlineValidationResult;
   getStateSummary(): BuilderStateSummary;
   getNextSteps(): NextStep[];
+  
+  // Validation and error state management
+  isValid(): boolean;
+  getMissingRequiredFields(): string[];
+  getEnhancedSuggestions(options?: { includeOptional?: boolean; prioritizeGoogleRichResults?: boolean }): any;
 }
 
 export declare class ArticleBuilder extends BaseProfileBuilder {
@@ -364,6 +371,13 @@ export declare function createMinimalExampleWithMode(profileType: string, mode: 
 export declare function getGoogleRichResultsFields(profileType: string): string[] | null;
 export declare function getLLMOptimizedFields(profileType: string): string[] | null;
 export declare function getSchemaOrgUrl(profileType: string): string | null;
+
+// Enhanced field metadata and suggestions
+export declare function getFieldMetadata(profileType: string, fieldName: string): any;
+export declare function getAllFieldsMetadata(profileType: string): { required: any[]; recommended: any[]; optional: any[] };
+export declare function getFieldSuggestions(profileType: string, currentData?: any): any;
+export declare function getEnhancedFieldSuggestions(profileType: string, currentData?: any, options?: { includeOptional?: boolean; prioritizeGoogleRichResults?: boolean }): any;
+export declare function getCompletionHints(profileType: string, partialField?: string): any[];
 
 // Type exports for consumers
 export type ProfileType = 'Article' | 'Book' | 'Course' | 'Dataset' | 'Event' | 'Faqpage' | 'Howto' | 'Jobposting' | 'Localbusiness' | 'ProductOffer' | 'Qapage' | 'Recipe' | 'Review' | 'Softwareapplication' | 'Videoobject';

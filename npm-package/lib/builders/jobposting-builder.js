@@ -1,18 +1,140 @@
 /**
- * JobPostingBuilder class for creating JobPosting structured data objects
+ * @fileoverview JobPostingBuilder class for creating JobPosting structured data objects
+ * 
+ * This module provides a specialized builder for creating JobPosting structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * job-specific properties like title, description, hiring organization, location,
+ * salary, requirements, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic job posting creation
+ * const { JobPostingBuilder, MODES } = require('./jobposting-builder');
+ * const job = new JobPostingBuilder(MODES.STRICT_SEO)
+ *   .title('Senior Software Engineer')
+ *   .description('We are looking for an experienced software engineer...')
+ *   .hiringOrganization('Tech Corp', 'https://techcorp.com')
+ *   .jobLocation('San Francisco, CA')
+ *   .datePosted('2024-01-01')
+ *   .build();
+ * 
+ * @example
+ * // Job posting with detailed information
+ * const job = new JobPostingBuilder()
+ *   .title('Frontend Developer')
+ *   .description('<p>Join our team as a Frontend Developer...</p>')
+ *   .hiringOrganization({
+ *     "@type": "Organization",
+ *     "name": "Innovation Labs",
+ *     "url": "https://innovationlabs.com",
+ *     "logo": "https://innovationlabs.com/logo.png"
+ *   })
+ *   .jobLocation({
+ *     "@type": "Place",
+ *     "address": {
+ *       "@type": "PostalAddress",
+ *       "addressLocality": "New York",
+ *       "addressRegion": "NY",
+ *       "addressCountry": "US"
+ *     }
+ *   })
+ *   .employmentType('FULL_TIME')
+ *   .baseSalary(80000, 'USD', 'YEAR')
+ *   .datePosted('2024-01-15')
+ *   .validThrough('2024-02-15')
+ *   .build();
+ * 
+ * @example
+ * // Remote job posting
+ * const job = new JobPostingBuilder()
+ *   .title('Remote Product Manager')
+ *   .description('Lead product development for our remote team...')
+ *   .hiringOrganization('Remote Corp')
+ *   .jobLocation('Remote')
+ *   .employmentType('FULL_TIME')
+ *   .workHours('40 hours per week')
+ *   .datePosted('2024-01-01')
+ *   .build();
  */
 
 const { BaseProfileBuilder, MODES } = require('./base-builder');
 
+/**
+ * JobPostingBuilder class for creating JobPosting structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * JobPosting structured data according to Schema.org specifications. Includes
+ * support for job titles, descriptions, organizations, locations, salaries,
+ * requirements, and more.
+ * 
+ * @class JobPostingBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a job posting builder
+ * const jobBuilder = new JobPostingBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const jobBuilder = new JobPostingBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete job posting
+ * const job = new JobPostingBuilder()
+ *   .title('Software Engineer')
+ *   .hiringOrganization('Tech Corp')
+ *   .jobLocation('San Francisco, CA')
+ *   .datePosted('2024-01-01')
+ *   .build();
+ */
 class JobPostingBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new JobPostingBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const jobBuilder = new JobPostingBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const jobBuilder = new JobPostingBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Jobposting', 'business', mode, sanitizeInputs);
   }
 
   /**
-   * Set job title
-   * @param {string} title - Job title
+   * Set the job title
+   * 
+   * Sets the title of the job position. This should be clear, descriptive,
+   * and match what candidates would expect to see in job listings.
+   * 
+   * @param {string} title - The job title/position name
    * @returns {JobPostingBuilder} This builder for chaining
+   * 
+   * @example
+   * // Simple job title
+   * jobBuilder.title('Software Engineer');
+   * 
+   * @example
+   * // Senior position
+   * jobBuilder.title('Senior Frontend Developer');
+   * 
+   * @example
+   * // Specialized role
+   * jobBuilder.title('DevOps Engineer - Cloud Infrastructure');
+   * 
+   * @example
+   * // Chained with other methods
+   * jobBuilder
+   *   .title('Product Manager')
+   *   .hiringOrganization('Tech Corp')
+   *   .jobLocation('San Francisco, CA');
    */
   title(title) {
     if (this.sanitizeInputs) {
@@ -24,9 +146,41 @@ class JobPostingBuilder extends BaseProfileBuilder {
   }
 
   /**
-   * Set job description
-   * @param {string} description - Job description (HTML format recommended)
+   * Set the job description
+   * 
+   * Sets a detailed description of the job position, including responsibilities,
+   * requirements, and what the role entails. HTML format is recommended for
+   * better formatting and readability.
+   * 
+   * @param {string} description - The job description (HTML format recommended)
    * @returns {JobPostingBuilder} This builder for chaining
+   * 
+   * @example
+   * // Simple text description
+   * jobBuilder.description('We are looking for a skilled software engineer to join our team.');
+   * 
+   * @example
+   * // HTML formatted description
+   * jobBuilder.description('<p>Join our innovative team as a <strong>Senior Developer</strong>!</p><ul><li>Build scalable web applications</li><li>Collaborate with cross-functional teams</li><li>Mentor junior developers</li></ul>');
+   * 
+   * @example
+   * // Detailed description with requirements
+   * jobBuilder.description(`
+   *   <h3>About the Role</h3>
+   *   <p>We're seeking a passionate Frontend Developer to join our growing team.</p>
+   *   <h3>Responsibilities</h3>
+   *   <ul>
+   *     <li>Develop responsive web applications using React</li>
+   *     <li>Collaborate with designers and backend developers</li>
+   *     <li>Write clean, maintainable code</li>
+   *   </ul>
+   *   <h3>Requirements</h3>
+   *   <ul>
+   *     <li>3+ years of React experience</li>
+   *     <li>Strong JavaScript skills</li>
+   *     <li>Experience with modern build tools</li>
+   *   </ul>
+   * `);
    */
   description(description) {
     if (this.sanitizeInputs) {
@@ -52,11 +206,41 @@ class JobPostingBuilder extends BaseProfileBuilder {
   }
 
   /**
-   * Set hiring organization
-   * @param {string|Object} organization - Organization name or object
+   * Set the hiring organization
+   * 
+   * Sets the organization that is hiring for this position. Can accept either
+   * a simple string name or a complete Organization object. If URLs are provided
+   * with a string name, it will create an Organization object automatically.
+   * 
+   * @param {string|Object} organization - Organization name or Organization object
    * @param {string} [url] - Organization URL (if organization is string)
    * @param {string} [logo] - Organization logo URL (if organization is string)
    * @returns {JobPostingBuilder} This builder for chaining
+   * 
+   * @example
+   * // Simple organization name
+   * jobBuilder.hiringOrganization('Tech Corp');
+   * 
+   * @example
+   * // Organization with URL and logo
+   * jobBuilder.hiringOrganization('Innovation Labs', 'https://innovationlabs.com', 'https://innovationlabs.com/logo.png');
+   * 
+   * @example
+   * // Complete Organization object
+   * jobBuilder.hiringOrganization({
+   *   "@type": "Organization",
+   *   "name": "Tech Solutions Inc",
+   *   "url": "https://techsolutions.com",
+   *   "logo": "https://techsolutions.com/logo.png",
+   *   "sameAs": "https://linkedin.com/company/techsolutions"
+   * });
+   * 
+   * @example
+   * // Chained with other methods
+   * jobBuilder
+   *   .title('Software Engineer')
+   *   .hiringOrganization('Tech Corp', 'https://techcorp.com')
+   *   .jobLocation('San Francisco, CA');
    */
   hiringOrganization(organization, url = null, logo = null) {
     if (typeof organization === 'string') {

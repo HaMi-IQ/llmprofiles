@@ -1,17 +1,108 @@
 /**
- * Mode configuration for different output strategies
+ * @fileoverview Mode configuration for different output strategies
+ * 
+ * This module provides configuration management for different output modes
+ * that control how structured data is formatted and what metadata is included.
+ * The three modes are designed for different use cases: SEO optimization,
+ * split-channel processing, and standards-compliant headers.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic mode usage
+ * const { MODES, ModeConfig } = require('./modes');
+ * const config = new ModeConfig(MODES.STRICT_SEO);
+ * 
+ * @example
+ * // Check mode capabilities
+ * const config = new ModeConfig('split-channels');
+ * if (config.separatesLLMBlock()) {
+ *   console.log('This mode creates separate LLM blocks');
+ * }
+ * 
+ * @example
+ * // Get HTML and HTTP headers for Standards Header mode
+ * const config = new ModeConfig(MODES.STANDARDS_HEADER);
+ * const relProfile = config.getRelProfileValue();
+ * const linkHeader = config.getLinkHeaderValue();
  */
 
+/**
+ * Available output modes for structured data generation
+ * 
+ * @constant {Object} MODES
+ * @property {string} STRICT_SEO - Standard SEO-optimized output mode
+ * @property {string} SPLIT_CHANNELS - Split channels mode with separate SEO and LLM blocks
+ * @property {string} STANDARDS_HEADER - Standards header mode with profile metadata
+ * 
+ * @example
+ * // Use different modes
+ * const { MODES } = require('./modes');
+ * 
+ * // Standard SEO mode (default)
+ * const seoMode = MODES.STRICT_SEO;
+ * 
+ * // Split channels for different processing
+ * const splitMode = MODES.SPLIT_CHANNELS;
+ * 
+ * // Standards header for compliance
+ * const headerMode = MODES.STANDARDS_HEADER;
+ */
 const MODES = {
+  /** @type {string} Standard SEO-optimized output mode */
   STRICT_SEO: 'strict-seo',
+  /** @type {string} Split channels mode with separate SEO and LLM blocks */
   SPLIT_CHANNELS: 'split-channels',
+  /** @type {string} Standards header mode with profile metadata */
   STANDARDS_HEADER: 'standards-header'
 };
 
 /**
- * Mode configuration class
+ * Mode configuration class for managing output strategies
+ * 
+ * Provides configuration management for different output modes, allowing
+ * control over how structured data is formatted and what metadata is included.
+ * Each mode is optimized for different use cases and processing requirements.
+ * 
+ * @class ModeConfig
+ * @example
+ * // Create mode configuration
+ * const config = new ModeConfig(MODES.STRICT_SEO);
+ * 
+ * @example
+ * // Check mode capabilities
+ * const config = new ModeConfig('split-channels');
+ * if (config.separatesLLMBlock()) {
+ *   console.log('This mode creates separate LLM blocks');
+ * }
+ * 
+ * @example
+ * // Get configuration object
+ * const config = new ModeConfig(MODES.STANDARDS_HEADER);
+ * const modeConfig = config.getConfig();
+ * console.log('Mode configuration:', modeConfig);
  */
 class ModeConfig {
+  /**
+   * Create a new ModeConfig instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode to configure
+   * @throws {Error} When mode is not one of the valid modes
+   * 
+   * @example
+   * // Default mode (Strict SEO)
+   * const config = new ModeConfig();
+   * 
+   * @example
+   * // Specific mode
+   * const config = new ModeConfig(MODES.SPLIT_CHANNELS);
+   * 
+   * @example
+   * // Invalid mode (will throw error)
+   * const config = new ModeConfig('invalid-mode'); // Throws Error
+   */
   constructor(mode = MODES.STRICT_SEO) {
     this.mode = mode;
     this.validateMode();

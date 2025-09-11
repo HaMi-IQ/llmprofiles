@@ -1,10 +1,117 @@
 /**
- * DatasetBuilder class for creating Dataset structured data objects
+ * @fileoverview DatasetBuilder class for creating Dataset structured data objects
+ * 
+ * This module provides a specialized builder for creating Dataset structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * dataset-specific properties like creator, publisher, distribution, keywords,
+ * and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic dataset creation
+ * import { DatasetBuilder, MODES } from './dataset-builder.mjs';
+ * const dataset = new DatasetBuilder(MODES.STRICT_SEO)
+ *   .name('Climate Change Data 2024')
+ *   .description('Comprehensive climate data collected from various sources')
+ *   .creator('Climate Research Institute', 'https://climate-research.org')
+ *   .publisher('Environmental Data Corp', 'https://envdata.com')
+ *   .datePublished('2024-01-01')
+ *   .build();
+ * 
+ * @example
+ * // Dataset with detailed metadata
+ * const dataset = new DatasetBuilder()
+ *   .name('COVID-19 Global Statistics')
+ *   .description('Daily COVID-19 statistics from around the world')
+ *   .creator({
+ *     "@type": "Organization",
+ *     "name": "World Health Organization",
+ *     "url": "https://who.int"
+ *   })
+ *   .publisher({
+ *     "@type": "Organization",
+ *     "name": "Global Health Data",
+ *     "url": "https://globalhealthdata.org"
+ *   })
+ *   .datePublished('2024-01-15')
+ *   .dateModified('2024-01-20')
+ *   .keywords(['covid-19', 'health', 'statistics', 'global'])
+ *   .license('https://creativecommons.org/licenses/by/4.0/')
+ *   .distribution({
+ *     "@type": "DataDownload",
+ *     "contentUrl": "https://example.com/covid-data.csv",
+ *     "encodingFormat": "text/csv"
+ *   })
+ *   .build();
+ * 
+ * @example
+ * // Dataset with multiple distributions
+ * const dataset = new DatasetBuilder()
+ *   .name('Stock Market Data')
+ *   .description('Historical stock market data for major indices')
+ *   .creator('Financial Data Corp')
+ *   .addDistribution({
+ *     "@type": "DataDownload",
+ *     "contentUrl": "https://example.com/stocks.csv",
+ *     "encodingFormat": "text/csv",
+ *     "name": "CSV Format"
+ *   })
+ *   .addDistribution({
+ *     "@type": "DataDownload",
+ *     "contentUrl": "https://example.com/stocks.json",
+ *     "encodingFormat": "application/json",
+ *     "name": "JSON Format"
+ *   })
+ *   .build();
  */
 
 import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
+/**
+ * DatasetBuilder class for creating Dataset structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * Dataset structured data according to Schema.org specifications. Includes
+ * support for creators, publishers, distributions, keywords, licenses,
+ * and more.
+ * 
+ * @class DatasetBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a dataset builder
+ * const datasetBuilder = new DatasetBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const datasetBuilder = new DatasetBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete dataset
+ * const dataset = new DatasetBuilder()
+ *   .name('My Dataset')
+ *   .creator('Data Creator')
+ *   .publisher('Data Publisher')
+ *   .datePublished('2024-01-01')
+ *   .build();
+ */
 export class DatasetBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new DatasetBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const datasetBuilder = new DatasetBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const datasetBuilder = new DatasetBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Dataset', 'content', mode, sanitizeInputs);
   }

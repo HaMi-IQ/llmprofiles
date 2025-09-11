@@ -1,10 +1,105 @@
 /**
- * HowToBuilder class for creating HowTo structured data objects
+ * @fileoverview HowToBuilder class for creating HowTo structured data objects
+ * 
+ * This module provides a specialized builder for creating HowTo structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * step-by-step instructions, tools, materials, time requirements, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic how-to creation
+ * const { HowToBuilder, MODES } = require('./howto-builder');
+ * const howto = new HowToBuilder(MODES.STRICT_SEO)
+ *   .name('How to Make Perfect Coffee')
+ *   .description('Learn to brew the perfect cup of coffee at home')
+ *   .author('Coffee Expert')
+ *   .addStep('Grind coffee beans', 'Grind 2 tablespoons of coffee beans to medium consistency')
+ *   .addStep('Boil water', 'Bring 8 ounces of water to 200°F')
+ *   .addStep('Brew coffee', 'Pour hot water over grounds and let steep for 4 minutes')
+ *   .build();
+ * 
+ * @example
+ * // How-to with tools and materials
+ * const howto = new HowToBuilder()
+ *   .name('How to Build a Birdhouse')
+ *   .description('Create a beautiful birdhouse for your garden')
+ *   .author('Woodworking Pro')
+ *   .totalTime('PT2H30M')
+ *   .addTool('Hammer', 'https://example.com/hammer')
+ *   .addTool('Saw', 'https://example.com/saw')
+ *   .addSupply('Wood planks', '2x4 pine boards')
+ *   .addSupply('Nails', '1-inch wood screws')
+ *   .addStep('Cut wood', 'Cut planks to required dimensions')
+ *   .addStep('Assemble base', 'Attach base pieces with screws')
+ *   .addStep('Add roof', 'Install roof pieces and secure')
+ *   .build();
+ * 
+ * @example
+ * // How-to with detailed steps and images
+ * const howto = new HowToBuilder()
+ *   .name('How to Change a Tire')
+ *   .description('Step-by-step guide to safely changing a flat tire')
+ *   .author('Auto Mechanic')
+ *   .totalTime('PT30M')
+ *   .addStep({
+ *     name: 'Park safely',
+ *     text: 'Pull over to a safe location and engage parking brake',
+ *     image: 'https://example.com/park-safely.jpg'
+ *   })
+ *   .addStep({
+ *     name: 'Remove lug nuts',
+ *     text: 'Loosen lug nuts with tire iron before jacking up car',
+ *     image: 'https://example.com/lug-nuts.jpg'
+ *   })
+ *   .build();
  */
 
 const { BaseProfileBuilder, MODES } = require('./base-builder');
 
+/**
+ * HowToBuilder class for creating HowTo structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * HowTo structured data according to Schema.org specifications. Includes
+ * support for step-by-step instructions, tools, materials, time requirements,
+ * and more.
+ * 
+ * @class HowToBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a how-to builder
+ * const howtoBuilder = new HowToBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const howtoBuilder = new HowToBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete how-to
+ * const howto = new HowToBuilder()
+ *   .name('How to Make Coffee')
+ *   .addStep('Grind beans', 'Grind coffee beans')
+ *   .addStep('Brew', 'Pour hot water')
+ *   .build();
+ */
 class HowToBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new HowToBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const howtoBuilder = new HowToBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const howtoBuilder = new HowToBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Howto', 'content', mode, sanitizeInputs);
   }

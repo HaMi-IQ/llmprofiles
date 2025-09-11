@@ -1,11 +1,99 @@
 /**
- * Article builder class for creating Article structured data
- * ES Module version
+ * @fileoverview ArticleBuilder class for creating Article structured data objects
+ * 
+ * This module provides a specialized builder for creating Article structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * article-specific properties like headline, author, publisher, dates, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic article creation
+ * import { ArticleBuilder, MODES } from './article-builder.mjs';
+ * const article = new ArticleBuilder(MODES.STRICT_SEO)
+ *   .headline('Breaking News: Important Update')
+ *   .author('John Doe', 'https://example.com/author')
+ *   .datePublished('2024-01-01T00:00:00Z')
+ *   .publisher('News Corp', 'https://example.com', 'https://example.com/logo.png')
+ *   .build();
+ * 
+ * @example
+ * // Article with detailed metadata
+ * const article = new ArticleBuilder()
+ *   .headline('The Future of Web Development')
+ *   .description('An in-depth look at emerging web technologies')
+ *   .author({
+ *     "@type": "Person",
+ *     "name": "Jane Smith",
+ *     "url": "https://example.com/author",
+ *     "sameAs": "https://twitter.com/janesmith"
+ *   })
+ *   .datePublished('2024-01-15T10:00:00Z')
+ *   .dateModified('2024-01-16T14:30:00Z')
+ *   .publisher('Tech Blog', 'https://techblog.com', 'https://techblog.com/logo.png')
+ *   .articleBody('<p>Web development is evolving rapidly...</p>')
+ *   .keywords(['web development', 'technology', 'programming'])
+ *   .wordCount(1500)
+ *   .url('https://techblog.com/future-web-dev')
+ *   .build();
+ * 
+ * @example
+ * // Article with voice search optimization
+ * const article = new ArticleBuilder()
+ *   .headline('How to Make Perfect Coffee')
+ *   .author('Coffee Expert')
+ *   .datePublished('2024-01-01')
+ *   .speakable(['h1', '.intro', '.steps'])
+ *   .about('Coffee brewing techniques')
+ *   .addMention('French Press')
+ *   .addMention('Espresso Machine')
+ *   .build();
  */
 
 import { BaseProfileBuilder } from './base-builder.mjs';
 
+/**
+ * ArticleBuilder class for creating Article structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * Article structured data according to Schema.org specifications. Includes
+ * support for headlines, authors, publishers, dates, content, and more.
+ * 
+ * @class ArticleBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create an article builder
+ * const articleBuilder = new ArticleBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const articleBuilder = new ArticleBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete article
+ * const article = new ArticleBuilder()
+ *   .headline('Breaking News')
+ *   .author('John Doe')
+ *   .datePublished('2024-01-01')
+ *   .build();
+ */
 export class ArticleBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new ArticleBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const articleBuilder = new ArticleBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const articleBuilder = new ArticleBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = 'strict-seo', sanitizeInputs = true) {
     super('Article', 'content', mode, sanitizeInputs);
   }

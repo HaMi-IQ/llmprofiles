@@ -1,10 +1,105 @@
 /**
- * QAPageBuilder class for creating QAPage structured data objects
+ * @fileoverview QAPageBuilder class for creating QAPage structured data objects
+ * 
+ * This module provides a specialized builder for creating QAPage structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * Q&A-specific properties like questions, answers, authors, dates, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic Q&A page creation
+ * const { QAPageBuilder, MODES } = require('./qapage-builder');
+ * const qaPage = new QAPageBuilder(MODES.STRICT_SEO)
+ *   .name('How to Install Software')
+ *   .description('Step-by-step guide for software installation')
+ *   .inLanguage('en')
+ *   .question('How do I install the software?', 'How do I install the software on my computer?')
+ *   .addAnswer('Download the installer from our website and run it.', 'Tech Support', '2024-01-15')
+ *   .addAnswer('Make sure you have administrator privileges before installing.', 'System Admin', '2024-01-16')
+ *   .build();
+ * 
+ * @example
+ * // Q&A page with detailed question and answers
+ * const qaPage = new QAPageBuilder()
+ *   .name('Product Troubleshooting')
+ *   .description('Common issues and solutions for our product')
+ *   .inLanguage('en')
+ *   .question({
+ *     name: 'Why is my app crashing?',
+ *     text: 'My application keeps crashing when I try to open it. What should I do?',
+ *     author: 'User123',
+ *     dateCreated: '2024-01-10'
+ *   })
+ *   .addAnswer({
+ *     text: 'Try restarting your device and clearing the app cache.',
+ *     author: 'Tech Support',
+ *     dateCreated: '2024-01-10'
+ *   })
+ *   .addAnswer({
+ *     text: 'Check if you have the latest version of the app installed.',
+ *     author: 'Product Team',
+ *     dateCreated: '2024-01-11'
+ *   })
+ *   .build();
+ * 
+ * @example
+ * // Q&A page with accepted answer
+ * const qaPage = new QAPageBuilder()
+ *   .name('Account Setup Help')
+ *   .description('Help with setting up your account')
+ *   .inLanguage('en')
+ *   .question('How do I create an account?', 'What are the steps to create a new account?')
+ *   .addAnswer('Go to our website and click the "Sign Up" button.', 'Support Team', '2024-01-01')
+ *   .addAnswer('Fill out the registration form with your email and password.', 'Support Team', '2024-01-01')
+ *   .acceptedAnswer('Go to our website and click the "Sign Up" button.', 'Support Team', '2024-01-01')
+ *   .build();
  */
 
 const { BaseProfileBuilder, MODES } = require('./base-builder');
 
+/**
+ * QAPageBuilder class for creating QAPage structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * QAPage structured data according to Schema.org specifications. Includes
+ * support for questions, answers, authors, dates, accepted answers, and more.
+ * 
+ * @class QAPageBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a Q&A page builder
+ * const qaBuilder = new QAPageBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const qaBuilder = new QAPageBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete Q&A page
+ * const qaPage = new QAPageBuilder()
+ *   .name('FAQ')
+ *   .question('Question?', 'What is the question?')
+ *   .addAnswer('Answer.', 'Author')
+ *   .build();
+ */
 class QAPageBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new QAPageBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const qaBuilder = new QAPageBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const qaBuilder = new QAPageBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Qapage', 'interaction', mode, sanitizeInputs);
   }

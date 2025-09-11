@@ -1,11 +1,120 @@
 /**
- * Product builder class for creating Product structured data
- * ES Module version
+ * @fileoverview ProductBuilder class for creating Product structured data objects
+ * 
+ * This module provides a specialized builder for creating Product structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * product-specific properties like name, description, price, availability,
+ * brand, reviews, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic product creation
+ * import { ProductBuilder, MODES } from './product-builder.mjs';
+ * const product = new ProductBuilder(MODES.STRICT_SEO)
+ *   .name('Wireless Bluetooth Headphones')
+ *   .description('High-quality wireless headphones with noise cancellation')
+ *   .brand('TechSound')
+ *   .price('199.99', 'USD')
+ *   .availability('https://schema.org/InStock')
+ *   .image('https://example.com/headphones.jpg', 500, 500)
+ *   .build();
+ * 
+ * @example
+ * // Product with detailed information
+ * const product = new ProductBuilder()
+ *   .name('Smartphone Pro Max')
+ *   .description('Latest flagship smartphone with advanced features')
+ *   .brand({
+ *     "@type": "Brand",
+ *     "name": "TechCorp",
+ *     "logo": "https://techcorp.com/logo.png"
+ *   })
+ *   .price('999.99', 'USD')
+ *   .availability('https://schema.org/InStock')
+ *   .sku('SMARTPHONE-PRO-MAX-256')
+ *   .gtin('1234567890123')
+ *   .category('Electronics > Mobile Phones')
+ *   .addImage({
+ *     "@type": "ImageObject",
+ *     "url": "https://example.com/phone-front.jpg",
+ *     "width": 800,
+ *     "height": 600
+ *   })
+ *   .addImage({
+ *     "@type": "ImageObject",
+ *     "url": "https://example.com/phone-back.jpg",
+ *     "width": 800,
+ *     "height": 600
+ *   })
+ *   .aggregateRating(4.5, 1200)
+ *   .build();
+ * 
+ * @example
+ * // Product with offers and reviews
+ * const product = new ProductBuilder()
+ *   .name('Gaming Laptop')
+ *   .description('High-performance gaming laptop with RTX graphics')
+ *   .brand('GameTech')
+ *   .price('1499.99', 'USD')
+ *   .availability('https://schema.org/InStock')
+ *   .addOffer({
+ *     "@type": "Offer",
+ *     "price": "1399.99",
+ *     "priceCurrency": "USD",
+ *     "availability": "https://schema.org/InStock",
+ *     "validFrom": "2024-01-01",
+ *     "validThrough": "2024-01-31"
+ *   })
+ *   .aggregateRating(4.7, 850)
+ *   .build();
  */
 
 import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
+/**
+ * ProductBuilder class for creating Product structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * Product structured data according to Schema.org specifications. Includes
+ * support for product names, descriptions, prices, availability, brands,
+ * reviews, offers, and more.
+ * 
+ * @class ProductBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a product builder
+ * const productBuilder = new ProductBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const productBuilder = new ProductBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete product
+ * const product = new ProductBuilder()
+ *   .name('My Product')
+ *   .price('99.99', 'USD')
+ *   .availability('https://schema.org/InStock')
+ *   .build();
+ */
 export class ProductBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new ProductBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const productBuilder = new ProductBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const productBuilder = new ProductBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Product', 'business', mode, sanitizeInputs);
   }

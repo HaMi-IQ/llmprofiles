@@ -1,11 +1,117 @@
 /**
- * EventBuilder class for creating Event structured data objects
- * CommonJS version
+ * @fileoverview EventBuilder class for creating Event structured data objects
+ * 
+ * This module provides a specialized builder for creating Event structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * event-specific properties like name, description, dates, location, organizer,
+ * and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic event creation
+ * const { EventBuilder, MODES } = require('./event-builder');
+ * const event = new EventBuilder(MODES.STRICT_SEO)
+ *   .name('Tech Conference 2024')
+ *   .description('Annual technology conference featuring the latest innovations')
+ *   .startDate('2024-06-15T09:00:00Z')
+ *   .endDate('2024-06-17T18:00:00Z')
+ *   .location('Convention Center', 'San Francisco, CA')
+ *   .organizer('Tech Events Inc', 'https://techevents.com')
+ *   .build();
+ * 
+ * @example
+ * // Event with detailed information
+ * const event = new EventBuilder()
+ *   .name('Web Development Workshop')
+ *   .description('Hands-on workshop covering modern web development techniques')
+ *   .startDate('2024-03-15T10:00:00Z')
+ *   .endDate('2024-03-15T16:00:00Z')
+ *   .location({
+ *     "@type": "Place",
+ *     "name": "Tech Hub",
+ *     "address": {
+ *       "@type": "PostalAddress",
+ *       "streetAddress": "123 Tech Street",
+ *       "addressLocality": "San Francisco",
+ *       "addressRegion": "CA",
+ *       "postalCode": "94105",
+ *       "addressCountry": "US"
+ *     }
+ *   })
+ *   .organizer({
+ *     "@type": "Organization",
+ *     "name": "Web Dev Academy",
+ *     "url": "https://webdevacademy.com"
+ *   })
+ *   .offers({
+ *     "@type": "Offer",
+ *     "price": "99.00",
+ *     "priceCurrency": "USD",
+ *     "availability": "https://schema.org/InStock"
+ *   })
+ *   .build();
+ * 
+ * @example
+ * // Virtual event
+ * const event = new EventBuilder()
+ *   .name('Online JavaScript Meetup')
+ *   .description('Monthly JavaScript meetup with guest speakers')
+ *   .startDate('2024-02-20T19:00:00Z')
+ *   .endDate('2024-02-20T21:00:00Z')
+ *   .location('Online')
+ *   .organizer('JS Community')
+ *   .eventStatus('https://schema.org/EventScheduled')
+ *   .eventAttendanceMode('https://schema.org/OnlineEventAttendanceMode')
+ *   .build();
  */
 
 const { BaseProfileBuilder, MODES } = require('./base-builder');
 
+/**
+ * EventBuilder class for creating Event structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * Event structured data according to Schema.org specifications. Includes
+ * support for event names, descriptions, dates, locations, organizers,
+ * offers, and more.
+ * 
+ * @class EventBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create an event builder
+ * const eventBuilder = new EventBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const eventBuilder = new EventBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete event
+ * const event = new EventBuilder()
+ *   .name('Tech Meetup')
+ *   .startDate('2024-01-01T18:00:00Z')
+ *   .location('Tech Hub')
+ *   .organizer('Tech Community')
+ *   .build();
+ */
 class EventBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new EventBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const eventBuilder = new EventBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const eventBuilder = new EventBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Event', 'interaction', mode, sanitizeInputs);
   }

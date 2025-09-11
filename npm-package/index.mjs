@@ -1,8 +1,51 @@
 /**
- * @llmprofiles/core - Minimal Schema.org profiles for LLMs and Rich Results
+ * @fileoverview @llmprofiles/core - Minimal Schema.org profiles for LLMs and Rich Results
  * 
- * Main entry point providing profile definitions, builders, and validation utilities
- * ES Module version
+ * This is the main ES Module entry point for the @llmprofiles/core package, providing:
+ * - Schema.org profile definitions optimized for LLMs and search engines
+ * - Builder classes for creating structured data objects
+ * - Validation utilities with enhanced error reporting
+ * - Field metadata and autocomplete support
+ * - Input sanitization for security
+ * - Multiple output modes (Strict SEO, Split Channels, Standards Header)
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * @see {@link https://llmprofiles.org} Official documentation
+ * @see {@link https://github.com/HaMi-IQ/llmprofiles} Source code
+ * 
+ * @example
+ * // Basic usage with Article builder (ES Module)
+ * import { ArticleBuilder, MODES } from '@llmprofiles/core';
+ * 
+ * const article = new ArticleBuilder(MODES.STRICT_SEO)
+ *   .headline('Breaking News: Important Update')
+ *   .author('John Doe', 'https://example.com/author')
+ *   .datePublished('2024-01-01T00:00:00Z')
+ *   .publisher('News Corp', 'https://example.com', 'https://example.com/logo.png')
+ *   .build();
+ * 
+ * @example
+ * // Using the simplified factory function (ES Module)
+ * import { createBuilder } from '@llmprofiles/core';
+ * 
+ * const jobPosting = createBuilder('JobPosting', { mode: 'strict-seo' })
+ *   .title('Software Engineer')
+ *   .hiringOrganization('Tech Corp', 'https://techcorp.com')
+ *   .jobLocation('San Francisco, CA')
+ *   .datePosted('2024-01-01')
+ *   .build();
+ * 
+ * @example
+ * // Validation with detailed error reporting (ES Module)
+ * import { validateStructuredData } from '@llmprofiles/core';
+ * 
+ * const result = validateStructuredData(myData, 'Article');
+ * if (!result.valid) {
+ *   console.log('Validation errors:', result.errors);
+ *   console.log('Missing recommended fields:', result.warnings);
+ * }
  */
 
 import { readFileSync } from 'fs';
@@ -15,7 +58,6 @@ import { InputSanitizer, defaultSanitizer } from './lib/sanitizer.mjs';
 
 // Import additional builders
 import { BookBuilder } from './lib/builders/book-builder.mjs';
-import { CourseBuilder } from './lib/builders/course-builder.mjs';
 import { DatasetBuilder } from './lib/builders/dataset-builder.mjs';
 import { HowToBuilder } from './lib/builders/howto-builder.mjs';
 import { RecipeBuilder } from './lib/builders/recipe-builder.mjs';
@@ -30,7 +72,8 @@ import {
   getFieldMetadata, 
   getAllFieldsMetadata, 
   getFieldSuggestions, 
-  getCompletionHints 
+  getCompletionHints,
+  getEnhancedFieldSuggestions
 } from './lib/field-metadata.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -221,7 +264,7 @@ export const {
 } = builders;
 
 // Export additional builders
-export { BookBuilder, CourseBuilder, DatasetBuilder, HowToBuilder, RecipeBuilder, VideoObjectBuilder, FAQPageBuilder, QAPageBuilder, SoftwareApplicationBuilder, ReviewBuilder };
+export { BookBuilder, DatasetBuilder, HowToBuilder, RecipeBuilder, VideoObjectBuilder, FAQPageBuilder, QAPageBuilder, SoftwareApplicationBuilder, ReviewBuilder };
 
 // Re-export utility classes
 export { ProfileValidator, InputSanitizer, defaultSanitizer };
@@ -275,3 +318,6 @@ export default profiles;
 
 // Simplified API alias
 export const validate = validateStructuredData;
+
+// Enhanced field metadata and suggestions (already exported above)
+// Note: These are already exported in the field metadata utilities section above

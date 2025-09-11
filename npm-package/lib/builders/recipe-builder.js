@@ -1,10 +1,133 @@
 /**
- * RecipeBuilder class for creating Recipe structured data objects
+ * @fileoverview RecipeBuilder class for creating Recipe structured data objects
+ * 
+ * This module provides a specialized builder for creating Recipe structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * recipe-specific properties like ingredients, instructions, cooking time,
+ * nutrition information, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic recipe creation
+ * const { RecipeBuilder, MODES } = require('./recipe-builder');
+ * const recipe = new RecipeBuilder(MODES.STRICT_SEO)
+ *   .name('Chocolate Chip Cookies')
+ *   .description('Classic homemade chocolate chip cookies')
+ *   .author('Baking Expert', 'https://bakingexpert.com')
+ *   .datePublished('2024-01-01')
+ *   .prepTime('PT15M')
+ *   .cookTime('PT12M')
+ *   .totalTime('PT27M')
+ *   .recipeYield('24 cookies')
+ *   .addIngredient('2 cups all-purpose flour')
+ *   .addIngredient('1 cup butter, softened')
+ *   .addIngredient('1 cup chocolate chips')
+ *   .addInstruction('Preheat oven to 375°F')
+ *   .addInstruction('Mix ingredients in a large bowl')
+ *   .addInstruction('Bake for 12 minutes until golden')
+ *   .build();
+ * 
+ * @example
+ * // Recipe with detailed nutrition information
+ * const recipe = new RecipeBuilder()
+ *   .name('Healthy Quinoa Salad')
+ *   .description('Nutritious quinoa salad with fresh vegetables')
+ *   .author('Healthy Chef')
+ *   .datePublished('2024-01-15')
+ *   .prepTime('PT20M')
+ *   .cookTime('PT15M')
+ *   .totalTime('PT35M')
+ *   .recipeYield('4 servings')
+ *   .recipeCategory('Salad')
+ *   .recipeCuisine('Mediterranean')
+ *   .addIngredient({
+ *     "@type": "Ingredient",
+ *     "name": "quinoa",
+ *     "amount": "1 cup"
+ *   })
+ *   .addIngredient({
+ *     "@type": "Ingredient", 
+ *     "name": "cherry tomatoes",
+ *     "amount": "1 cup"
+ *   })
+ *   .nutrition({
+ *     "@type": "NutritionInformation",
+ *     "calories": "250",
+ *     "fatContent": "8g",
+ *     "proteinContent": "10g",
+ *     "carbohydrateContent": "35g"
+ *   })
+ *   .build();
+ * 
+ * @example
+ * // Recipe with ratings and reviews
+ * const recipe = new RecipeBuilder()
+ *   .name('Grandma\'s Apple Pie')
+ *   .description('Traditional apple pie recipe passed down through generations')
+ *   .author('Family Recipes')
+ *   .datePublished('2024-01-01')
+ *   .prepTime('PT45M')
+ *   .cookTime('PT60M')
+ *   .totalTime('PT105M')
+ *   .recipeYield('8 servings')
+ *   .recipeCategory('Dessert')
+ *   .aggregateRating(4.8, 150)
+ *   .addReview({
+ *     "@type": "Review",
+ *     "author": "Happy Baker",
+ *     "ratingValue": 5,
+ *     "reviewBody": "Perfect recipe! Tastes just like grandma used to make."
+ *   })
+ *   .build();
  */
 
 const { BaseProfileBuilder, MODES } = require('./base-builder');
 
+/**
+ * RecipeBuilder class for creating Recipe structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * Recipe structured data according to Schema.org specifications. Includes
+ * support for ingredients, instructions, cooking times, nutrition information,
+ * ratings, and more.
+ * 
+ * @class RecipeBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a recipe builder
+ * const recipeBuilder = new RecipeBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const recipeBuilder = new RecipeBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete recipe
+ * const recipe = new RecipeBuilder()
+ *   .name('Simple Pasta')
+ *   .author('Chef Mario')
+ *   .prepTime('PT10M')
+ *   .cookTime('PT15M')
+ *   .build();
+ */
 class RecipeBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new RecipeBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const recipeBuilder = new RecipeBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const recipeBuilder = new RecipeBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Recipe', 'content', mode, sanitizeInputs);
   }

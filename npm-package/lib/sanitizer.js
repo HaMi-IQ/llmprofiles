@@ -1,9 +1,52 @@
 /**
- * Input sanitization utilities for secure data handling
+ * @fileoverview Input sanitization utilities for secure data handling
+ * 
+ * This module provides comprehensive input sanitization functionality to ensure
+ * that structured data is safe and properly formatted. It includes validation
+ * and sanitization for various data types including strings, URLs, emails,
+ * phone numbers, dates, and complex structured data objects.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic sanitization
+ * const { InputSanitizer, defaultSanitizer } = require('./sanitizer');
+ * const sanitizer = new InputSanitizer();
+ * const cleanString = sanitizer.sanitizeString('<script>alert("xss")</script>');
+ * 
+ * @example
+ * // Sanitize structured data
+ * const sanitized = defaultSanitizer.sanitizeStructuredData(myData, 'Article');
+ * 
+ * @example
+ * // Custom sanitization configuration
+ * const customSanitizer = new InputSanitizer({
+ *   MAX_STRING_LENGTH: 5000,
+ *   ALLOWED_URL_PROTOCOLS: ['https:']
+ * });
  */
 
 /**
- * Sanitization configuration options
+ * Default sanitization configuration options
+ * 
+ * @constant {Object} SANITIZATION_CONFIG
+ * @property {number} MAX_STRING_LENGTH - Maximum length for string inputs
+ * @property {number} MAX_URL_LENGTH - Maximum length for URL inputs
+ * @property {number} MAX_EMAIL_LENGTH - Maximum length for email inputs
+ * @property {number} MAX_PHONE_LENGTH - Maximum length for phone number inputs
+ * @property {number} MAX_SKU_LENGTH - Maximum length for SKU inputs
+ * @property {number} MAX_LANGUAGE_CODE_LENGTH - Maximum length for language code inputs
+ * @property {string[]} ALLOWED_URL_PROTOCOLS - Allowed URL protocols
+ * @property {RegExp} ALLOWED_LANGUAGE_PATTERN - Pattern for valid language codes
+ * @property {RegExp} ALLOWED_PHONE_PATTERN - Pattern for valid phone numbers
+ * @property {RegExp} ALLOWED_SKU_PATTERN - Pattern for valid SKUs
+ * @property {RegExp} HTML_TAG_PATTERN - Pattern for HTML tags
+ * @property {RegExp} SCRIPT_TAG_PATTERN - Pattern for script tags
+ * @property {RegExp} JAVASCRIPT_PROTOCOL_PATTERN - Pattern for JavaScript protocols
+ * @property {RegExp} DATA_URI_PATTERN - Pattern for data URIs
+ * @property {Object} DANGEROUS_CHARS - Mapping of dangerous characters to HTML entities
  */
 const SANITIZATION_CONFIG = {
   // Maximum string lengths
@@ -37,9 +80,51 @@ const SANITIZATION_CONFIG = {
 };
 
 /**
- * Input sanitization class
+ * Input sanitization class for secure data handling
+ * 
+ * Provides comprehensive sanitization functionality for various data types
+ * to ensure structured data is safe, properly formatted, and free from
+ * potentially malicious content.
+ * 
+ * @class InputSanitizer
+ * @example
+ * // Create sanitizer with default configuration
+ * const sanitizer = new InputSanitizer();
+ * 
+ * @example
+ * // Create sanitizer with custom configuration
+ * const sanitizer = new InputSanitizer({
+ *   MAX_STRING_LENGTH: 5000,
+ *   ALLOWED_URL_PROTOCOLS: ['https:']
+ * });
+ * 
+ * @example
+ * // Sanitize various data types
+ * const cleanString = sanitizer.sanitizeString('<script>alert("xss")</script>');
+ * const cleanUrl = sanitizer.sanitizeUrl('https://example.com');
+ * const cleanEmail = sanitizer.sanitizeEmail('user@example.com');
  */
 class InputSanitizer {
+  /**
+   * Create a new InputSanitizer instance
+   * 
+   * @param {Object} [config={}] - Custom configuration options to override defaults
+   * @param {number} [config.MAX_STRING_LENGTH] - Maximum length for string inputs
+   * @param {number} [config.MAX_URL_LENGTH] - Maximum length for URL inputs
+   * @param {number} [config.MAX_EMAIL_LENGTH] - Maximum length for email inputs
+   * @param {number} [config.MAX_PHONE_LENGTH] - Maximum length for phone number inputs
+   * @param {number} [config.MAX_SKU_LENGTH] - Maximum length for SKU inputs
+   * @param {number} [config.MAX_LANGUAGE_CODE_LENGTH] - Maximum length for language code inputs
+   * @param {string[]} [config.ALLOWED_URL_PROTOCOLS] - Allowed URL protocols
+   * @param {RegExp} [config.ALLOWED_LANGUAGE_PATTERN] - Pattern for valid language codes
+   * @param {RegExp} [config.ALLOWED_PHONE_PATTERN] - Pattern for valid phone numbers
+   * @param {RegExp} [config.ALLOWED_SKU_PATTERN] - Pattern for valid SKUs
+   * @param {RegExp} [config.HTML_TAG_PATTERN] - Pattern for HTML tags
+   * @param {RegExp} [config.SCRIPT_TAG_PATTERN] - Pattern for script tags
+   * @param {RegExp} [config.JAVASCRIPT_PROTOCOL_PATTERN] - Pattern for JavaScript protocols
+   * @param {RegExp} [config.DATA_URI_PATTERN] - Pattern for data URIs
+   * @param {Object} [config.DANGEROUS_CHARS] - Mapping of dangerous characters to HTML entities
+   */
   constructor(config = {}) {
     this.config = { ...SANITIZATION_CONFIG, ...config };
   }

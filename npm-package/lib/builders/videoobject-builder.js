@@ -1,10 +1,107 @@
 /**
- * VideoObjectBuilder class for creating VideoObject structured data objects
+ * @fileoverview VideoObjectBuilder class for creating VideoObject structured data objects
+ * 
+ * This module provides a specialized builder for creating VideoObject structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * video-specific properties like duration, upload date, thumbnail, embed URL,
+ * and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic video creation
+ * const { VideoObjectBuilder, MODES } = require('./videoobject-builder');
+ * const video = new VideoObjectBuilder(MODES.STRICT_SEO)
+ *   .name('How to Build a Website')
+ *   .description('Step-by-step tutorial on building a modern website')
+ *   .uploadDate('2024-01-15')
+ *   .duration('PT15M30S')
+ *   .thumbnailUrl('https://example.com/thumbnail.jpg')
+ *   .embedUrl('https://youtube.com/embed/abc123')
+ *   .contentUrl('https://youtube.com/watch?v=abc123')
+ *   .build();
+ * 
+ * @example
+ * // Video with detailed information
+ * const video = new VideoObjectBuilder()
+ *   .name('Advanced JavaScript Tutorial')
+ *   .description('Learn advanced JavaScript concepts and patterns')
+ *   .uploadDate('2024-01-20')
+ *   .datePublished('2024-01-20T10:00:00Z')
+ *   .duration('PT45M15S')
+ *   .thumbnailUrl('https://example.com/js-tutorial-thumb.jpg')
+ *   .embedUrl('https://youtube.com/embed/xyz789')
+ *   .contentUrl('https://youtube.com/watch?v=xyz789')
+ *   .author('Tech Tutorials', 'https://techtutorials.com')
+ *   .publisher('Learning Channel', 'https://learningchannel.com')
+ *   .keywords(['javascript', 'programming', 'tutorial', 'web development'])
+ *   .build();
+ * 
+ * @example
+ * // Video with multiple formats and interactions
+ * const video = new VideoObjectBuilder()
+ *   .name('Product Demo Video')
+ *   .description('Watch our product in action')
+ *   .uploadDate('2024-01-10')
+ *   .duration('PT8M45S')
+ *   .thumbnailUrl('https://example.com/demo-thumb.jpg')
+ *   .embedUrl('https://vimeo.com/embed/123456')
+ *   .contentUrl('https://vimeo.com/123456')
+ *   .interactionStatistic({
+ *     "@type": "InteractionCounter",
+ *     "interactionType": "https://schema.org/WatchAction",
+ *     "userInteractionCount": 1500
+ *   })
+ *   .aggregateRating(4.7, 200)
+ *   .build();
  */
 
 const { BaseProfileBuilder, MODES } = require('./base-builder');
 
+/**
+ * VideoObjectBuilder class for creating VideoObject structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * VideoObject structured data according to Schema.org specifications. Includes
+ * support for video names, descriptions, durations, upload dates, thumbnails,
+ * embed URLs, and more.
+ * 
+ * @class VideoObjectBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a video object builder
+ * const videoBuilder = new VideoObjectBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const videoBuilder = new VideoObjectBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete video object
+ * const video = new VideoObjectBuilder()
+ *   .name('My Video')
+ *   .uploadDate('2024-01-01')
+ *   .duration('PT5M')
+ *   .thumbnailUrl('https://example.com/thumb.jpg')
+ *   .build();
+ */
 class VideoObjectBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new VideoObjectBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const videoBuilder = new VideoObjectBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const videoBuilder = new VideoObjectBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Videoobject', 'content', mode, sanitizeInputs);
   }

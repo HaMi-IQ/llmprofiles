@@ -21,21 +21,31 @@ const bookProfile = {
     "author": {
       "anyOf": [
         {
-          "type": "string"
+          "type": "string",
+          "description": "Author name as string"
         },
         {
-          "type": "object"
+          "type": "object",
+          "description": "Author as Person object"
         }
       ]
     }
   },
   "recommended": {
     "@context": {
-      "const": "https://schema.org"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array"
+        }
+      ]
     },
     "@id": {
       "type": "string",
-      "format": "uri-reference"
+      "format": "uri-reference",
+      "description": "Unique identifier for the book"
     },
     "description": {
       "type": "string",
@@ -43,14 +53,15 @@ const bookProfile = {
     },
     "bookFormat": {
       "type": "string",
-      "description": "The format of the book"
+      "description": "The format of the book (e.g., Hardcover, Paperback, EBook)"
     },
     "isbn": {
       "type": "string",
-      "description": "The ISBN of the book"
+      "description": "The ISBN of the book (10 or 13 digits)"
     },
     "numberOfPages": {
       "type": "integer",
+      "minimum": 1,
       "description": "Number of pages in the book"
     },
     "inLanguage": {
@@ -70,10 +81,12 @@ const bookProfile = {
     "publisher": {
       "anyOf": [
         {
-          "type": "string"
+          "type": "string",
+          "description": "Publisher name as string"
         },
         {
-          "type": "object"
+          "type": "object",
+          "description": "Publisher as Organization object"
         }
       ]
     },
@@ -82,31 +95,119 @@ const bookProfile = {
       "description": "Genre of the book"
     },
     "keywords": {
+      "anyOf": [
+        {
       "type": "string",
       "description": "Comma-separated keywords for the book"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Keywords as array of strings"
+        }
+      ]
     },
     "about": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of topics the book is about"
     },
     "audience": {
-      "type": "object"
+      "type": "object",
+      "description": "Target audience for the book"
     },
     "image": {
       "anyOf": [
         {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "Image URL as string"
         },
         {
-          "type": "object"
+          "type": "object",
+          "description": "Image as ImageObject"
         }
       ]
     },
     "aggregateRating": {
-      "type": "object"
+      "type": "object",
+      "description": "Aggregate rating for the book"
     },
     "review": {
-      "type": "array"
+      "type": "array",
+      "description": "Reviews of the book"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL where the book is described"
+    },
+    "sameAs": {
+      "type": "string",
+      "format": "uri",
+      "description": "Reference page URL (e.g., Wikipedia, Library of Congress)"
+    },
+    "bookEdition": {
+      "type": "string",
+      "description": "Edition information (e.g., '2nd Edition')"
+    },
+    "workExample": {
+      "type": "array",
+      "description": "Array of book editions"
+    },
+    "illustrator": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Illustrator name as string"
+        },
+        {
+          "type": "object",
+          "description": "Illustrator as Person object"
+        }
+      ]
+    },
+    "translator": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Translator name as string"
+        },
+        {
+          "type": "object",
+          "description": "Translator as Person object"
+        }
+      ]
+    },
+    "copyrightYear": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 3000,
+      "description": "Copyright year"
+    },
+    "copyrightHolder": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "Copyright holder name as string"
+        },
+        {
+          "type": "object",
+          "description": "Copyright holder as Person or Organization object"
+        }
+      ]
+    },
+    "awards": {
+      "type": "string",
+      "description": "Awards or recognition received by the book"
+    },
+    "citation": {
+      "type": "string",
+      "description": "Citation information for the book"
     },
     "additionalType": {
       "const": "https://llmprofiles.org/profiles/content/book/v1/index.jsonld"
@@ -137,19 +238,54 @@ const bookProfile = {
       ]
     }
   },
-  "optional": {},
+  "optional": {
+    "alternateName": {
+      "type": "string",
+      "description": "Alternative name for the book"
+    },
+    "potentialAction": {
+      "type": "object",
+      "description": "Potential action for the book (e.g., ReadAction)"
+    },
+    "license": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "description": "License information"
+    },
+    "isAccessibleForFree": {
+      "type": "boolean",
+      "description": "Whether the book is accessible for free"
+    },
+    "offers": {
+      "type": "object",
+      "description": "Offers for purchasing the book"
+    }
+  },
   "googleRichResults": [
     "name",
     "author",
     "isbn",
-    "publisher"
+    "publisher",
+    "datePublished",
+    "image",
+    "aggregateRating"
   ],
   "llmOptimized": [
     "name",
     "author",
     "description",
     "genre",
-    "numberOfPages"
+    "numberOfPages",
+    "about",
+    "keywords",
+    "isbn"
   ]
 };
 

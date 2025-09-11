@@ -1,19 +1,131 @@
 /**
- * BookBuilder class for creating Book structured data objects
+ * @fileoverview BookBuilder class for creating Book structured data objects
+ * 
+ * This module provides a specialized builder for creating Book structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * book-specific properties like author, ISBN, publisher, genre, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic book creation
+ * const { BookBuilder, MODES } = require('./book-builder');
+ * const book = new BookBuilder(MODES.STRICT_SEO)
+ *   .name('The Great Gatsby')
+ *   .author('F. Scott Fitzgerald')
+ *   .isbn('978-0-7432-7356-5')
+ *   .publisher('Scribner')
+ *   .datePublished('1925-04-10')
+ *   .build();
+ * 
+ * @example
+ * // Book with detailed metadata
+ * const book = new BookBuilder()
+ *   .name('JavaScript: The Good Parts')
+ *   .author('Douglas Crockford', 'https://example.com/author')
+ *   .isbn('978-0-596-51774-8')
+ *   .bookFormat('Paperback')
+ *   .numberOfPages(176)
+ *   .inLanguage('en')
+ *   .publisher('O\'Reilly Media', 'https://oreilly.com')
+ *   .genre('Programming')
+ *   .keywords(['JavaScript', 'Programming', 'Web Development'])
+ *   .aggregateRating(4.5, 120)
+ *   .build();
+ * 
+ * @example
+ * // Book with multiple editions
+ * const book = new BookBuilder()
+ *   .name('Clean Code')
+ *   .author('Robert C. Martin')
+ *   .addWorkExample({
+ *     bookFormat: 'Hardcover',
+ *     isbn: '978-0-13-235088-4',
+ *     datePublished: '2008-08-01'
+ *   })
+ *   .addWorkExample({
+ *     bookFormat: 'EBook',
+ *     isbn: '978-0-13-235088-4',
+ *     datePublished: '2008-08-01'
+ *   })
+ *   .build();
  */
 
 const { BaseProfileBuilder, MODES } = require('./base-builder');
 
+/**
+ * BookBuilder class for creating Book structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * Book structured data according to Schema.org specifications. Includes
+ * support for authors, ISBN, publisher, genre, ratings, and more.
+ * 
+ * @class BookBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a book builder
+ * const bookBuilder = new BookBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const bookBuilder = new BookBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete book
+ * const book = new BookBuilder()
+ *   .name('The Great Gatsby')
+ *   .author('F. Scott Fitzgerald')
+ *   .isbn('978-0-7432-7356-5')
+ *   .build();
+ */
 class BookBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new BookBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const bookBuilder = new BookBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const bookBuilder = new BookBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Book', 'content', mode, sanitizeInputs);
   }
 
   /**
-   * Set author
+   * Set the book author
+   * 
+   * Sets the author of the book. Can accept either a simple string name
+   * or a complete Person object. If a URL is provided with a string name,
+   * it will create a Person object automatically.
+   * 
    * @param {string|Object} author - Author name or Person object
    * @param {string} [url] - Author URL (if author is string)
    * @returns {BookBuilder} This builder for chaining
+   * 
+   * @example
+   * // Simple author name
+   * bookBuilder.author('F. Scott Fitzgerald');
+   * 
+   * @example
+   * // Author with URL
+   * bookBuilder.author('Douglas Crockford', 'https://example.com/author');
+   * 
+   * @example
+   * // Complete Person object
+   * bookBuilder.author({
+   *   "@type": "Person",
+   *   "name": "Robert C. Martin",
+   *   "url": "https://example.com/author",
+   *   "sameAs": "https://twitter.com/unclebobmartin"
+   * });
    */
   author(author, url = null) {
     if (typeof author === 'string') {
@@ -49,9 +161,25 @@ class BookBuilder extends BaseProfileBuilder {
   }
 
   /**
-   * Set ISBN
-   * @param {string} isbn - ISBN number
+   * Set the book's ISBN (International Standard Book Number)
+   * 
+   * Sets the ISBN identifier for the book. The ISBN should be a valid
+   * 10 or 13-digit ISBN number, with or without hyphens.
+   * 
+   * @param {string} isbn - ISBN number (10 or 13 digits, with or without hyphens)
    * @returns {BookBuilder} This builder for chaining
+   * 
+   * @example
+   * // ISBN-13
+   * bookBuilder.isbn('978-0-7432-7356-5');
+   * 
+   * @example
+   * // ISBN-10
+   * bookBuilder.isbn('0-7432-7356-7');
+   * 
+   * @example
+   * // ISBN without hyphens
+   * bookBuilder.isbn('9780743273565');
    */
   isbn(isbn) {
     if (this.sanitizeInputs) {

@@ -1,10 +1,104 @@
 /**
- * ReviewBuilder class for creating Review structured data objects
+ * @fileoverview ReviewBuilder class for creating Review structured data objects
+ * 
+ * This module provides a specialized builder for creating Review structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * review-specific properties like rating, author, review body, item reviewed,
+ * and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic review creation
+ * import { ReviewBuilder, MODES } from './review-builder.mjs';
+ * const review = new ReviewBuilder(MODES.STRICT_SEO)
+ *   .reviewRating(4.5)
+ *   .author('John Doe', 'https://example.com/user')
+ *   .reviewBody('Great product! Highly recommend it.')
+ *   .itemReviewed('Wireless Headphones')
+ *   .datePublished('2024-01-15')
+ *   .build();
+ * 
+ * @example
+ * // Review with detailed information
+ * const review = new ReviewBuilder()
+ *   .reviewRating(5, 5, 1)
+ *   .author({
+ *     "@type": "Person",
+ *     "name": "Jane Smith",
+ *     "url": "https://example.com/jane",
+ *     "sameAs": "https://twitter.com/janesmith"
+ *   })
+ *   .reviewBody('This smartphone exceeded all my expectations. The camera quality is outstanding and the battery life is impressive.')
+ *   .itemReviewed({
+ *     "@type": "Product",
+ *     "name": "Smartphone Pro Max",
+ *     "brand": "TechCorp"
+ *   })
+ *   .datePublished('2024-01-20')
+ *   .dateModified('2024-01-21')
+ *   .publisher('Tech Reviews')
+ *   .build();
+ * 
+ * @example
+ * // Review with pros and cons
+ * const review = new ReviewBuilder()
+ *   .reviewRating(4, 5, 1)
+ *   .author('Tech Reviewer')
+ *   .reviewBody('Good product with some minor issues.')
+ *   .itemReviewed('Gaming Laptop')
+ *   .datePublished('2024-01-10')
+ *   .addPositiveNotes('Great performance', 'Good build quality')
+ *   .addNegativeNotes('Battery life could be better', 'Fan noise under load')
+ *   .build();
  */
 
 import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
+/**
+ * ReviewBuilder class for creating Review structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * Review structured data according to Schema.org specifications. Includes
+ * support for ratings, authors, review bodies, items reviewed, dates,
+ * and more.
+ * 
+ * @class ReviewBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a review builder
+ * const reviewBuilder = new ReviewBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const reviewBuilder = new ReviewBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete review
+ * const review = new ReviewBuilder()
+ *   .reviewRating(4.5)
+ *   .author('Reviewer')
+ *   .reviewBody('Great product!')
+ *   .itemReviewed('Product Name')
+ *   .build();
+ */
 export class ReviewBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new ReviewBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const reviewBuilder = new ReviewBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const reviewBuilder = new ReviewBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Review', 'business', mode, sanitizeInputs);
   }

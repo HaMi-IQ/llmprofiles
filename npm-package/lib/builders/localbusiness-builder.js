@@ -1,10 +1,105 @@
 /**
- * LocalBusinessBuilder class for creating LocalBusiness structured data objects
+ * @fileoverview LocalBusinessBuilder class for creating LocalBusiness structured data objects
+ * 
+ * This module provides a specialized builder for creating LocalBusiness structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * business-specific properties like name, address, phone, hours, reviews, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic local business creation
+ * const { LocalBusinessBuilder, MODES } = require('./localbusiness-builder');
+ * const business = new LocalBusinessBuilder(MODES.STRICT_SEO)
+ *   .name('Joe\'s Pizza')
+ *   .description('Family-owned pizza restaurant serving authentic Italian cuisine')
+ *   .address('123 Main Street', 'New York', 'NY', '10001', 'US')
+ *   .telephone('+1-555-123-4567')
+ *   .url('https://joespizza.com')
+ *   .build();
+ * 
+ * @example
+ * // Local business with detailed information
+ * const business = new LocalBusinessBuilder()
+ *   .name('Tech Repair Shop')
+ *   .description('Professional computer and phone repair services')
+ *   .address({
+ *     "@type": "PostalAddress",
+ *     "streetAddress": "456 Tech Avenue",
+ *     "addressLocality": "San Francisco",
+ *     "addressRegion": "CA",
+ *     "postalCode": "94105",
+ *     "addressCountry": "US"
+ *   })
+ *   .telephone('+1-555-987-6543')
+ *   .email('info@techrepair.com')
+ *   .url('https://techrepair.com')
+ *   .openingHours('Mo-Fr 09:00-18:00, Sa 10:00-16:00')
+ *   .priceRange('$$')
+ *   .aggregateRating(4.5, 120)
+ *   .build();
+ * 
+ * @example
+ * // Restaurant with menu and reviews
+ * const business = new LocalBusinessBuilder()
+ *   .name('Bella Vista Restaurant')
+ *   .description('Fine dining restaurant with Mediterranean cuisine')
+ *   .address('789 Restaurant Row', 'Los Angeles', 'CA', '90210', 'US')
+ *   .telephone('+1-555-456-7890')
+ *   .url('https://bellavista.com')
+ *   .openingHours('Tu-Su 17:00-22:00')
+ *   .priceRange('$$$')
+ *   .servesCuisine('Mediterranean')
+ *   .hasMenu('https://bellavista.com/menu')
+ *   .aggregateRating(4.8, 250)
+ *   .build();
  */
 
 const { BaseProfileBuilder, MODES } = require('./base-builder');
 
+/**
+ * LocalBusinessBuilder class for creating LocalBusiness structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * LocalBusiness structured data according to Schema.org specifications. Includes
+ * support for business names, addresses, contact information, hours, reviews,
+ * and more.
+ * 
+ * @class LocalBusinessBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a local business builder
+ * const businessBuilder = new LocalBusinessBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const businessBuilder = new LocalBusinessBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete local business
+ * const business = new LocalBusinessBuilder()
+ *   .name('My Business')
+ *   .address('123 Main St', 'City', 'State', '12345', 'US')
+ *   .telephone('+1-555-123-4567')
+ *   .build();
+ */
 class LocalBusinessBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new LocalBusinessBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const businessBuilder = new LocalBusinessBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const businessBuilder = new LocalBusinessBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('Localbusiness', 'business', mode, sanitizeInputs);
   }

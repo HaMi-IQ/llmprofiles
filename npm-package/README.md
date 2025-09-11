@@ -17,12 +17,15 @@
 * 🤖 **3 output modes** (Strict SEO, Split Channels, Standards Header)
 * 🧩 **Typed builders** for 15+ common profiles
 * 🧪 **Validation utilities** & examples
+* ⚡ **Smart validation** with required field checking
+* 🎯 **Field suggestions** with importance indicators
+* 💡 **IDE autocomplete** support with metadata
 
 ---
 
 ## 🔗 Quick Links
 
-* [Install](#-install) • [60-sec Demo](#-60-sec-demo) • [Why @llmprofilescore](#-why-llmprofilescore) • [Output Modes](#-three-output-modes) • [Examples](#-usage-examples) • [Profiles](#-available-profile-types) • [Security](#-security-features) • [Nextjs/HTML](#-html--nextjs-integration) • [API & Validation](#-advanced-usage) • [FAQ](#-faq) • [Contributing](#-contributing)
+* [Install](#-install) • [60-sec Demo](#-60-sec-demo) • [Smart Validation](#-smart-validation--autocomplete) • [Why @llmprofilescore](#-why-llmprofilescore) • [Output Modes](#-three-output-modes) • [Examples](#-usage-examples) • [Profiles](#-available-profile-types) • [Security](#-security-features) • [Nextjs/HTML](#-html--nextjs-integration) • [API & Validation](#-advanced-usage) • [FAQ](#-faq) • [Contributing](#-contributing)
 
 ---
 
@@ -58,6 +61,89 @@ const product = new ProductBuilder(MODES.STRICT_SEO)
 
 console.log(JSON.stringify(product, null, 2));
 ```
+
+---
+
+## ⚡ Smart Validation & Autocomplete
+
+**Required Field Validation**
+
+The `build()` method now validates required fields and throws errors when critical fields are missing:
+
+```ts
+import { JobPostingBuilder } from '@llmprofiles/core';
+
+try {
+  const jobPosting = new JobPostingBuilder()
+    .title("Software Engineer")
+    // Missing required fields: hiringOrganization, jobLocation
+    .build(); // This will throw an error
+} catch (error) {
+  console.log('Error:', error.message);
+  // "Missing required fields: hiringOrganization, jobLocation"
+}
+```
+
+**Field Suggestions with Importance Indicators**
+
+Get intelligent suggestions for completing your schema:
+
+```ts
+const jobPosting = new JobPostingBuilder()
+  .title("Software Engineer")
+  .description("Join our team");
+
+// Check validation status
+console.log('Is valid?', jobPosting.isValid()); // false
+console.log('Missing fields:', jobPosting.getMissingRequiredFields());
+// ['hiringOrganization', 'jobLocation']
+
+// Get field suggestions organized by priority
+const suggestions = jobPosting.getSuggestions();
+console.log('Critical fields:', suggestions.critical.map(f => f.name));
+console.log('Important fields:', suggestions.important.map(f => f.name));
+
+// Get enhanced suggestions with metadata
+const enhanced = jobPosting.getEnhancedSuggestions();
+console.log('Summary:', enhanced.summary);
+// { totalFields: 15, requiredFields: 2, recommendedFields: 13, ... }
+```
+
+**IDE Autocomplete Support**
+
+Get completion hints for better development experience:
+
+```ts
+// Get all available fields with metadata
+const hints = jobPosting.getCompletionHints();
+hints.forEach(hint => {
+  console.log(`${hint.label} (${hint.importance}) - ${hint.documentation}`);
+  // "title (required) - The title field"
+  // "hiringOrganization (required) - The hiringOrganization field"
+});
+
+// Get next steps guidance
+const nextSteps = jobPosting.getNextSteps();
+nextSteps.forEach(step => {
+  console.log(`Priority ${step.priority}: ${step.message}`);
+  console.log(`  Fields: ${step.fields.join(', ')}`);
+});
+```
+
+**Multiple Build Options**
+
+```ts
+// Build with validation (default)
+const result1 = builder.build();
+
+// Build with warnings instead of errors
+const result2 = builder.buildWithWarnings();
+
+// Build without validation (unsafe)
+const result3 = builder.buildUnsafe();
+```
+
+📖 **[Full Validation Guide →](./VALIDATION_AND_AUTOCOMPLETE_GUIDE.md)**
 
 ---
 

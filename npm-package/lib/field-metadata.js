@@ -1,28 +1,93 @@
 /**
- * Field metadata system for enhanced builder functionality
- * Provides field importance levels, guidance, and autocomplete support
+ * @fileoverview Field metadata system for enhanced builder functionality
+ * 
+ * This module provides a comprehensive field metadata system that enhances
+ * builder functionality with field importance levels, guidance, autocomplete
+ * support, and intelligent suggestions. It helps developers understand which
+ * fields are required, recommended, or optional, and provides context-aware
+ * suggestions for completing structured data.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Get field metadata
+ * const { getFieldMetadata, FIELD_IMPORTANCE } = require('./field-metadata');
+ * const metadata = getFieldMetadata('Article', 'headline');
+ * console.log('Field importance:', metadata.importance);
+ * 
+ * @example
+ * // Get field suggestions
+ * const { getFieldSuggestions } = require('./field-metadata');
+ * const suggestions = getFieldSuggestions('Article', { headline: 'My Article' });
+ * console.log('Missing required fields:', suggestions.critical);
+ * 
+ * @example
+ * // Get completion hints for IDE
+ * const { getCompletionHints } = require('./field-metadata');
+ * const hints = getCompletionHints('Article', 'auth');
+ * console.log('Autocomplete suggestions:', hints);
  */
 
 const profiles = require('../profiles/index.json');
 
 /**
- * Field importance levels
+ * Field importance level constants
+ * 
+ * @constant {Object} FIELD_IMPORTANCE
+ * @property {string} REQUIRED - Required fields that must be present for valid structured data
+ * @property {string} RECOMMENDED - Recommended fields that improve SEO and rich results
+ * @property {string} OPTIONAL - Optional fields that can enhance functionality
+ * 
+ * @example
+ * const { FIELD_IMPORTANCE } = require('./field-metadata');
+ * 
+ * // Check field importance
+ * if (metadata.importance === FIELD_IMPORTANCE.REQUIRED) {
+ *   console.log('This field is required');
+ * }
  */
 const FIELD_IMPORTANCE = {
+  /** @type {string} Required fields that must be present for valid structured data */
   REQUIRED: 'required',
+  /** @type {string} Recommended fields that improve SEO and rich results */
   RECOMMENDED: 'recommended', 
+  /** @type {string} Optional fields that can enhance functionality */
   OPTIONAL: 'optional'
 };
 
 /**
- * Field categories for better organization
+ * Field category constants for better organization
+ * 
+ * @constant {Object} FIELD_CATEGORY
+ * @property {string} BASIC - Basic fields like name, description, URL
+ * @property {string} CONTENT - Content-related fields like headline, articleBody
+ * @property {string} METADATA - Metadata fields like author, publisher, dates
+ * @property {string} SEO - SEO-related fields like mainEntityOfPage, breadcrumb
+ * @property {string} LLM - LLM-optimized fields like about, mentions, topics
+ * @property {string} GOOGLE - Google Rich Results specific fields
+ * 
+ * @example
+ * const { FIELD_CATEGORY } = require('./field-metadata');
+ * 
+ * // Check field category
+ * if (metadata.category === FIELD_CATEGORY.BASIC) {
+ *   console.log('This is a basic field');
+ * }
  */
 const FIELD_CATEGORY = {
+  /** @type {string} Basic fields like name, description, URL */
   BASIC: 'basic',
+  /** @type {string} Content-related fields like headline, articleBody */
   CONTENT: 'content',
+  /** @type {string} Metadata fields like author, publisher, dates */
   METADATA: 'metadata',
+  /** @type {string} SEO-related fields like mainEntityOfPage, breadcrumb */
   SEO: 'seo',
+  /** @type {string} LLM-optimized fields like about, mentions, topics */
   LLM: 'llm',
+  /** @type {string} Google Rich Results specific fields */
   GOOGLE: 'google'
 };
 
@@ -356,7 +421,10 @@ function getCompletionHints(profileType, partialField = '') {
       detail: `${field.importance} - ${field.type}`,
       documentation: field.description,
       insertText: field.name,
-      sortText: `${field.importance === FIELD_IMPORTANCE.REQUIRED ? '0' : field.importance === FIELD_IMPORTANCE.RECOMMENDED ? '1' : '2'}_${field.name}`
+      sortText: `${field.importance === FIELD_IMPORTANCE.REQUIRED ? '0' : field.importance === FIELD_IMPORTANCE.RECOMMENDED ? '1' : '2'}_${field.name}`,
+      importance: field.importance,
+      googleRichResults: field.googleRichResults,
+      llmOptimized: field.llmOptimized
     }));
   }
 
@@ -368,8 +436,66 @@ function getCompletionHints(profileType, partialField = '') {
       detail: `${field.importance} - ${field.type}`,
       documentation: field.description,
       insertText: field.name,
-      sortText: `${field.importance === FIELD_IMPORTANCE.REQUIRED ? '0' : field.importance === FIELD_IMPORTANCE.RECOMMENDED ? '1' : '2'}_${field.name}`
+      sortText: `${field.importance === FIELD_IMPORTANCE.REQUIRED ? '0' : field.importance === FIELD_IMPORTANCE.RECOMMENDED ? '1' : '2'}_${field.name}`,
+      importance: field.importance,
+      googleRichResults: field.googleRichResults,
+      llmOptimized: field.llmOptimized
     }));
+}
+
+/**
+ * Get field suggestions for a specific profile type with enhanced metadata
+ * @param {string} profileType - Profile type
+ * @param {Object} currentData - Current data object
+ * @param {Object} options - Options for suggestions
+ * @param {boolean} [options.includeOptional=true] - Whether to include optional fields
+ * @param {boolean} [options.includeSummary=true] - Whether to include summary statistics
+ * @param {boolean} [options.includeConvenienceProps=true] - Whether to include convenience boolean properties
+ * @returns {Object} Enhanced suggestions with metadata
+ */
+function getEnhancedFieldSuggestions(profileType, currentData = {}, options = {}) {
+  const { includeOptional = true, includeSummary = true, includeConvenienceProps = true } = options;
+  const suggestions = getFieldSuggestions(profileType, currentData);
+  
+  // Add enhanced metadata to suggestions
+  const enhanceSuggestions = (suggestionList) => {
+    return suggestionList.map(suggestion => {
+      const enhanced = { ...suggestion };
+      
+      if (includeConvenienceProps) {
+        enhanced.isRequired = suggestion.importance === FIELD_IMPORTANCE.REQUIRED;
+        enhanced.isRecommended = suggestion.importance === FIELD_IMPORTANCE.RECOMMENDED;
+        enhanced.isOptional = suggestion.importance === FIELD_IMPORTANCE.OPTIONAL;
+        enhanced.hasGoogleRichResults = suggestion.googleRichResults;
+        enhanced.hasLLMOptimization = suggestion.llmOptimized;
+      }
+      
+      return enhanced;
+    });
+  };
+
+  const enhancedSuggestions = {
+    critical: enhanceSuggestions(suggestions.critical || []),
+    important: enhanceSuggestions(suggestions.important || []),
+    helpful: enhanceSuggestions(suggestions.helpful || []),
+    optional: includeOptional ? enhanceSuggestions(suggestions.optional || []) : []
+  };
+
+  // Add summary information if requested
+  if (includeSummary) {
+    enhancedSuggestions.summary = {
+      totalFields: enhancedSuggestions.critical.length + enhancedSuggestions.important.length + enhancedSuggestions.helpful.length + enhancedSuggestions.optional.length,
+      requiredFields: enhancedSuggestions.critical.length,
+      recommendedFields: enhancedSuggestions.important.length + enhancedSuggestions.helpful.length,
+      optionalFields: enhancedSuggestions.optional.length,
+      googleRichResultsFields: [...enhancedSuggestions.critical, ...enhancedSuggestions.important, ...enhancedSuggestions.helpful, ...enhancedSuggestions.optional]
+        .filter(f => f.googleRichResults).length,
+      llmOptimizedFields: [...enhancedSuggestions.critical, ...enhancedSuggestions.important, ...enhancedSuggestions.helpful, ...enhancedSuggestions.optional]
+        .filter(f => f.llmOptimized).length
+    };
+  }
+
+  return enhancedSuggestions;
 }
 
 module.exports = {
@@ -378,5 +504,6 @@ module.exports = {
   getFieldMetadata,
   getAllFieldsMetadata,
   getFieldSuggestions,
-  getCompletionHints
+  getCompletionHints,
+  getEnhancedFieldSuggestions
 };

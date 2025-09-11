@@ -1,10 +1,102 @@
 /**
- * SoftwareApplicationBuilder class for creating SoftwareApplication structured data objects
+ * @fileoverview SoftwareApplicationBuilder class for creating SoftwareApplication structured data objects
+ * 
+ * This module provides a specialized builder for creating SoftwareApplication structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * application-specific properties like category, operating system, price,
+ * download URL, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic software application creation
+ * import { SoftwareApplicationBuilder, MODES } from './softwareapplication-builder.mjs';
+ * const app = new SoftwareApplicationBuilder(MODES.STRICT_SEO)
+ *   .name('Task Manager Pro')
+ *   .description('Professional task management application')
+ *   .applicationCategory('BusinessApplication')
+ *   .operatingSystem('Windows, macOS, Linux')
+ *   .price('29.99', 'USD')
+ *   .downloadUrl('https://example.com/download')
+ *   .build();
+ * 
+ * @example
+ * // Mobile app with detailed information
+ * const app = new SoftwareApplicationBuilder()
+ *   .name('Photo Editor')
+ *   .description('Advanced photo editing app with AI features')
+ *   .applicationCategory('MultimediaApplication')
+ *   .operatingSystem('iOS, Android')
+ *   .price('4.99', 'USD')
+ *   .downloadUrl('https://apps.apple.com/photo-editor')
+ *   .screenshot('https://example.com/screenshot1.jpg')
+ *   .screenshot('https://example.com/screenshot2.jpg')
+ *   .aggregateRating(4.5, 1200)
+ *   .author('Photo Apps Inc', 'https://photoapps.com')
+ *   .datePublished('2024-01-01')
+ *   .build();
+ * 
+ * @example
+ * // Free software with system requirements
+ * const app = new SoftwareApplicationBuilder()
+ *   .name('Code Editor')
+ *   .description('Lightweight code editor for developers')
+ *   .applicationCategory('DeveloperApplication')
+ *   .operatingSystem('Windows, macOS, Linux')
+ *   .price('0', 'USD')
+ *   .downloadUrl('https://example.com/code-editor')
+ *   .systemRequirements('Windows 10, macOS 10.15, Ubuntu 18.04')
+ *   .memoryRequirements('512MB RAM')
+ *   .storageRequirements('100MB free space')
+ *   .build();
  */
 
 import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
+/**
+ * SoftwareApplicationBuilder class for creating SoftwareApplication structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * SoftwareApplication structured data according to Schema.org specifications. Includes
+ * support for application categories, operating systems, prices, download URLs,
+ * system requirements, and more.
+ * 
+ * @class SoftwareApplicationBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a software application builder
+ * const appBuilder = new SoftwareApplicationBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const appBuilder = new SoftwareApplicationBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete software application
+ * const app = new SoftwareApplicationBuilder()
+ *   .name('My App')
+ *   .applicationCategory('BusinessApplication')
+ *   .operatingSystem('Windows')
+ *   .price('19.99', 'USD')
+ *   .build();
+ */
 export class SoftwareApplicationBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new SoftwareApplicationBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const appBuilder = new SoftwareApplicationBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const appBuilder = new SoftwareApplicationBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('SoftwareApplication', 'technology', mode, sanitizeInputs);
   }

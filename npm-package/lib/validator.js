@@ -1,5 +1,29 @@
 /**
- * Profile validation utilities
+ * @fileoverview Profile validation utilities
+ * 
+ * This module provides comprehensive validation functionality for structured data
+ * against Schema.org profiles. It includes enhanced error reporting, Google Rich
+ * Results compliance checking, LLM optimization scoring, and security validation.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic validation
+ * const { ProfileValidator } = require('./validator');
+ * const validator = new ProfileValidator();
+ * const result = validator.validate(myData, 'Article');
+ * 
+ * @example
+ * // Batch validation
+ * const batchResult = validator.validateBatch([data1, data2, data3], 'Product');
+ * console.log('Batch summary:', batchResult.summary);
+ * 
+ * @example
+ * // Get validation statistics
+ * const stats = validator.getValidationStats(dataset, 'JobPosting');
+ * console.log('Average compliance:', stats.averageGoogleCompliance);
  */
 
 const Ajv = require('ajv');
@@ -12,7 +36,40 @@ const {
   FIELD_IMPORTANCE 
 } = require('./field-metadata');
 
+/**
+ * Profile validation class with enhanced error reporting and compliance checking
+ * 
+ * Provides comprehensive validation of structured data against Schema.org profiles
+ * with detailed error reporting, Google Rich Results compliance checking, LLM
+ * optimization scoring, and security validation.
+ * 
+ * @class ProfileValidator
+ * @example
+ * // Create validator with default settings
+ * const validator = new ProfileValidator();
+ * 
+ * @example
+ * // Create validator without input sanitization
+ * const validator = new ProfileValidator(false);
+ * 
+ * @example
+ * // Validate data and get detailed results
+ * const result = validator.validate(articleData, 'Article');
+ * if (!result.valid) {
+ *   console.log('Errors:', result.errors);
+ *   console.log('Warnings:', result.warnings);
+ * }
+ */
 class ProfileValidator {
+  /**
+   * Create a new ProfileValidator instance
+   * 
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data for security
+   * @param {Object} [options] - Additional configuration options
+   * @param {boolean} [options.allErrors=true] - Whether to collect all validation errors
+   * @param {boolean} [options.verbose=true] - Whether to include verbose error information
+   * @param {boolean} [options.strict=false] - Whether to use strict JSON Schema validation
+   */
   constructor(sanitizeInputs = true) {
     this.ajv = new Ajv({
       allErrors: true,
@@ -27,9 +84,43 @@ class ProfileValidator {
 
   /**
    * Validate data against a profile
-   * @param {Object} data - Data to validate
-   * @param {string} profileType - Profile type
-   * @returns {Object} Validation result
+   * 
+   * Performs comprehensive validation of structured data against a specific profile
+   * definition. Returns detailed validation results including errors, warnings,
+   * Google Rich Results compliance, LLM optimization score, and security warnings.
+   * 
+   * @param {Object} data - The JSON-LD data to validate
+   * @param {string} profileType - Profile type to validate against (e.g., 'Article', 'JobPosting')
+   * @returns {Object} Validation result object with the following properties:
+   *   - `valid` {boolean} - Whether the data is valid according to the profile
+   *   - `errors` {Array<Object>} - Array of validation errors with detailed information
+   *   - `warnings` {Array<Object>} - Array of warnings for missing recommended fields
+   *   - `googleRichResults` {Object} - Google Rich Results compliance information
+   *   - `llmOptimization` {Object} - LLM optimization score and missing fields
+   *   - `sanitized` {Object|null} - Sanitized version of the input data (if sanitization enabled)
+   *   - `securityWarnings` {Array<Object>} - Security-related warnings (if any)
+   * 
+   * @example
+   * const articleData = {
+   *   "@context": "https://schema.org",
+   *   "@type": "Article",
+   *   "headline": "Breaking News",
+   *   "author": "John Doe"
+   * };
+   * 
+   * const result = validator.validate(articleData, 'Article');
+   * if (!result.valid) {
+   *   console.log('Validation errors:', result.errors);
+   *   console.log('Missing recommended fields:', result.warnings);
+   * }
+   * 
+   * @example
+   * // Check Google Rich Results compliance
+   * const result = validator.validate(data, 'Product');
+   * console.log('Google Rich Results compliant:', result.googleRichResults.compliant);
+   * console.log('Coverage:', result.googleRichResults.coverage + '%');
+   * 
+   * @throws {Error} When profileType is not found in available profiles
    */
   validate(data, profileType) {
     const profile = this.profiles[profileType];

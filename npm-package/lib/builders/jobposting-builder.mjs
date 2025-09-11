@@ -1,10 +1,109 @@
 /**
- * JobPostingBuilder class for creating JobPosting structured data objects
+ * @fileoverview JobPostingBuilder class for creating JobPosting structured data objects
+ * 
+ * This module provides a specialized builder for creating JobPosting structured data
+ * objects according to Schema.org specifications. It includes methods for setting
+ * job-specific properties like title, description, hiring organization, location,
+ * salary, requirements, and more.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Basic job posting creation
+ * import { JobPostingBuilder, MODES } from './jobposting-builder.mjs';
+ * const job = new JobPostingBuilder(MODES.STRICT_SEO)
+ *   .title('Senior Software Engineer')
+ *   .description('We are looking for an experienced software engineer...')
+ *   .hiringOrganization('Tech Corp', 'https://techcorp.com')
+ *   .jobLocation('San Francisco, CA')
+ *   .datePosted('2024-01-01')
+ *   .build();
+ * 
+ * @example
+ * // Job posting with detailed information
+ * const job = new JobPostingBuilder()
+ *   .title('Frontend Developer')
+ *   .description('<p>Join our team as a Frontend Developer...</p>')
+ *   .hiringOrganization({
+ *     "@type": "Organization",
+ *     "name": "Innovation Labs",
+ *     "url": "https://innovationlabs.com",
+ *     "logo": "https://innovationlabs.com/logo.png"
+ *   })
+ *   .jobLocation({
+ *     "@type": "Place",
+ *     "address": {
+ *       "@type": "PostalAddress",
+ *       "addressLocality": "New York",
+ *       "addressRegion": "NY",
+ *       "addressCountry": "US"
+ *     }
+ *   })
+ *   .employmentType('FULL_TIME')
+ *   .baseSalary(80000, 'USD', 'YEAR')
+ *   .datePosted('2024-01-15')
+ *   .validThrough('2024-02-15')
+ *   .build();
+ * 
+ * @example
+ * // Remote job posting
+ * const job = new JobPostingBuilder()
+ *   .title('Remote Product Manager')
+ *   .description('Lead product development for our remote team...')
+ *   .hiringOrganization('Remote Corp')
+ *   .jobLocation('Remote')
+ *   .employmentType('FULL_TIME')
+ *   .workHours('40 hours per week')
+ *   .datePosted('2024-01-01')
+ *   .build();
  */
 
 import { BaseProfileBuilder, MODES } from './base-builder.mjs';
 
+/**
+ * JobPostingBuilder class for creating JobPosting structured data objects
+ * 
+ * Extends BaseProfileBuilder to provide specialized methods for creating
+ * JobPosting structured data according to Schema.org specifications. Includes
+ * support for job titles, descriptions, organizations, locations, salaries,
+ * requirements, and more.
+ * 
+ * @class JobPostingBuilder
+ * @extends BaseProfileBuilder
+ * @example
+ * // Create a job posting builder
+ * const jobBuilder = new JobPostingBuilder();
+ * 
+ * @example
+ * // Create with custom mode and sanitization
+ * const jobBuilder = new JobPostingBuilder(MODES.SPLIT_CHANNELS, false);
+ * 
+ * @example
+ * // Build a complete job posting
+ * const job = new JobPostingBuilder()
+ *   .title('Software Engineer')
+ *   .hiringOrganization('Tech Corp')
+ *   .jobLocation('San Francisco, CA')
+ *   .datePosted('2024-01-01')
+ *   .build();
+ */
 export class JobPostingBuilder extends BaseProfileBuilder {
+  /**
+   * Create a new JobPostingBuilder instance
+   * 
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Default configuration
+   * const jobBuilder = new JobPostingBuilder();
+   * 
+   * @example
+   * // Custom configuration
+   * const jobBuilder = new JobPostingBuilder(MODES.SPLIT_CHANNELS, false);
+   */
   constructor(mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     super('JobPosting', 'business', mode, sanitizeInputs);
   }

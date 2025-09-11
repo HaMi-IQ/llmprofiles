@@ -362,7 +362,10 @@ function getCompletionHints(profileType, partialField = '') {
       detail: `${field.importance} - ${field.type}`,
       documentation: field.description,
       insertText: field.name,
-      sortText: `${field.importance === FIELD_IMPORTANCE.REQUIRED ? '0' : field.importance === FIELD_IMPORTANCE.RECOMMENDED ? '1' : '2'}_${field.name}`
+      sortText: `${field.importance === FIELD_IMPORTANCE.REQUIRED ? '0' : field.importance === FIELD_IMPORTANCE.RECOMMENDED ? '1' : '2'}_${field.name}`,
+      importance: field.importance,
+      googleRichResults: field.googleRichResults,
+      llmOptimized: field.llmOptimized
     }));
   }
 
@@ -374,8 +377,66 @@ function getCompletionHints(profileType, partialField = '') {
       detail: `${field.importance} - ${field.type}`,
       documentation: field.description,
       insertText: field.name,
-      sortText: `${field.importance === FIELD_IMPORTANCE.REQUIRED ? '0' : field.importance === FIELD_IMPORTANCE.RECOMMENDED ? '1' : '2'}_${field.name}`
+      sortText: `${field.importance === FIELD_IMPORTANCE.REQUIRED ? '0' : field.importance === FIELD_IMPORTANCE.RECOMMENDED ? '1' : '2'}_${field.name}`,
+      importance: field.importance,
+      googleRichResults: field.googleRichResults,
+      llmOptimized: field.llmOptimized
     }));
+}
+
+/**
+ * Get field suggestions for a specific profile type with enhanced metadata
+ * @param {string} profileType - Profile type
+ * @param {Object} currentData - Current data object
+ * @param {Object} options - Options for suggestions
+ * @param {boolean} [options.includeOptional=true] - Whether to include optional fields
+ * @param {boolean} [options.includeSummary=true] - Whether to include summary statistics
+ * @param {boolean} [options.includeConvenienceProps=true] - Whether to include convenience boolean properties
+ * @returns {Object} Enhanced suggestions with metadata
+ */
+function getEnhancedFieldSuggestions(profileType, currentData = {}, options = {}) {
+  const { includeOptional = true, includeSummary = true, includeConvenienceProps = true } = options;
+  const suggestions = getFieldSuggestions(profileType, currentData);
+  
+  // Add enhanced metadata to suggestions
+  const enhanceSuggestions = (suggestionList) => {
+    return suggestionList.map(suggestion => {
+      const enhanced = { ...suggestion };
+      
+      if (includeConvenienceProps) {
+        enhanced.isRequired = suggestion.importance === FIELD_IMPORTANCE.REQUIRED;
+        enhanced.isRecommended = suggestion.importance === FIELD_IMPORTANCE.RECOMMENDED;
+        enhanced.isOptional = suggestion.importance === FIELD_IMPORTANCE.OPTIONAL;
+        enhanced.hasGoogleRichResults = suggestion.googleRichResults;
+        enhanced.hasLLMOptimization = suggestion.llmOptimized;
+      }
+      
+      return enhanced;
+    });
+  };
+
+  const enhancedSuggestions = {
+    critical: enhanceSuggestions(suggestions.critical || []),
+    important: enhanceSuggestions(suggestions.important || []),
+    helpful: enhanceSuggestions(suggestions.helpful || []),
+    optional: includeOptional ? enhanceSuggestions(suggestions.optional || []) : []
+  };
+
+  // Add summary information if requested
+  if (includeSummary) {
+    enhancedSuggestions.summary = {
+      totalFields: enhancedSuggestions.critical.length + enhancedSuggestions.important.length + enhancedSuggestions.helpful.length + enhancedSuggestions.optional.length,
+      requiredFields: enhancedSuggestions.critical.length,
+      recommendedFields: enhancedSuggestions.important.length + enhancedSuggestions.helpful.length,
+      optionalFields: enhancedSuggestions.optional.length,
+      googleRichResultsFields: [...enhancedSuggestions.critical, ...enhancedSuggestions.important, ...enhancedSuggestions.helpful, ...enhancedSuggestions.optional]
+        .filter(f => f.googleRichResults).length,
+      llmOptimizedFields: [...enhancedSuggestions.critical, ...enhancedSuggestions.important, ...enhancedSuggestions.helpful, ...enhancedSuggestions.optional]
+        .filter(f => f.llmOptimized).length
+    };
+  }
+
+  return enhancedSuggestions;
 }
 
 export {
@@ -384,5 +445,6 @@ export {
   getFieldMetadata,
   getAllFieldsMetadata,
   getFieldSuggestions,
-  getCompletionHints
+  getCompletionHints,
+  getEnhancedFieldSuggestions
 };

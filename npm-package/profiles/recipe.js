@@ -19,19 +19,42 @@ const recipeProfile = {
       "description": "The name of the recipe"
     },
     "ingredients": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of ingredient strings"
     },
     "recipeInstructions": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "description": "Array of recipe instructions"
     }
   },
   "recommended": {
     "@context": {
-      "const": "https://schema.org"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array"
+        }
+      ]
     },
     "@id": {
       "type": "string",
-      "format": "uri-reference"
+      "format": "uri-reference",
+      "description": "Unique identifier for the recipe"
     },
     "description": {
       "type": "string",
@@ -40,20 +63,24 @@ const recipeProfile = {
     "author": {
       "anyOf": [
         {
-          "type": "string"
+          "type": "string",
+          "description": "Author name as string"
         },
         {
-          "type": "object"
+          "type": "object",
+          "description": "Author as Person object"
         }
       ]
     },
     "datePublished": {
       "type": "string",
-      "format": "date"
+      "format": "date",
+      "description": "Date when the recipe was published"
     },
     "dateModified": {
       "type": "string",
-      "format": "date"
+      "format": "date",
+      "description": "Date when the recipe was last modified"
     },
     "prepTime": {
       "type": "string",
@@ -70,10 +97,12 @@ const recipeProfile = {
     "recipeYield": {
       "anyOf": [
         {
-          "type": "string"
+          "type": "string",
+          "description": "Yield as string (e.g., '4 servings')"
         },
         {
-          "type": "number"
+          "type": "number",
+          "description": "Yield as number"
         }
       ]
     },
@@ -86,16 +115,19 @@ const recipeProfile = {
       "description": "Cuisine type (e.g., 'Italian', 'Mexican')"
     },
     "nutrition": {
-      "type": "object"
+      "type": "object",
+      "description": "Nutritional information"
     },
     "image": {
       "anyOf": [
         {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "description": "Recipe image URL"
         },
         {
-          "type": "object"
+          "type": "object",
+          "description": "Recipe image as ImageObject"
         }
       ]
     },
@@ -104,7 +136,45 @@ const recipeProfile = {
       "description": "Comma-separated keywords for the recipe"
     },
     "suitableForDiet": {
-      "type": "array"
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of suitable diets (e.g., 'VegetarianDiet', 'GlutenFreeDiet')"
+    },
+    "recipeIngredient": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of recipe ingredients"
+    },
+    "recipeInstructions": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "description": "Array of recipe instructions"
+    },
+    "aggregateRating": {
+      "type": "object",
+      "description": "Aggregate rating for the recipe"
+    },
+    "review": {
+      "type": "array",
+      "description": "Reviews of the recipe"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL of the recipe page"
     },
     "additionalType": {
       "const": "https://llmprofiles.org/profiles/content/recipe/v1/index.jsonld"
@@ -135,20 +205,80 @@ const recipeProfile = {
       ]
     }
   },
-  "optional": {},
+  "optional": {
+    "alternateName": {
+      "type": "string",
+      "description": "Alternative name for the recipe"
+    },
+    "sameAs": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL of a reference page"
+    },
+    "inLanguage": {
+      "type": "string",
+      "description": "Language of the recipe"
+    },
+    "audience": {
+      "type": "object",
+      "description": "Target audience for the recipe"
+    },
+    "about": {
+      "type": "object",
+      "description": "Subject matter of the recipe"
+    },
+    "recipeServings": {
+      "type": "number",
+      "description": "Number of servings"
+    },
+    "recipeDifficulty": {
+      "type": "string",
+      "description": "Difficulty level of the recipe"
+    },
+    "cookingMethod": {
+      "type": "string",
+      "description": "Cooking method used"
+    },
+    "recipeCookingMethod": {
+      "type": "string",
+      "description": "Cooking method for the recipe"
+    },
+    "tool": {
+      "type": "array",
+      "description": "Tools needed for the recipe"
+    },
+    "supply": {
+      "type": "array",
+      "description": "Supplies needed for the recipe"
+    },
+    "video": {
+      "type": "object",
+      "description": "Video of the recipe being made"
+    }
+  },
   "googleRichResults": [
     "name",
     "image",
     "author",
     "datePublished",
-    "description"
+    "description",
+    "prepTime",
+    "cookTime",
+    "recipeYield",
+    "recipeCategory",
+    "recipeCuisine"
   ],
   "llmOptimized": [
     "name",
     "description",
     "recipeIngredient",
     "recipeInstructions",
-    "cookTime"
+    "cookTime",
+    "prepTime",
+    "totalTime",
+    "recipeCategory",
+    "recipeCuisine",
+    "suitableForDiet"
   ]
 };
 

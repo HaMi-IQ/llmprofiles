@@ -1,5 +1,32 @@
 /**
- * BaseProfileBuilder class for creating structured data objects
+ * @fileoverview BaseProfileBuilder class for creating structured data objects
+ * 
+ * This module provides the base builder class that all specific profile builders
+ * extend. It includes common functionality for building structured data objects,
+ * mode-specific output formatting, field discovery, validation, and enhanced
+ * autocomplete support.
+ * 
+ * @version 2.0.5-alpha.0
+ * @author HAMI
+ * @license MIT
+ * 
+ * @example
+ * // Direct usage (not recommended - use specific builders)
+ * const { BaseProfileBuilder, MODES } = require('./base-builder');
+ * const builder = new BaseProfileBuilder('Article', 'content', MODES.STRICT_SEO);
+ * 
+ * @example
+ * // Using with field discovery
+ * const builder = new BaseProfileBuilder('Article', 'content');
+ * const suggestions = builder.getSuggestions();
+ * console.log('Missing required fields:', suggestions.critical);
+ * 
+ * @example
+ * // Validation and completion status
+ * const builder = new BaseProfileBuilder('Article', 'content');
+ * builder.name('My Article');
+ * const status = builder.getCompletionStatus();
+ * console.log('Completion score:', status.overall.score);
  */
 
 const { ModeConfig, MODES } = require('../modes');
@@ -9,10 +36,42 @@ const {
   getAllFieldsMetadata, 
   getFieldSuggestions, 
   getCompletionHints,
+  getEnhancedFieldSuggestions,
   FIELD_IMPORTANCE 
 } = require('../field-metadata');
 
+/**
+ * Base profile builder class for creating structured data objects
+ * 
+ * This is the base class that all specific profile builders extend. It provides
+ * common functionality for building structured data objects, including mode-specific
+ * output formatting, field discovery, validation, and enhanced autocomplete support.
+ * 
+ * @class BaseProfileBuilder
+ * @abstract
+ * @example
+ * // This class is typically not used directly
+ * // Use specific builders like ArticleBuilder, JobPostingBuilder, etc.
+ * 
+ * @example
+ * // Field discovery and validation
+ * const builder = new ArticleBuilder();
+ * const suggestions = builder.getSuggestions();
+ * const status = builder.getCompletionStatus();
+ */
 class BaseProfileBuilder {
+  /**
+   * Create a new BaseProfileBuilder instance
+   * 
+   * @param {string} profileType - The Schema.org type (e.g., 'Article', 'JobPosting')
+   * @param {string} category - The profile category ('business', 'content', 'interaction', 'technology')
+   * @param {string} [mode=MODES.STRICT_SEO] - The output mode
+   * @param {boolean} [sanitizeInputs=true] - Whether to sanitize input data
+   * 
+   * @example
+   * // Create base builder (typically done by specific builders)
+   * const builder = new BaseProfileBuilder('Article', 'content', MODES.STRICT_SEO);
+   */
   constructor(profileType, category, mode = MODES.STRICT_SEO, sanitizeInputs = true) {
     this.data = {
       "@context": "https://schema.org",
@@ -61,9 +120,30 @@ class BaseProfileBuilder {
   /**
    * Build the final JSON-LD object
    * @param {string} [mode] - Override the mode for this build
+   * @param {Object} [options] - Build options
+   * @param {boolean} [options.validate=true] - Whether to validate required fields before building
+   * @param {boolean} [options.throwOnError=true] - Whether to throw errors for missing required fields
    * @returns {Object|Object[]} The structured data object(s) based on mode
+   * @throws {Error} When required fields are missing and throwOnError is true
    */
-  build(mode = null) {
+  build(mode = null, options = {}) {
+    const { validate = true, throwOnError = true } = options;
+    
+    // Validate required fields if requested
+    if (validate) {
+      const validation = this.validateInline();
+      if (!validation.valid) {
+        const missingFields = validation.errors.map(e => e.field).join(', ');
+        const errorMessage = `Missing required fields: ${missingFields}. Use validateInline() for detailed validation results.`;
+        
+        if (throwOnError) {
+          throw new Error(errorMessage);
+        } else {
+          console.warn(`Warning: ${errorMessage}`);
+        }
+      }
+    }
+    
     if (mode) {
       const tempModeConfig = new ModeConfig(mode);
       return this.buildWithMode(tempModeConfig);
@@ -516,6 +596,53 @@ class BaseProfileBuilder {
     }
 
     return nextSteps;
+  }
+
+  /**
+   * Check if the builder is in a valid state (all required fields present)
+   * @returns {boolean} True if valid, false otherwise
+   */
+  isValid() {
+    const validation = this.validateInline();
+    return validation.valid;
+  }
+
+  /**
+   * Get missing required fields
+   * @returns {Array} Array of missing required field names
+   */
+  getMissingRequiredFields() {
+    const validation = this.validateInline();
+    return validation.errors.map(e => e.field);
+  }
+
+  /**
+   * Build without validation (for cases where you want to build incomplete schemas)
+   * @param {string} [mode] - Override the mode for this build
+   * @returns {Object|Object[]} The structured data object(s) based on mode
+   */
+  buildUnsafe(mode = null) {
+    return this.build(mode, { validate: false });
+  }
+
+  /**
+   * Build with warnings instead of errors for missing required fields
+   * @param {string} [mode] - Override the mode for this build
+   * @returns {Object|Object[]} The structured data object(s) based on mode
+   */
+  buildWithWarnings(mode = null) {
+    return this.build(mode, { validate: true, throwOnError: false });
+  }
+
+  /**
+   * Get enhanced field suggestions with detailed metadata
+   * @param {Object} [options] - Options for suggestions
+   * @param {boolean} [options.includeOptional=true] - Whether to include optional fields
+   * @param {boolean} [options.prioritizeGoogleRichResults=true] - Whether to prioritize Google Rich Results fields
+   * @returns {Object} Enhanced suggestions with metadata
+   */
+  getEnhancedSuggestions(options = {}) {
+    return getEnhancedFieldSuggestions(this.profileType, this.data, options);
   }
 }
 
